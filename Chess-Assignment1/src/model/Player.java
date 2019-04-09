@@ -61,6 +61,10 @@ public class Player {
 		return type;
 	}
 	
+	int getScore() {
+		return score;
+	}
+	
 	public void setName(String name)
 	{
 		this.name = name;

@@ -22,6 +22,7 @@ public class Cell {
 	{
 		Piece piece = occupier;
 		occupier = null;
+		isOccupied = false;
 		return piece;
 	}
 	
@@ -39,6 +40,10 @@ public class Cell {
 	PlayerType getOccupiedType()
 	{
 		return occupier.getPlayer().getType();
+	}
+	
+	Piece getOccupier() {
+		return occupier;
 	}
 	
 	int getRow()
