@@ -44,6 +44,7 @@ public class GameBoard {
 	private CellList selectedCells;
 	private Player selectedPlayer;
 	private Map<PlayerType, Player> players;
+	public Object getCells;
 	
 
 
