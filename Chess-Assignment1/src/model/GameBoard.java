@@ -114,6 +114,10 @@ public class GameBoard {
 		return selectedPlayer;
 	}
 	
+	public CellList getCells() {
+		return cells;
+	}
+	
 	
 	/*bad method placement, move?*/
 	public void printGrid()
