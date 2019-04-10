@@ -11,13 +11,16 @@ public class GameBoardTest {
 	@Test
 	public void testMove1() {
 		board.select("r1");
-		assertTrue(board.move(0, 3));
+		board.move(0, 3);
+		assertTrue(board.getCells().get(0, 3).getOccupier() == board.getSelectedPiece());
 	}
 	
 	@Test
 	public void testMove2() {
 		board.select("r1");
-		assertTrue(!(board.move(1, 3)));
+//		assertTrue(!(board.move(1, 3)));
+		board.move(1, 3);
+		assertTrue(board.getCells().get(1, 3).getOccupier() != board.getSelectedPiece());
 	}
 	
 	@Test (expected=NullPointerException.class)
