@@ -18,5 +18,10 @@ public class PlayerTest {
 		player.addScore(200);
 		assertEquals(player.getScore(), 200);
 	}
+	
+	@Test
+	public void testPlayer() {
+		assertEquals(PlayerType.WHITE, player.getType());
+	}
 
 }
