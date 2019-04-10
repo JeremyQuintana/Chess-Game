@@ -18,5 +18,23 @@ public class PlayerTest {
 		player.addScore(200);
 		assertEquals(player.getScore(), 200);
 	}
-
+	
+	@Test
+	public void testPlayer() {
+		assertEquals(PlayerType.WHITE, player.getType());
+	}
+	
+	@Test
+	public void testPlayerName()
+	{
+		player.setName("Jeremy Handsome");
+		assertEquals(player.getName(),"Jeremy Handsome");
+	}
+	
+	public void testPlayerPassword()
+	{
+		player.setPassword("thisisapassword");
+		assertEquals(player.getPassword(),"thisisapassword");
+	}
+	
 }
