@@ -8,7 +8,8 @@ import java.util.Map;
 public class GameBoard {
 
 	public GameBoard()
-	{
+	{	
+		System.out.println("TEST");
 		
 		//initialize list of cells
 		cells = new CellList(); 
