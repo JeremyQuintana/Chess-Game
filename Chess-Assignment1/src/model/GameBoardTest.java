@@ -15,12 +15,10 @@ public class GameBoardTest {
 		assertTrue(board.getCells().get(0, 3).getOccupier() == board.getSelectedPiece());
 	}
 	
-	@Test
+	@Test (expected=InvalidMoveException.class)
 	public void testMove2() {
 		board.select("r1");
-//		assertTrue(!(board.move(1, 3)));
 		board.move(1, 3);
-		assertTrue(board.getCells().get(1, 3).getOccupier() != board.getSelectedPiece());
 	}
 	
 	@Test (expected=NullPointerException.class)
