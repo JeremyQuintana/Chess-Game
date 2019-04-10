@@ -31,6 +31,13 @@ public class GameBoardTest {
 		board.select("r1");
 		assertTrue(board.getSelectedPiece().getCell().getCol() ==  0 && board.getSelectedPiece().getCell().getRow() ==  0);
 	}
+	
+	@Test
+	public void testSelect2() {
+		board.select("r1");
+		board.select("JeremyIsAwesome");
+		assertTrue(board.getSelectedPiece().getCell().getCol() ==  0 && board.getSelectedPiece().getCell().getRow() ==  0);
+	}
 
 	@Test
 	public void testSwitchPlayer() {

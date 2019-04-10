@@ -29,5 +29,24 @@ public class Knight extends Piece {
 		// knight is never blocked
 		return false;
 	}
+	
+	//not working
+	public CellList getMoves(CellList cells, boolean xDirection, boolean yDirection) 
+	{
+		CellList validCells = new CellList();
+		
+		int y = getCell().getRow();
+		int x = getCell().getCol();
+		
+		int moveY = xDirection ? 2 : -2;
+		int moveX = yDirection ? 1 : -1;
+		if(!(cells.get(y+moveY, x+moveX).getIsOccupied())) validCells.add(cells.get(y+moveY, x+moveX));
+		
+		moveY = xDirection ? 1 : -1;
+		moveX = yDirection ? 2 : -2;
+		if(!(cells.get(y+moveY, x+moveX).getIsOccupied())) validCells.add(cells.get(y+moveY, x+moveX));
+		
+		return validCells;
+	}
 
 }

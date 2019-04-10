@@ -25,5 +25,23 @@ public class Bishop extends Piece {
 		return false;
 	}
 	
+	//havent tested
+	public CellList getMoves(CellList cells, boolean xDirection, boolean yDirection) 
+	{
+		CellList validCells = new CellList();
+		
+		int y = getCell().getRow();
+		int x = getCell().getCol();
+		while(y < GameBoard.GRID_SIZE && x < GameBoard.GRID_SIZE && x>=0 && y>=0) {
+			if(cells.get(y, x).getIsOccupied()) break;
+			else validCells.add(cells.get(y, x));
+			
+			y = yDirection ? y++ : y--;
+			x = xDirection ? x++ : x--;
+		}
+		
+		
+		return validCells;
+	}
 
 }

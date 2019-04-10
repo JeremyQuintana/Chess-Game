@@ -121,6 +121,22 @@ public abstract class Piece {
 	{
 		return key;
 	}
+	
+	//not working
+	public abstract CellList getMoves(CellList cells, boolean xDirection, boolean yDirection);
+	//not working
+	public CellList getValidMoves(CellList cells) {
+		
+		boolean[] values = {true, false};
+		CellList validCells = new CellList();
+		
+		for (boolean rowPositive : values)
+			for (boolean colPositive : values) {
+				for(Cell cell : getMoves(cells, rowPositive, colPositive)) validCells.add(cell);
+			}
+		return validCells; //what happens when cell is fully blocked
+		
+	}
 
 }
 

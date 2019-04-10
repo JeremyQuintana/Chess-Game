@@ -36,6 +36,12 @@ public class GameBoard {
 			
 			selectedPiece.move(cells.get(row, col));
 		}
+		
+//		test to see if returned valid cells are correct (not working)
+//		select("r1");
+//		for(Cell cell : selectedPiece.getValidMoves(cells)) {
+//			System.out.println("y=" + cell.getRow() + " x=" + cell.getCol());
+//		}
 	}
 	
 	public static int GRID_SIZE = 6;
@@ -69,7 +75,8 @@ public class GameBoard {
 	
 	public void select(String key)
 	{
-		selectedPiece = selectedPlayer.getPieces().get(key);
+		Piece desiredPiece = selectedPlayer.getPieces().get(key);
+		if(desiredPiece != null) selectedPiece = desiredPiece;
 	}
 	
 	public void switchPlayer()
