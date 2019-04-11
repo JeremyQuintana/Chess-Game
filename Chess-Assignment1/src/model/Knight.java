@@ -2,6 +2,8 @@ package model;
 
 import java.util.List;
 
+import model.Piece.Statement;
+
 public class Knight extends Piece {
 
 	public Knight(Player player, String key) 
@@ -9,19 +11,9 @@ public class Knight extends Piece {
 		super(PieceType.KNIGHT, player, key);
 	}
 	
-	
-//	/*TO IMPLEMENT*/
-//	public boolean isValidMove(Cell destination, List<Cell> cells)
-//	{
-//		// piecetype handles this
-////		Move move = new Move(super.getCell(), destination);
-////		
-////		if (move.getXDist() == 1 && move.getYDist() == 2 ||
-////			move.getXDist() == 2 && move.getYDist() == 1) 
-////			return super.isValidMove(destination, cells);
-//		return false;
-//		
-//	}
+	// move limit for knight for each direction
+	// ie. distance of (1,2) or (2,1)
+	static final int MOVE_LIMIT = 2;
 
 	@Override
 	protected boolean isBlocked(Cell destination, List<Cell> cells) 
@@ -30,23 +22,40 @@ public class Knight extends Piece {
 		return false;
 	}
 	
-	//not working
-	public CellList getMoves(CellList cells, boolean xDirection, boolean yDirection) 
+
+	Cell getDestination(int a, CellList cells, boolean rowPositive, boolean colPositive) 
 	{
-		CellList validCells = new CellList();
-		
-		int y = getCell().getRow();
-		int x = getCell().getCol();
-		
-		int moveY = xDirection ? 2 : -2;
-		int moveX = yDirection ? 1 : -1;
-		if(!(cells.get(y+moveY, x+moveX).getIsOccupied())) validCells.add(cells.get(y+moveY, x+moveX));
-		
-		moveY = xDirection ? 1 : -1;
-		moveX = yDirection ? 2 : -2;
-		if(!(cells.get(y+moveY, x+moveX).getIsOccupied())) validCells.add(cells.get(y+moveY, x+moveX));
-		
-		return validCells;
+		int rowDist = a;
+		int colDist = a==1 ? 2:1;
+		return getRedirectedCell(rowDist, colDist, cells, rowPositive, colPositive);
 	}
+	
+	Statement breakCondition(int a, Cell destination)
+	{
+		if (a > MOVE_LIMIT)											return Statement.BREAK;
+		else if (destination == null || isOccupied(destination))	return Statement.CONTINUE;
+		else														return Statement.NOTHING;
+				
+	}
+	
+	
+	//not working
+//	public CellList getMoves(CellList cells, boolean rowPositive, boolean colPositive) 
+//	{
+//		CellList validCells = new CellList();
+//		Cell destination = getLocation();
+//		
+//		for (int a=1; destination != null && !isOccupied(destination); a++)
+//		{
+//			if (a>1)
+//				validCells.add(destination);
+//			
+//			destination = getRedirectedCell(a, (a+1)%2, cells, rowPositive, colPositive);
+//			// knight is only allowed 2 moves in each direction
+//			if (a == 3)
+//				break;
+//		}
+//		return validCells;
+//	}
 
 }

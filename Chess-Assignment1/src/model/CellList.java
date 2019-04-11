@@ -11,7 +11,8 @@ public class CellList extends LinkedList<Cell>{
 		for (Cell cell : this)
 			if (cell.getRow() == row && cell.getCol() == col)
 				return cell;
-		throw new NullPointerException("invalid row or column");
+		return null;
+//		throw new NullPointerException("invalid row or column");
 	}
 	
 	

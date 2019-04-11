@@ -12,6 +12,7 @@ public class GameBoard {
 		
 		//initialize list of cells
 		cells = new CellList(); 
+		selectedCells = new CellList();
 		for (int row=0; row<GRID_SIZE; row++)
 		for (int col=0; col<GRID_SIZE; col++)
 			cells.add(new Cell(row,col));
@@ -59,24 +60,35 @@ public class GameBoard {
 	// returns true if the move successful
 	public boolean move(int row, int col)											
 	{
-		/*what if input is not valid row/col?*/
+		boolean moveSuccess = false;
 		Cell destination = cells.get(row, col);
 		
-		if (selectedPiece.isValidMove(destination, cells))
+		/*if input invalid row/col - test*/
+		if (destination == null)
+			throw new NullPointerException("invalid row or column");
+		
+		if (selectedCells.contains(destination))
 		{
+			moveSuccess = true;
 			// if your trying to kill opposer's piece
+			/*piece doesn't get removed? - test*/
 			removePiece(destination);
 			selectedPiece.move(destination);
-			
-			return true;
 		}
-		return false;
+		// deselect pieces
+		selectedPiece = null;
+		selectedCells = new CellList();
+		return moveSuccess;
 	}
 	
 	public void select(String key)
 	{
 		Piece desiredPiece = selectedPlayer.getPieces().get(key);
-		if(desiredPiece != null) selectedPiece = desiredPiece;
+		if(desiredPiece != null) 
+		{
+			selectedPiece = desiredPiece;
+			selectedCells = selectedPiece.getValidMoves(cells);
+		}
 	}
 	
 	public void switchPlayer()
@@ -97,15 +109,6 @@ public class GameBoard {
 				loser.removePiece(piece.getKey());
 			}
 	}
-	
-//	// alternative to 2 key map
-//	private Cell getCell(int row, int col) throws NullPointerException
-//	{
-//		for (Cell cell : cells)
-//			if (cell.getRow() == row && cell.getCol() == col)
-//				return cell;
-//		throw new NullPointerException("invalid row or column");
-//	}
 	
 	public Piece getSelectedPiece()
 	{
@@ -133,7 +136,7 @@ public class GameBoard {
 		System.out.println();
 		for (Cell cell : cells)
 		{
-			System.out.printf("%-3s",cell.toString());
+			System.out.printf("%-3s", selectedCells.contains(cell) ? "o" : (cell.getIsOccupied() ? cell.getOccupier().getKey() : "."));
 			if (cell.getCol() == GRID_SIZE-1)
 				System.out.println();
 		}

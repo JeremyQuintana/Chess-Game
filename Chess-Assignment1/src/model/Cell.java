@@ -57,7 +57,7 @@ public class Cell {
 	
 	public String toString()
 	{
-		return isOccupied ? occupier.getKey() : ".";
+		return "(" + col + "," + row + ")";
 	}
 	
 }

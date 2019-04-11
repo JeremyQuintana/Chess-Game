@@ -43,7 +43,6 @@ public class Player {
 	void removePiece(String pieceKey)
 	{
 		pieces.remove(pieceKey);
-		// do something with score?
 	}
 	
 	void addScore(int points)

@@ -29,14 +29,14 @@ public class GameBoardTest {
 	@Test
 	public void testSelect1() {
 		board.select("r1");
-		assertTrue(board.getSelectedPiece().getCell().getCol() ==  0 && board.getSelectedPiece().getCell().getRow() ==  0);
+		assertTrue(board.getSelectedPiece().getLocation().getCol() ==  0 && board.getSelectedPiece().getLocation().getRow() ==  0);
 	}
 	
 	@Test
 	public void testSelect2() {
 		board.select("r1");
 		board.select("JeremyIsAwesome");
-		assertTrue(board.getSelectedPiece().getCell().getCol() ==  0 && board.getSelectedPiece().getCell().getRow() ==  0);
+		assertTrue(board.getSelectedPiece().getLocation().getCol() ==  0 && board.getSelectedPiece().getLocation().getRow() ==  0);
 	}
 
 	@Test

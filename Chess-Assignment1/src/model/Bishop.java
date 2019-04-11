@@ -2,6 +2,8 @@ package model;
 
 import java.util.List;
 
+import model.Piece.Statement;
+
 public class Bishop extends Piece {
 
 	public Bishop(Player player, String key) 
@@ -25,23 +27,41 @@ public class Bishop extends Piece {
 		return false;
 	}
 	
-	//havent tested
-	public CellList getMoves(CellList cells, boolean xDirection, boolean yDirection) 
+	// Bishop moves in a diagonal pattern (a, a)
+	Cell getDestination(int a, CellList cells, boolean rowPositive, boolean colPositive) 
 	{
-		CellList validCells = new CellList();
-		
-		int y = getCell().getRow();
-		int x = getCell().getCol();
-		while(y < GameBoard.GRID_SIZE && x < GameBoard.GRID_SIZE && x>=0 && y>=0) {
-			if(cells.get(y, x).getIsOccupied()) break;
-			else validCells.add(cells.get(y, x));
-			
-			y = yDirection ? y++ : y--;
-			x = xDirection ? x++ : x--;
-		}
-		
-		
-		return validCells;
+		return getRedirectedCell(a, a, cells, rowPositive, colPositive);
 	}
+	
+	Statement breakCondition(int a, Cell destination)
+	{
+		if (destination == null || isOccupied(destination))	return Statement.BREAK;
+		else												return Statement.NOTHING;
+	}
+	
+//	//havent tested
+//	public CellList getMoves(CellList cells, boolean rowPositive, boolean colPositive) 
+//	{
+//		CellList validCells = new CellList();
+//		
+//		int y = getCell().getRow();
+//		int x = getCell().getCol();
+//		while(y < GameBoard.GRID_SIZE && x < GameBoard.GRID_SIZE && x>=0 && y>=0) {
+//			if(cells.get(y, x).getIsOccupied()) break;
+//			else validCells.add(cells.get(y, x));
+//			
+//			y = yDirection ? y++ : y--;
+//			x = xDirection ? x++ : x--;
+//		}
+//		Cell destination = getLocation();
+//		for (int a=1; destination != null && !isOccupied(destination); a++)
+//		{
+//			if (a>1)
+//				validCells.add(destination);
+//			
+//			destination = super.a(a, a, cells, rowPositive, colPositive);
+//		}
+//		return validCells;
+//	}
 
 }
