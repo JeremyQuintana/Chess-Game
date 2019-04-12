@@ -32,30 +32,9 @@ public class Knight extends Piece {
 	
 	Statement breakCondition(int a, Cell destination)
 	{
-		if (a > MOVE_LIMIT)											return Statement.BREAK;
-		else if (destination == null || isOccupied(destination))	return Statement.CONTINUE;
-		else														return Statement.NOTHING;
+		if (a > MOVE_LIMIT)												return Statement.BREAK;
+		else if (destination == null || isSameOccupied(destination))	return Statement.CONTINUE;
+		else															return Statement.NOTHING;
 				
 	}
-	
-	
-	//not working
-//	public CellList getMoves(CellList cells, boolean rowPositive, boolean colPositive) 
-//	{
-//		CellList validCells = new CellList();
-//		Cell destination = getLocation();
-//		
-//		for (int a=1; destination != null && !isOccupied(destination); a++)
-//		{
-//			if (a>1)
-//				validCells.add(destination);
-//			
-//			destination = getRedirectedCell(a, (a+1)%2, cells, rowPositive, colPositive);
-//			// knight is only allowed 2 moves in each direction
-//			if (a == 3)
-//				break;
-//		}
-//		return validCells;
-//	}
-
 }

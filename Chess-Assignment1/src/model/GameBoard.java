@@ -45,7 +45,7 @@ public class GameBoard {
 //		}
 	}
 	
-	public static int GRID_SIZE = 6;
+	public static int GRID_SIZE = 12;
 	private CellList cells;
 	private Piece selectedPiece;
 	private CellList selectedCells;

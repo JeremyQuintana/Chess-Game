@@ -124,18 +124,16 @@ public abstract class Piece {
 		// checks valid destinations in all 4 directions (+ +) (+ -) (- +) (- -)
 		for (boolean rowPositive : values)
 		for (boolean colPositive : values) 
-		{
-			int apj=0;
 			// unified getMoves method for all 3 pieces
 			k : for (int a=1; true; a++)
 			{
 				Cell destination = getDestination(a, cells, rowPositive, colPositive);
+				boolean isKnight = PieceType.KNIGHT == pieceType;
 				
 				// knight has slightly different break conditions
-				boolean isKnight = PieceType.KNIGHT==pieceType;
 				if (isKnight && a > Knight.MOVE_LIMIT)
 					break;
-				else if (destination == null || isOccupied(destination))
+				else if (destination == null || isSameOccupied(destination))
 					if (isKnight) 	
 						continue; 
 					else 			
@@ -146,21 +144,41 @@ public abstract class Piece {
 //					case CONTINUE: 	continue k;
 //					case NOTHING: 	break;
 //				}
+				
+//				if (isKnight)
+//				{
+//					if (a > Knight.MOVE_LIMIT)
+//						break;
+//					if (isOpposerOccupied(destination))
+//						validMoves.add(destination);
+//				}
+//				else if (destination == null || isSameOccupied(destination))
+//					break;
+//				else if (isOpposerOccupied(destination))
+//				{
+//					validMoves.add(destination);
+//					break;
+//				}
+//				else	
 				validMoves.add(destination);
 				
-				if (!isKnight && destination.getIsOccupied() && destination.getOccupiedType() != getPlayer().getType())
+				if (!isKnight && isOpposerOccupied(destination))
 					break;
 			}
-		}
 		System.out.println(validMoves);
 		return validMoves;
 		/*account for case where there are no moves?? or will this piece together*/
 	}
 	
 	// if another same-player piece at destination
-	boolean isOccupied(Cell destination)
+	boolean isSameOccupied(Cell destination)
 	{
 		return destination.getIsOccupied() && destination.getOccupiedType() == getPlayer().getType();
+	}
+	// if opposer-player piece at destination
+	boolean isOpposerOccupied(Cell destination)
+	{
+		return destination.getIsOccupied() && destination.getOccupiedType() != getPlayer().getType();
 	}
 	
 	// depending on direction, chooses coordinates of cell accordingly

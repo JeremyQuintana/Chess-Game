@@ -35,8 +35,8 @@ public class Bishop extends Piece {
 	
 	Statement breakCondition(int a, Cell destination)
 	{
-		if (destination == null || isOccupied(destination))	return Statement.BREAK;
-		else												return Statement.NOTHING;
+		if (destination == null || isSameOccupied(destination))	return Statement.BREAK;
+		else													return Statement.NOTHING;
 	}
 	
 //	//havent tested
