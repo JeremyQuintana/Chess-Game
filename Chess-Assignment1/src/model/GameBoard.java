@@ -3,10 +3,49 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 
 public class GameBoard {
 
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		GameBoard board = new GameBoard();
+		
+		while (true)
+		{
+			board.printGrid();
+			
+			System.out.print(board.getSelectedPlayer().toString() + " turn, choose a piece: ");
+			board.select(sc.next());
+			
+			board.printGrid();
+			
+			System.out.println(board.getSelectedPiece().toString() + " has been selected");
+			
+			System.out.print("move to x: ");	int row = sc.nextInt();
+			System.out.print("move to y: ");	int col = sc.nextInt();
+			
+			if (board.move(col, row) == false)
+			{
+				System.out.println("Invalid move - try again.");
+				continue;
+			}
+			
+			board.switchPlayer();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public GameBoard()
 	{	
 		System.out.println("TEST");
@@ -46,7 +85,7 @@ public class GameBoard {
 //		}
 	}
 	
-	public static int GRID_SIZE = 12;
+	public static int GRID_SIZE = 8;
 	private CellList cells;
 	private Piece selectedPiece;
 	private CellList selectedCells;
@@ -131,13 +170,12 @@ public class GameBoard {
 	}
 	
 	
-	/*bad method placement, move?*/
 	public void printGrid()
 	{
 		System.out.println();
 		for (Cell cell : cells)
 		{
-			System.out.printf("%-3s", selectedCells.contains(cell) ? "o" : (cell.getIsOccupied() ? cell.getOccupier().getKey() : "."));
+			System.out.printf("%-3s", cell.getPrintable(selectedCells.contains(cell)));
 			if (cell.getCol() == GRID_SIZE-1)
 				System.out.println();
 		}

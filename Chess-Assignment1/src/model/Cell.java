@@ -26,7 +26,7 @@ public class Cell {
 		return piece;
 	}
 	
-	void setOccupied(Piece piece)
+	public void setOccupied(Piece piece)
 	{
 		occupier = piece;
 		isOccupied = piece != null;
@@ -58,6 +58,12 @@ public class Cell {
 	public String toString()
 	{
 		return "(" + col + "," + row + ")";
+	}
+	
+	public String getPrintable(boolean isSelected)
+	{
+		String occupier = (isOccupied ? this.occupier.getKey() : ".");
+		return isSelected ? "o" : occupier;
 	}
 	
 }

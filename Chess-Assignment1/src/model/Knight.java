@@ -2,8 +2,6 @@ package model;
 
 import java.util.List;
 
-import model.Piece.Statement;
-
 public class Knight extends Piece {
 
 	public Knight(Player player, String key) 
@@ -30,11 +28,12 @@ public class Knight extends Piece {
 		return getRedirectedCell(rowDist, colDist, cells, rowPositive, colPositive);
 	}
 	
-	Statement breakCondition(int a, Cell destination)
+	boolean allMovesAdded(CellList validCells, int a, Cell destination)
 	{
-		if (a > MOVE_LIMIT)												return Statement.BREAK;
-		else if (destination == null || isSameOccupied(destination))	return Statement.CONTINUE;
-		else															return Statement.NOTHING;
-				
+		if (a == 1) 											return false;
+		if (a-1 > MOVE_LIMIT)									return true;
+		if (destination == null || isSameOccupied(destination))	return false;
+		validCells.add(destination);
+																return false;
 	}
 }
