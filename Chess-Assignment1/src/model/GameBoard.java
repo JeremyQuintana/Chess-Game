@@ -141,8 +141,10 @@ public class GameBoard {
 		if(desiredPiece != null) 
 		{
 			selectedPiece = desiredPiece;
-			selectedCells = selectedPiece.getValidMoves(cells);
+			selectedCells = getValidMoves();
 		}
+		else
+			throw new NullPointerException("no piece selected");
 	}
 	
 	public void switchPlayer()
@@ -195,4 +197,57 @@ public class GameBoard {
 		}
 		System.out.println();
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// a method to return all valid destinations for a piece
+	public CellList getValidMoves() {
+		
+		boolean[] values = {true, false};
+		CellList validMoves = new CellList();
+		
+		// checks valid destinations in all 4 directions (+ +) (+ -) (- +) (- -)
+		for (boolean rowPositive : values)
+		for (boolean colPositive : values) 
+			for (int a=1; a<=Piece.MOVE_LIMIT && selectedPiece.movesLeftToAdd(a); a++)
+			{
+				int newRow = selectedPiece.getDestinationRow(a, rowPositive, colPositive);
+				int newCol = selectedPiece.getDestinationCol(a, rowPositive, colPositive);
+				
+				Cell destination = cells.get(newRow, newCol);
+				if (selectedPiece.isValidMove2(destination))
+					validMoves.add(destination);	
+			}
+		
+		/*test cases - if the cell contains opposer piece, that cell is valid*/
+		/*test cases - bishop/rook intercepted by any piece, but extra cell if its opposer piece*/
+		/*test cases - knight*/
+		
+		System.out.println(validMoves);
+		return validMoves;
+	}
+	
+	
 }

@@ -40,15 +40,4 @@ public enum PieceType {
 		throw new NullPointerException("piece does not exist");
 	}
 	
-	int getMoveLimit()
-	{
-		switch (this)
-		{
-			case ROOK : 	return 	2;
-			case BISHOP : 	return 	2;
-			case KNIGHT :	return  2;
-		}
-		throw new NullPointerException("piece does not exist");
-	}
-	
 }

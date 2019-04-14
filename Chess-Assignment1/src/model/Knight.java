@@ -12,27 +12,44 @@ public class Knight extends Piece {
 	// move limit for knight for each direction
 	// ie. distance of (1,2) or (2,1)
 	static final int MOVE_LIMIT = 2;
-
-	@Override
-	protected boolean isBlocked(Cell destination, List<Cell> cells) 
+	
+	// Knights can't get intercepted
+	boolean isValidMove2(Cell destination)
 	{
-		// knight is never blocked
-		return false;
+		return super.isValidMove(destination);
+	}
+	
+	// Knights only have a count of moves
+	boolean movesLeftToAdd(int a)			 
+	{
+		return a <= MOVE_LIMIT;
 	}
 	
 
-	Cell getDestination(int a, CellList cells, boolean rowPositive, boolean colPositive) 
+//	Cell getDestination(int a, CellList cells, boolean rowPositive, boolean colPositive) 
+//	{
+//		int rowDist = a;
+//		int colDist = a==1 ? 2:1;
+//		return getRedirectedCell(rowDist, colDist, cells, rowPositive, colPositive);
+//	}
+//	
+//	boolean allMovesAdded(CellList validCells, int a, Cell destination)
+//	{
+//		if (destination == null || isSameOccupied(destination))	
+//			return false;
+//		validCells.add(destination);
+//		return false;
+//	}
+	
+	// choose either (1,2) or (2,1)
+	int getDestinationRow(int a, boolean rowPositive, boolean colPositive)
 	{
-		int rowDist = a;
-		int colDist = a==1 ? 2:1;
-		return getRedirectedCell(rowDist, colDist, cells, rowPositive, colPositive);
+		return getRedirectedRow(a, rowPositive);
 	}
 	
-	boolean allMovesAdded(CellList validCells, int a, Cell destination)
+	int getDestinationCol(int a, boolean rowPositive, boolean colPositive)
 	{
-		if (destination == null || isSameOccupied(destination))	
-			return false;
-		validCells.add(destination);
-		return false;
+		return getRedirectedCol(a==1 ? 2:1, colPositive);
 	}
+
 }

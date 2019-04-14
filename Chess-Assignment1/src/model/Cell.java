@@ -57,7 +57,7 @@ public class Cell {
 	
 	public String toString()
 	{
-		return "(" + col + "," + row + ")";
+		return "(" + col + "," + row + ")" + " " + getPrintable(false);
 	}
 	
 	public String getPrintable(boolean isSelected)

@@ -2,45 +2,32 @@ package model;
 
 import java.util.List;
 
-public class Bishop extends Piece {
+public class Bishop extends InterceptablePiece {
 
 	public Bishop(Player player, String key) 
 	{
 		super(PieceType.BISHOP, player, key);
 	}
 	
-//	/*TO IMPLEMENT*/
-//	public boolean isValidMove(Cell destination, List<Cell> cells)
+	
+	
+	
+//	// Bishop moves in a diagonal pattern (a, a)
+//	Cell getDestination(int a, CellList cells, boolean rowPositive, boolean colPositive) 
 //	{
-//		// piecetype handles this
-////		Move move = new Move(super.getCell(), destination);
-////		
-////		if (move.getXDist() == move.getYDist()) 
-////			return super.isValidMove(destination, cells);
+//		return getRedirectedCell(a, a, cells, rowPositive, colPositive);
+//	}
+//	
+//	boolean allMovesAdded(CellList validCells, int a, Cell destination)
+//	{
+//		if (destination == null || isSameOccupied(destination))		
+//			return true;
+//		validCells.add(destination);
+//		if (isOpposerOccupied(destination))							
+//			return true;
 //		return false;
 //	}
-	
-	protected boolean isBlocked(Cell destination, List<Cell> cells) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	// Bishop moves in a diagonal pattern (a, a)
-	Cell getDestination(int a, CellList cells, boolean rowPositive, boolean colPositive) 
-	{
-		return getRedirectedCell(a, a, cells, rowPositive, colPositive);
-	}
-	
-	boolean allMovesAdded(CellList validCells, int a, Cell destination)
-	{
-		if (destination == null || isSameOccupied(destination))		
-			return true;
-		validCells.add(destination);
-		if (isOpposerOccupied(destination))							
-			return true;
-		return false;
-	}
-	
+
 //	//havent tested
 //	public CellList getMoves(CellList cells, boolean rowPositive, boolean colPositive) 
 //	{
@@ -65,5 +52,16 @@ public class Bishop extends Piece {
 //		}
 //		return validCells;
 //	}
+	
+	// bishop moves in pattern (a,a)
+	int getDestinationRow(int a, boolean rowPositive, boolean colPositive)
+	{
+		return getRedirectedRow(a, rowPositive);
+	}
+	
+	int getDestinationCol(int a, boolean rowPositive, boolean colPositive)
+	{
+		return getRedirectedCol(a, colPositive);
+	}
 
 }
