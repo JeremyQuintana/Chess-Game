@@ -11,9 +11,25 @@ public class GameBoard {
 	public static void main(String[] args) 
 	{
 		Scanner sc = new Scanner(System.in);
-		GameBoard board = new GameBoard();
+//		Player[] players = new Player[] 
+//		{ 
+//	          new Player("1", "The Shark"), 
+//	          new Player("2", "The Loser"),
+//	          new Player("3", "Dateum"),
+//	          new Player("4", "Plinga"),
+//	          new Player("5", "Rupesh"),
+//	          new Player("6", "Nihao"),
+//	          new Player("7", "Destroyer")
+//	    };
+//
+//		for (Player player : players)
+//			gameEngine.addPlayer(player);
 		
-		while (true)
+		GameBoard board = new GameBoard();
+		int moveCount = 0;
+		int maxMoveCount = 30;
+		
+		while (moveCount < maxMoveCount)
 		{
 			board.printGrid();
 			
@@ -32,7 +48,7 @@ public class GameBoard {
 				System.out.println("Invalid move - try again.");
 				continue;
 			}
-			
+			moveCount++;
 			board.switchPlayer();
 		}
 	}
@@ -48,8 +64,6 @@ public class GameBoard {
 	
 	public GameBoard()
 	{	
-		System.out.println("TEST");
-		
 		//initialize list of cells
 		cells = new CellList(); 
 		selectedCells = new CellList();

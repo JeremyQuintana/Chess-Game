@@ -30,10 +30,9 @@ public class Knight extends Piece {
 	
 	boolean allMovesAdded(CellList validCells, int a, Cell destination)
 	{
-		if (a == 1) 											return false;
-		if (a-1 > MOVE_LIMIT)									return true;
-		if (destination == null || isSameOccupied(destination))	return false;
+		if (destination == null || isSameOccupied(destination))	
+			return false;
 		validCells.add(destination);
-																return false;
+		return false;
 	}
 }

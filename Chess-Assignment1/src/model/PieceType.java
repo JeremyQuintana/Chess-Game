@@ -23,7 +23,7 @@ public enum PieceType {
 			case BISHOP : 	return 1;
 			case KNIGHT :	return 2;
 		}
-		return -1;
+		throw new NullPointerException("piece does not exist");
 	}
 	
 	boolean isValidMove(Move move)
@@ -37,7 +37,18 @@ public enum PieceType {
 			case KNIGHT :	return  xDist == 1 && yDist == 2 ||
 									xDist == 2 && yDist == 1;
 		}
-		return false;
+		throw new NullPointerException("piece does not exist");
+	}
+	
+	int getMoveLimit()
+	{
+		switch (this)
+		{
+			case ROOK : 	return 	2;
+			case BISHOP : 	return 	2;
+			case KNIGHT :	return  2;
+		}
+		throw new NullPointerException("piece does not exist");
 	}
 	
 }

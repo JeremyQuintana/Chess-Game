@@ -19,6 +19,8 @@ public abstract class Piece {
 	private String key;
 	//how to get the cell and WHY to get the cell
 	private Cell location;
+	// all pieces have a maximum of 2 moves they can make
+	private static final int MOVE_LIMIT = 2;
 	
 	PieceType getPieceType()
 	{
@@ -96,7 +98,7 @@ public abstract class Piece {
 		// checks valid destinations in all 4 directions (+ +) (+ -) (- +) (- -)
 		for (boolean rowPositive : values)
 		for (boolean colPositive : values) 
-			for (int a=1; !allMovesAdded(validMoves, a, destination); a++)
+			for (int a=1; a==1 || (a<=MOVE_LIMIT && !allMovesAdded(validMoves, a, destination)); a++)
 			{
 //				boolean isKnight = PieceType.KNIGHT == pieceType;
 //				//	knight has slightly different break conditions
@@ -113,8 +115,9 @@ public abstract class Piece {
 				destination = getDestination(a, cells, rowPositive, colPositive);
 			}
 		
-		/*test cases - bishop/rook intercepted by any piece, but extra cell if its oppposer piece*/
-		/*test cases - knight has*/
+		/*test cases - if the cell contains opposer piece, that cell is valid*/
+		/*test cases - bishop/rook intercepted by any piece, but extra cell if its opposer piece*/
+		/*test cases - knight*/
 		
 		System.out.println(validMoves);
 		return validMoves;

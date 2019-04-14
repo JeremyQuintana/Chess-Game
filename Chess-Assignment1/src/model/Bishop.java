@@ -33,11 +33,12 @@ public class Bishop extends Piece {
 	
 	boolean allMovesAdded(CellList validCells, int a, Cell destination)
 	{
-		if (a == 1) 												return false;
-		if (destination == null || isSameOccupied(destination))		return true;
+		if (destination == null || isSameOccupied(destination))		
+			return true;
 		validCells.add(destination);
-		if (isOpposerOccupied(destination))							return true;
-		else 														return false;
+		if (isOpposerOccupied(destination))							
+			return true;
+		return false;
 	}
 	
 //	//havent tested
