@@ -83,6 +83,23 @@ public class GameBoardTest {
 	}
 	
 	@Test
+	public void movementBlocked() {
+		System.out.println("Movement Blocked");
+		// Select Rook 1 from PlayerWHITE
+		// Move Rook 1 to pos (0, 2)
+		board.select("r1");
+		board.move(0, 2);
+		// Move Rook 1 to pos (1, 2)
+		board.select("r1");
+		board.move(1, 2);
+		// Select Knight 1 from PlayerWHITE
+		board.select("k1");
+		// Invalid move as Rook 1 is in the position (1, 2);
+		boolean success = board.move(1, 2);
+		assertFalse(success);
+	}
+	
+	@Test
 	// To check if its removing the pieces correctly from Player's pieces
 	public void pieceRemoved() {
 		// First turn belongs to the PlayerType.WHITE
