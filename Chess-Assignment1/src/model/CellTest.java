@@ -21,7 +21,7 @@ public class CellTest {
 	public void testRemovePiece() {
 		cell.setOccupied(piece);
 		cell.removePiece();
-		assertTrue(!(cell.getIsOccupied()));
+		assertFalse(cell.getIsOccupied());
 	}
 
 	@Test

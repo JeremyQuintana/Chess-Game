@@ -7,73 +7,9 @@ import java.util.Scanner;
 
 
 public class GameBoard {
-
-	public static void main(String[] args) 
-	{
-		Scanner sc = new Scanner(System.in);
-//		Player[] players = new Player[] 
-//		{ 
-//	          new Player("1", "The Shark"), 
-//	          new Player("2", "The Loser"),
-//	          new Player("3", "Dateum"),
-//	          new Player("4", "Plinga"),
-//	          new Player("5", "Rupesh"),
-//	          new Player("6", "Nihao"),
-//	          new Player("7", "Destroyer")
-//	    };
-//
-//		for (Player player : players)
-//			gameEngine.addPlayer(player);
-		
-		GameBoard board = new GameBoard();
-		int moveCount = 0;
-		int maxMoveCount = 30;
-		
-		while (moveCount < maxMoveCount)
-		{
-			board.printGrid();
-			
-			while (true) {
-				System.out.print(board.getSelectedPlayer().toString() + " turn, choose a piece: ");
-				String chosenPiece = sc.next();
-				if (board.select(chosenPiece)) {
-					break;
-				}	
-			}
-			
-			board.printGrid();
-			
-			System.out.println(board.getSelectedPiece().toString() + " has been selected");
-//			System.out.print("move to x: ");	int row = sc.nextInt();
-//			System.out.print("move to y: ");	int col = sc.nextInt();
-//			if (board.move(col, row) == false)
-//			{
-//				continue;
-//			}
-			while (true) {
-				System.out.print("move to x: ");	int row = sc.nextInt();
-				System.out.print("move to y: ");	int col = sc.nextInt();
-				if (board.move(col, row))
-				{
-					break;
-				}
-			}
-			
-			moveCount++;
-			board.switchPlayer();
-		}
-	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	public GameBoard()
+	public GameBoard(Player p1, Player p2)
 	{	
 		//initialize list of cells
 		cells = new CellList(); 
@@ -85,9 +21,10 @@ public class GameBoard {
 		// instantiates the black and white players 
 		// Name, password can be determined at runtime
 		players = new HashMap<>();                
-		for (PlayerType player : PlayerType.values())
-			players.put(player, new Player(player));
+		players.put(p1.getType(), p1);
+		players.put(p2.getType(), p2);
 		selectedPlayer = players.get(PlayerType.WHITE);
+		
 	
 		// place pieces in default locations
 		for (Player player : players.values())
