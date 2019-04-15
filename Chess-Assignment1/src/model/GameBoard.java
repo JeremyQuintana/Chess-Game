@@ -7,62 +7,9 @@ import java.util.Scanner;
 
 
 public class GameBoard {
-
-	public static void main(String[] args) 
-	{
-		Scanner sc = new Scanner(System.in);
-//		Player[] players = new Player[] 
-//		{ 
-//	          new Player("1", "The Shark"), 
-//	          new Player("2", "The Loser"),
-//	          new Player("3", "Dateum"),
-//	          new Player("4", "Plinga"),
-//	          new Player("5", "Rupesh"),
-//	          new Player("6", "Nihao"),
-//	          new Player("7", "Destroyer")
-//	    };
-//
-//		for (Player player : players)
-//			gameEngine.addPlayer(player);
-		
-		GameBoard board = new GameBoard();
-		int moveCount = 0;
-		int maxMoveCount = 30;
-		
-		while (moveCount < maxMoveCount)
-		{
-			board.printGrid();
-			
-			System.out.print(board.getSelectedPlayer().toString() + " turn, choose a piece: ");
-			board.select(sc.next());
-			
-			board.printGrid();
-			
-			System.out.println(board.getSelectedPiece().toString() + " has been selected");
-			
-			System.out.print("move to x: ");	int row = sc.nextInt();
-			System.out.print("move to y: ");	int col = sc.nextInt();
-			
-			if (board.move(col, row) == false)
-			{
-				System.out.println("Invalid move - try again.");
-				continue;
-			}
-			moveCount++;
-			board.switchPlayer();
-		}
-	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	public GameBoard()
+	public GameBoard(Player p1, Player p2)
 	{	
 		//initialize list of cells
 		cells = new CellList(); 
@@ -74,9 +21,11 @@ public class GameBoard {
 		// instantiates the black and white players 
 		// Name, password can be determined at runtime
 		players = new HashMap<>();                
-		for (PlayerType player : PlayerType.values())
-			players.put(player, new Player(player));
+
+		players.put(p1.getType(), p1);
+		players.put(p2.getType(), p2);
 		selectedPlayer = players.get(PlayerType.WHITE);
+		
 	
 		// place pieces in default locations
 		for (Player player : players.values())
@@ -99,7 +48,7 @@ public class GameBoard {
 //		}
 	}
 	
-	public static int GRID_SIZE = 8;
+	public static int GRID_SIZE = 6;
 	private CellList cells;
 	private Piece selectedPiece;
 	private CellList selectedCells;
@@ -117,8 +66,17 @@ public class GameBoard {
 		Cell destination = cells.get(row, col);
 		
 		/*if input invalid row/col - test*/
-		if (destination == null)
-			throw new NullPointerException("invalid row or column");
+		if (destination == null ) {
+			System.out.println("Invalid move - try again.");
+			return moveSuccess;
+//			throw new NullPointerException("invalid row or column");	
+		}
+		else {
+			if (!selectedCells.contains(destination)) {
+				System.out.println("Invalid move - try again.");
+				return moveSuccess;
+			}	
+		}
 		
 		if (selectedCells.contains(destination))
 		{
@@ -134,16 +92,20 @@ public class GameBoard {
 		return moveSuccess;
 	}
 	
-	public void select(String key)
+	public boolean select(String key)
 	{
 		Piece desiredPiece = selectedPlayer.getPieces().get(key);
 		if(desiredPiece != null) 
 		{
 			selectedPiece = desiredPiece;
 			selectedCells = getValidMoves();
+			return true;
 		}
-		else
-			throw new NullPointerException("no piece selected");
+		else {
+			System.out.println("Piece selected not available. Please choose another piece.");
+			return false;
+//			throw new NullPointerException("no piece selected");
+		}
 	}
 	
 	public void switchPlayer()

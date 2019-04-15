@@ -1,43 +1,36 @@
 package model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
 public class CellTest extends TestCase {
 
-	public void testCell() {
-		fail("Not yet implemented");
+	Cell cell;
+	Piece piece;
+	
+	@Before
+	public void setUp() {
+		cell = new Cell(0,0);
+		Player player = new Player(PlayerType.WHITE);
+		piece = new Rook(player, "r1");
 	}
-
+	
+	@Test
 	public void testRemovePiece() {
-		fail("Not yet implemented");
+		cell.setOccupied(piece);
+		cell.removePiece();
+		assertFalse(cell.getIsOccupied());
 	}
 
+	@Test
 	public void testSetOccupied() {
-		fail("Not yet implemented");
-	}
-
-	public void testGetIsOccupied() {
-		fail("Not yet implemented");
-	}
-
-	public void testGetOccupiedType() {
-		fail("Not yet implemented");
-	}
-
-	public void testGetOccupier() {
-		fail("Not yet implemented");
-	}
-
-	public void testGetRow() {
-		fail("Not yet implemented");
-	}
-
-	public void testGetCol() {
-		fail("Not yet implemented");
-	}
-
-	public void testToString() {
-		fail("Not yet implemented");
+		cell.setOccupied(piece);
+		assertEquals(cell.getOccupier(), piece);
 	}
 
 }

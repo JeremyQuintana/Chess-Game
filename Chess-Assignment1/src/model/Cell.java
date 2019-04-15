@@ -62,7 +62,14 @@ public class Cell {
 	
 	public String getPrintable(boolean isSelected)
 	{
-		String occupier = (isOccupied ? this.occupier.getKey() : ".");
+		String occupier = ".";
+		if (isOccupied) 
+		{
+			occupier = this.occupier.getKey();
+			if (getOccupiedType().equals(PlayerType.BLACK))
+				occupier = this.occupier.getKey().toUpperCase();
+		}
+//		String occupier = (isOccupied ? this.occupier.getKey() : ".");
 		return isSelected ? "o" : occupier;
 	}
 	
