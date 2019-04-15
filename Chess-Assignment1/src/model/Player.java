@@ -10,14 +10,6 @@ public class Player {
 		score = 0;
 		
 		pieces = new HashMap<>();
-//		for (PieceType piece : PieceType.values())
-//		{
-//			String key = piece.getKey();
-//			pieces.put(key, 		new Piece(piece, this, key)); 
-//			pieces.put(key + "2", 	new Piece(piece, this, key + "2"));
-//		}
-//		
-		// if piece subclasses implemented, ^^^ method becomes
 		for (PieceType piece : PieceType.values())
 		{
 			for (int i=1; i<=2; i++)
@@ -60,7 +52,8 @@ public class Player {
 		return type;
 	}
 	
-	int getScore() {
+	int getScore() 
+	{
 		return score;
 	}
 	

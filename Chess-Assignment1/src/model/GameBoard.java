@@ -105,7 +105,6 @@ public class GameBoard {
 	private CellList selectedCells;
 	private Player selectedPlayer;
 	private Map<PlayerType, Player> players;
-	public Object getCells;
 	
 
 
@@ -161,7 +160,7 @@ public class GameBoard {
 			
 				Player winner = selectedPlayer;
 				Player loser = players.get(selectedPlayer.getType().getOpposer());
-				winner.addScore(1000); 											/*how many*/
+				winner.addScore(5); 											
 				loser.removePiece(piece.getKey());
 			}
 	}
