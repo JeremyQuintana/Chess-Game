@@ -21,6 +21,7 @@ public class GameBoard {
 		// instantiates the black and white players 
 		// Name, password can be determined at runtime
 		players = new HashMap<>();                
+
 		players.put(p1.getType(), p1);
 		players.put(p2.getType(), p2);
 		selectedPlayer = players.get(PlayerType.WHITE);

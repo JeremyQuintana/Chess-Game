@@ -21,40 +21,8 @@ public class GameBoardTest {
 	}
 	
 	@Test
-	public void testMove1() {
-		// 
-		board.select("r1");
-		board.move(0, 3);
-		assertTrue(board.getCells().get(0, 3).getOccupier() == board.getSelectedPiece());
-	}
-	
-	@Test (expected=InvalidMoveException.class)
-	public void testMove2() {
-		board.select("r1");
-		board.move(1, 3);
-	}
-	
-	@Test (expected=NullPointerException.class)
-	public void testMove3() {
-		board.select("r1");
-		board.move(7, 3);
-	}
-
-	@Test
-	public void testSelect1() {
-		board.select("r1");
-		assertTrue(board.getSelectedPiece().getLocation().getCol() ==  0 && board.getSelectedPiece().getLocation().getRow() ==  0);
-	}
-	
-	@Test
-	public void testSelect2() {
-		board.select("r1");
-		board.select("JeremyIsAwesome");
-		assertTrue(board.getSelectedPiece().getLocation().getCol() ==  0 && board.getSelectedPiece().getLocation().getRow() ==  0);
-	}
-
-	@Test
 	public void testSwitchPlayer() {
+		// Test if the player is switched correctly
 		if(board.getSelectedPlayer().getType() == PlayerType.BLACK) {
 			board.switchPlayer();
 			assertEquals(board.getSelectedPlayer().getType(), PlayerType.WHITE);
@@ -64,5 +32,75 @@ public class GameBoardTest {
 			assertEquals(board.getSelectedPlayer().getType(), PlayerType.BLACK);
 		}
 	}
+	
+	@Test
+	public void testMove1() {
+		board.select("r1");
+		board.move(0, 3); // Move forward 2 cells
+		// Check if the cell is correctly update with the piece
+		Cell updatedCell = null;
+		for (Cell cell: board.getCells()) {
+			if (cell.getCol() == 3 && cell.getRow() == 0) {
+				updatedCell = cell;
+				break;
+			}
+		}
+		assertFalse(updatedCell.getOccupier().getPieceType().equals(board.getSelectedPiece().getPieceType()));
+	}
+	
+	
+	@Test
+	public void testMove2() {
+		board.select("r1");
+		// Rook can only move forward or sideways
+		boolean success = board.move(1, 3);
+		assertFalse(success);
+	}
+	
+	@Test
+	public void testMove3() {
+		board.select("r1");
+		// Pieces cannot move out from the board grid of 6 x 6
+		boolean success = board.move(7, 3);
+		assertFalse(success);
+	}
+
+	@Test
+	public void testSelect1() {
+		// Player WHITE's turn
+		// Select Rook from the pieces
+		board.select("r1");
+		// Check if the default position of rook1 for player WHITE is correct
+		assertTrue(board.getSelectedPiece().getLocation().getCol() ==  0 && board.getSelectedPiece().getLocation().getRow() ==  0);
+	}
+	
+	@Test
+	public void testSelect2() {
+		// Select Rook2 from the Player WHITE's pieces
+		// Check if the current selected piece is correct or not
+		board.select("r2");
+		assertEquals(board.getSelectedPiece().getPieceType(), PieceType.ROOK);
+	}
+	
+	@Test
+	// To check if its removing the pieces correctly from Player's pieces
+	public void pieceRemoved() {
+		// First turn belongs to the PlayerType.WHITE
+		board.select("r1");
+		board.move(0, 2);
+		// Switch to Player BLACK
+		board.switchPlayer();
+		board.select("r1");
+		board.move(0, 3);
+		// Switch to Player WHITE
+		board.switchPlayer();
+		board.select("r1");
+		board.move(0, 3); // Player WHITE's rook1 has take over Player BLACK's rook1 in row 0 col 3
+		// Switch to Player BLACK
+		board.switchPlayer();
+		// To check if the rook1 piece is removed from Player BLACK
+		assertTrue(board.getSelectedPlayer().getPieces().get("r1") == null);
+	}
+
 
 }
