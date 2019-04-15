@@ -36,16 +36,16 @@ public class GameBoardTest {
 	@Test
 	public void testMove1() {
 		board.select("r1");
-		board.move(0, 3); // Move forward 2 cells
+		board.move(0, 2); // Move forward 2 cells
 		// Check if the cell is correctly updated with the piece
 		Cell updatedCell = null;
 		for (Cell cell: board.getCells()) {
-			if (cell.getCol() == 3 && cell.getRow() == 0) {
+			if (cell.getCol() == 2 && cell.getRow() == 0) {
 				updatedCell = cell;
 				break;
 			}
 		}
-		assertFalse(updatedCell.getOccupier().getPieceType().equals(board.getSelectedPiece().getPieceType()));
+		assertTrue(updatedCell.getOccupier().getPieceType().equals(PieceType.ROOK));
 	}
 	
 	
