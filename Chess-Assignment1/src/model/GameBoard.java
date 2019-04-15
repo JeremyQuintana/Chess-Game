@@ -99,7 +99,7 @@ public class GameBoard {
 //		}
 	}
 	
-	public static int GRID_SIZE = 8;
+	public static int GRID_SIZE = 6;
 	private CellList cells;
 	private Piece selectedPiece;
 	private CellList selectedCells;
