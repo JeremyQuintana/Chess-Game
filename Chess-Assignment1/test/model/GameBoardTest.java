@@ -14,7 +14,7 @@ public class GameBoardTest {
 	
 	@Before
 	public void setUp() {
-		// When game board is created, two players is added into the game.
+		// When game board is created, two players are added into the game.
 		p1 = new Player(PlayerType.WHITE);
 		p2 = new Player(PlayerType.BLACK);
 		board = new GameBoard(p1, p2);
@@ -37,7 +37,7 @@ public class GameBoardTest {
 	public void testMove1() {
 		board.select("r1");
 		board.move(0, 3); // Move forward 2 cells
-		// Check if the cell is correctly update with the piece
+		// Check if the cell is correctly updated with the piece
 		Cell updatedCell = null;
 		for (Cell cell: board.getCells()) {
 			if (cell.getCol() == 3 && cell.getRow() == 0) {
