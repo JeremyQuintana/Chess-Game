@@ -65,18 +65,14 @@ public class GameBoard {
 		boolean moveSuccess = false;
 		Cell destination = cells.get(row, col);
 		
-		/*if input invalid row/col - test*/
-		if (destination == null ) {
+		if (destination == null) 
+			throw new NullPointerException("invalid row or column");	
+		else if (!selectedCells.contains(destination)) 
+		{
 			System.out.println("Invalid move - try again.");
 			return moveSuccess;
-//			throw new NullPointerException("invalid row or column");	
-		}
-		else {
-			if (!selectedCells.contains(destination)) {
-				System.out.println("Invalid move - try again.");
-				return moveSuccess;
-			}	
-		}
+		}	
+	
 		
 		if (selectedCells.contains(destination))
 		{
@@ -127,6 +123,33 @@ public class GameBoard {
 			}
 	}
 	
+	// a method to return all valid destinations for a piece
+		public CellList getValidMoves() {
+			
+			boolean[] values = {true, false};
+			CellList validMoves = new CellList();
+			
+			// checks valid destinations in all 4 directions (+ +) (+ -) (- +) (- -)
+			for (boolean rowPositive : values)
+			for (boolean colPositive : values) 
+				for (int a=1; a<=Piece.MOVE_LIMIT && selectedPiece.movesLeftToAdd(a); a++)
+				{
+					int newRow = selectedPiece.getDestinationRow(a, rowPositive, colPositive);
+					int newCol = selectedPiece.getDestinationCol(a, rowPositive, colPositive);
+					
+					Cell destination = cells.get(newRow, newCol);
+					if (selectedPiece.isValidMove2(destination))
+						validMoves.add(destination);	
+				}
+			
+			/*test cases - if the cell contains opposer piece, that cell is valid*/
+			/*test cases - bishop/rook intercepted by any piece, but extra cell if its opposer piece*/
+			/*test cases - knight*/
+			
+			System.out.println(validMoves);
+			return validMoves;
+		}
+	
 	public Piece getSelectedPiece()
 	{
 		return selectedPiece;
@@ -157,58 +180,5 @@ public class GameBoard {
 				System.out.println();
 		}
 		System.out.println();
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// a method to return all valid destinations for a piece
-	public CellList getValidMoves() {
-		
-		boolean[] values = {true, false};
-		CellList validMoves = new CellList();
-		
-		// checks valid destinations in all 4 directions (+ +) (+ -) (- +) (- -)
-		for (boolean rowPositive : values)
-		for (boolean colPositive : values) 
-			for (int a=1; a<=Piece.MOVE_LIMIT && selectedPiece.movesLeftToAdd(a); a++)
-			{
-				int newRow = selectedPiece.getDestinationRow(a, rowPositive, colPositive);
-				int newCol = selectedPiece.getDestinationCol(a, rowPositive, colPositive);
-				
-				Cell destination = cells.get(newRow, newCol);
-				if (selectedPiece.isValidMove2(destination))
-					validMoves.add(destination);	
-			}
-		
-		/*test cases - if the cell contains opposer piece, that cell is valid*/
-		/*test cases - bishop/rook intercepted by any piece, but extra cell if its opposer piece*/
-		/*test cases - knight*/
-		
-		System.out.println(validMoves);
-		return validMoves;
-	}
-	
-	
+	}	
 }

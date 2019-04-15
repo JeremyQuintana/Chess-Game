@@ -51,10 +51,6 @@ public abstract class Piece {
 	}
 	
 	abstract boolean isValidMove2(Cell destination);
-//	// get Cell depending on its move pattern and current iteration a
-//	abstract Cell getDestination(int a, CellList cells, boolean rowPositive, boolean colPositive);
-//	// adds destination if it fits rules, and breaks out of loop if no more to be added
-//	abstract boolean allMovesAdded(CellList validCells, int a, Cell destination);
 	// adds destination if it fits rules, and breaks out of loop if no more to be added
 	abstract boolean movesLeftToAdd(int a);
 	
@@ -79,62 +75,6 @@ public abstract class Piece {
 		return key;
 	}
 	
-//	// a method to return all valid destinations for a piece
-//	public CellList getValidMoves(CellList cells) {
-//		
-//		boolean[] values = {true, false};
-//		CellList validMoves = new CellList();
-//		Cell destination = null;
-//		
-//		// checks valid destinations in all 4 directions (+ +) (+ -) (- +) (- -)
-//		for (boolean rowPositive : values)
-//		for (boolean colPositive : values) 
-//			for (int a=1; a==1 || (a<=MOVE_LIMIT && !allMovesAdded(validMoves, a, destination)); a++)
-//			{
-////				boolean isKnight = PieceType.KNIGHT == pieceType;
-////				//	knight has slightly different break conditions
-////				if (isKnight && a > Knight.MOVE_LIMIT)
-////					break;
-////				else if (destination == null || isSameOccupied(destination))
-////					if (isKnight) 	
-////						continue; 
-////					else 			
-////						break;
-////				validMoves.add(destination);
-////				if (!isKnight && isOpposerOccupied(destination))
-////					break;
-//				destination = getDestination(a, cells, rowPositive, colPositive);
-//			}
-//		
-//		/*test cases - if the cell contains opposer piece, that cell is valid*/
-//		/*test cases - bishop/rook intercepted by any piece, but extra cell if its opposer piece*/
-//		/*test cases - knight*/
-//		
-//		System.out.println(validMoves);
-//		return validMoves;
-//		/*account for case where there are no moves?? or will this piece together*/
-//	}
-//	
-//	// if another same-player piece at destination
-//	boolean isSameOccupied(Cell destination)
-//	{
-//		return destination.getIsOccupied() && destination.getOccupiedType() == getPlayer().getType();
-//	}
-//	// if opposer-player piece at destination
-//	boolean isOpposerOccupied(Cell destination)
-//	{
-//		return destination.getIsOccupied() && destination.getOccupiedType() != getPlayer().getType();
-//	}
-//	
-//	// depending on direction, chooses coordinates of cell accordingly
-//	Cell getRedirectedCell(int rowDist, int colDist, CellList cells, boolean rowPositive, boolean colPositive)
-//	{
-//		int row = location.getRow();
-//		int col = location.getCol();
-//		int newRow = row + (rowPositive ? rowDist : -rowDist);
-//		int newCol = col + (colPositive ? colDist : -colDist);
-//		return cells.get(newRow, newCol);
-//	}
 	
 	// get row/column depending on its move pattern and current iteration a
 	abstract int getDestinationRow(int a, boolean rowPositive, boolean colPositive);
