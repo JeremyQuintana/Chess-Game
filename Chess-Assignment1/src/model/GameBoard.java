@@ -33,21 +33,32 @@ public class GameBoard {
 		{
 			board.printGrid();
 			
-			System.out.print(board.getSelectedPlayer().toString() + " turn, choose a piece: ");
-			board.select(sc.next());
+			while (true) {
+				System.out.print(board.getSelectedPlayer().toString() + " turn, choose a piece: ");
+				String chosenPiece = sc.next();
+				if (board.select(chosenPiece)) {
+					break;
+				}	
+			}
 			
 			board.printGrid();
 			
 			System.out.println(board.getSelectedPiece().toString() + " has been selected");
-			
-			System.out.print("move to x: ");	int row = sc.nextInt();
-			System.out.print("move to y: ");	int col = sc.nextInt();
-			
-			if (board.move(col, row) == false)
-			{
-				System.out.println("Invalid move - try again.");
-				continue;
+//			System.out.print("move to x: ");	int row = sc.nextInt();
+//			System.out.print("move to y: ");	int col = sc.nextInt();
+//			if (board.move(col, row) == false)
+//			{
+//				continue;
+//			}
+			while (true) {
+				System.out.print("move to x: ");	int row = sc.nextInt();
+				System.out.print("move to y: ");	int col = sc.nextInt();
+				if (board.move(col, row))
+				{
+					break;
+				}
 			}
+			
 			moveCount++;
 			board.switchPlayer();
 		}
@@ -118,8 +129,17 @@ public class GameBoard {
 		Cell destination = cells.get(row, col);
 		
 		/*if input invalid row/col - test*/
-		if (destination == null)
-			throw new NullPointerException("invalid row or column");
+		if (destination == null ) {
+			System.out.println("Invalid move - try again.");
+			return moveSuccess;
+//			throw new NullPointerException("invalid row or column");	
+		}
+		else {
+			if (!selectedCells.contains(destination)) {
+				System.out.println("Invalid move - try again.");
+				return moveSuccess;
+			}	
+		}
 		
 		if (selectedCells.contains(destination))
 		{
@@ -135,16 +155,20 @@ public class GameBoard {
 		return moveSuccess;
 	}
 	
-	public void select(String key)
+	public boolean select(String key)
 	{
 		Piece desiredPiece = selectedPlayer.getPieces().get(key);
 		if(desiredPiece != null) 
 		{
 			selectedPiece = desiredPiece;
 			selectedCells = getValidMoves();
+			return true;
 		}
-		else
-			throw new NullPointerException("no piece selected");
+		else {
+			System.out.println("Piece selected not available. Please choose another piece.");
+			return false;
+//			throw new NullPointerException("no piece selected");
+		}
 	}
 	
 	public void switchPlayer()
