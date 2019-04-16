@@ -64,6 +64,7 @@ public class GameBoardTest {
 		boolean success = board.move(7, 3);
 		assertFalse(success);
 	}
+	
 
 	@Test
 	public void testSelect1() {

@@ -24,13 +24,13 @@ public class GameBoard {
 		p1.setType(PlayerType.WHITE);
 		p2.setType(PlayerType.BLACK);
 		
-		gamers = new HashMap<>();   
-		gamers.put(p1.getType(), p1);
-		gamers.put(p2.getType(), p2);
-		selectedPlayer = gamers.get(PlayerType.WHITE);
+		players = new HashMap<>();   
+		players.put(p1.getType(), p1);
+		players.put(p2.getType(), p2);
+		selectedPlayer = players.get(PlayerType.WHITE);
 	
 		// place pieces in default locations
-		for (Player player : gamers.values())
+		for (Player player : players.values())
 		for (Piece piece : player.getPieces().values())				
 		{
 			selectedPiece = piece;
@@ -74,16 +74,16 @@ public class GameBoard {
 //		}
 //	}
 	
-	public static int GRID_SIZE = 9;
+	public static int GRID_SIZE = 6;
 	private List<Cell> cells;
 	private Piece selectedPiece;
 	private List<Cell> selectedCells;
 	private Player selectedPlayer;
-	private Map<PlayerType, Player> gamers;
+	private Map<PlayerType, Player> players;
 	// contains all registered players
 //	private List<Player> playerList;
 	private int moveCount;
-	private int maxCount;
+	private int moveLimit;
 	
 
 
@@ -99,10 +99,8 @@ public class GameBoard {
 			removePiece(destination);
 			selectedPiece.move(destination);
 			moveCount++;
-			deSelect();
 			return true;
 		}
-		deSelect();
 		return false;
 	}
 	
@@ -118,18 +116,15 @@ public class GameBoard {
 		return false;
 	}
 	
-	private void deSelect()
+	public void switchPlayer()
 	{
 		selectedPiece = null;
 		selectedCells = new LinkedList<>();
+		selectedPlayer = players.get(selectedPlayer.getType().getOpposer());
 	}
 	
-	public void switchPlayer()
-	{
-		selectedPlayer = gamers.get(selectedPlayer.getType().getOpposer());
-	}
-	
-	private void removePiece(Cell destination)
+																					/*change to private after tests*/
+	public void removePiece(Cell destination)
 	{
 		if (destination.getIsOccupied())
 			if (destination.getOccupiedType() != selectedPiece.getPlayer().getType())
@@ -137,7 +132,7 @@ public class GameBoard {
 				Piece piece = destination.removePiece();
 			
 				Player winner = selectedPlayer;
-				Player loser = gamers.get(selectedPlayer.getType().getOpposer());
+				Player loser = players.get(selectedPlayer.getType().getOpposer());
 				winner.addScore(5); 											
 				loser.removePiece(piece.getKey());
 			}
@@ -193,31 +188,44 @@ public class GameBoard {
 	public List<Cell> getCells() {
 		return cells;
 	}
+	
+	public List<Cell> getSelectedCells() {
+		return selectedCells;
+	}
 
-	boolean isBelowMaxCount()
+	boolean isGameOver()
 	{
-		return moveCount < maxCount;
+		boolean noPiecesLeft = false;
+		for (Player player : players.values())
+			if (player.getPieces().isEmpty())
+				noPiecesLeft = true;
+		return moveCount >= moveLimit || noPiecesLeft;
+	}
+	
+	Player getWinner()
+	{
+		int whiteScore = players.get(PlayerType.WHITE).getScore();
+		int blackScore = players.get(PlayerType.BLACK).getScore();
+		
+		if (whiteScore != blackScore)
+			return players.get(whiteScore > blackScore ? PlayerType.WHITE : PlayerType.BLACK);
+		else return null;
+	}
+	
+	int getMoveCount()
+	{
+		return moveCount;
+	}
+	
+	int getMoveLimit()
+	{
+		return moveLimit;
 	}
 	
 	int setMaxCount(int maxCount1, int maxCount2)
 	{
-		maxCount = (maxCount1+maxCount2)/2;
-		return maxCount;
+		moveLimit = (maxCount1+maxCount2)/2;
+		return moveLimit;
 	}
 	
-	
-	
-	
-	
-	public void printGrid()
-	{
-		System.out.println();
-		for (Cell cell : getCells())
-		{
-			System.out.printf("%-3s", cell.getPrintable(selectedCells.contains(cell)));
-			if (cell.getCol() == GRID_SIZE-1)
-				System.out.println();
-		}
-		System.out.println();
-	}	
 }
