@@ -19,11 +19,10 @@ public class Client {
 		{ 
 			new Player("Jeremy", "abcdefg"), 
 			new Player("OOY", "22f923@M)#F"),
-			new Player("Ru-bin", "coolbin")
+			new Player("Rubin", "coolbin")
 		};
 		Client client = new Client(players);
-//		for (Player p : players)
-//			board.addPlayer(p);
+		
 		
 		Scanner sc = new Scanner(System.in);
 		Player[] gamers = new Player[2];
@@ -44,6 +43,15 @@ public class Client {
 			
 			while (true)
 			{
+				System.out.print("Enter player password: ");
+				String pass = sc.next();
+				if (!gamers[i].getPassword().equals(pass))
+					System.out.println("Incorrect pass.");
+				else break;
+			} 
+			
+			while (true)
+			{
 				System.out.print("Enter preferred max count: ");
 				moveCounts[i] = sc.nextInt();
 				
@@ -53,9 +61,6 @@ public class Client {
 			} 
 		}
 		
-//		GameBoard board = new GameBoard(gamers[0], gamers[1]);
-//		client.setBoard(board);
-//		board.setMaxCount(moveCounts[0], moveCounts[1]);
 //		
 		GameBoard board = new GameBoard(new Player("Jerekmy", "abcdefg"), new Player("Jeremy", "abcdefg"));
 		client.setBoard(board);
