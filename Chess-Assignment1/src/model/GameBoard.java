@@ -40,7 +40,7 @@ public class GameBoard {
 			if (piece.getKey().contains("2"))
 				row = GRID_SIZE-1-row;
 			
-			selectedPiece.move(cells.get(row, col));
+			selectedPiece.move(getCell(row, col));
 		}
 //		test to see if returned valid cells are correct (not working)
 //		select("r1");
@@ -179,11 +179,6 @@ public class GameBoard {
 	{
 		return selectedPlayer;
 	}
-	
-//	public void addPlayer(Player player)
-//	{
-//		playerList.add(player);
-//	}
 	
 	Cell getCell(int row, int col) 
 	{
