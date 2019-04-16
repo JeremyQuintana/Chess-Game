@@ -14,11 +14,11 @@ public class CellTest extends TestCase {
 	Piece piece;
 	
 	@Before
-	public void setUp() {
-		cell = new Cell(0,0);
-		Player player = new Player(PlayerType.WHITE);
-		piece = new Rook(player, "r1");
-	}
+//	public void setUp() {
+//		cell = new Cell(0,0);
+//		Player player = new Player(PlayerType.WHITE);
+//		piece = new Rook(player, "r1");
+//	}
 	
 	@Test
 	public void testRemovePiece() {

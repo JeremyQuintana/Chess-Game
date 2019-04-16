@@ -69,7 +69,6 @@ public class Cell {
 			if (getOccupiedType().equals(PlayerType.BLACK))
 				occupier = this.occupier.getKey().toUpperCase();
 		}
-//		String occupier = (isOccupied ? this.occupier.getKey() : ".");
 		return isSelected ? "o" : occupier;
 	}
 	

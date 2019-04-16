@@ -13,12 +13,12 @@ public class GameBoardTest {
 	Player p2;
 	
 	@Before
-	public void setUp() {
-		// When game board is created, two players are added into the game.
-		p1 = new Player(PlayerType.WHITE);
-		p2 = new Player(PlayerType.BLACK);
-		board = new GameBoard(p1, p2);
-	}
+//	public void setUp() {
+//		// When game board is created, two players are added into the game.
+//		p1 = new Player(PlayerType.WHITE);
+//		p2 = new Player(PlayerType.BLACK);
+//		board = new GameBoard(p1, p2);
+//	}
 	
 	@Test
 	public void testSwitchPlayer() {

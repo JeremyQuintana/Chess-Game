@@ -4,9 +4,10 @@ import java.util.Map;
 
 public class Player {
 
-	public Player(PlayerType playerType)
+	public Player(String id, String password)
 	{
-		type = playerType;
+		this.id = id;
+		this.password = password;
 		score = 0;
 		
 		pieces = new HashMap<>();
@@ -26,7 +27,7 @@ public class Player {
 		
 	}
 	
-	private String name;
+	private String id;
 	private String password;
 	private PlayerType type;
 	private int score;
@@ -52,23 +53,28 @@ public class Player {
 		return type;
 	}
 	
+	void setType(PlayerType type)
+	{
+		this.type = type;
+	}
+	
 	int getScore() 
 	{
 		return score;
 	}
 	
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-	public void setPassword(String password)
-	{
-		this.password = password;
-	}
+//	public void setid(String id)
+//	{
+//		this.id = id;
+//	}
+//	public void setPassword(String password)
+//	{
+//		this.password = password;
+//	}
 	
-	public String getName()
+	public String getid()
 	{
-		return name;
+		return id;
 	}
 	
 	public String getPassword()
