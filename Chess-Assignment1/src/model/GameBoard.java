@@ -12,11 +12,11 @@ public class GameBoard {
 	public GameBoard(Player p1, Player p2)
 	{	
 		//initialize list of cells
-		cells = new LinkedList<>(); 
+		cells = new LinkedList<>();
 		selectedCells = new LinkedList<>();
 		for (int row=0; row<GRID_SIZE; row++)
 		for (int col=0; col<GRID_SIZE; col++)
-			cells.add(new Cell(row,col));       
+			getCells().add(new Cell(row,col));       
 		
 //		playerList = new LinkedList<>();
 		moveCount = 0;
@@ -40,7 +40,7 @@ public class GameBoard {
 			if (piece.getKey().contains("2"))
 				row = GRID_SIZE-1-row;
 			
-			selectedPiece.move(cells.get(row, col));
+			selectedPiece.move(getCell(row, col));
 		}
 //		test to see if returned valid cells are correct (not working)
 //		select("r1");
@@ -187,7 +187,7 @@ public class GameBoard {
 	
 	Cell getCell(int row, int col) 
 	{
-		for (Cell cell : cells)
+		for (Cell cell : getCells())
 			if (cell.getRow() == row && cell.getCol() == col)
 				return cell;
 		return null;
@@ -195,6 +195,10 @@ public class GameBoard {
 	
 	
 	
+	public List<Cell> getCells() {
+		return cells;
+	}
+
 	boolean isBelowMaxCount()
 	{
 		return moveCount < maxCount;
@@ -213,7 +217,7 @@ public class GameBoard {
 	public void printGrid()
 	{
 		System.out.println();
-		for (Cell cell : cells)
+		for (Cell cell : getCells())
 		{
 			System.out.printf("%-3s", cell.getPrintable(selectedCells.contains(cell)));
 			if (cell.getCol() == GRID_SIZE-1)

@@ -2,10 +2,15 @@ package model;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class PlayerTest {
-	Player player = new Player("o", "j");
+	Player player;
+	@Before
+	public void setUp() {
+		player = new Player("o", "j");
+	}
 	
 	@Test
 	public void testRemovePiece() {
@@ -21,7 +26,8 @@ public class PlayerTest {
 	
 	@Test
 	public void testPlayer() {
-		assertEquals(PlayerType.WHITE, player.getType());
+		assertEquals("o", player.getid());
+		assertEquals("j", player.getPassword());
 	}
 	
 //	@Test
