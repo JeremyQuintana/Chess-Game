@@ -14,13 +14,12 @@ public class Knight extends Piece {
 	static final int MOVE_LIMIT = 2;
 	
 	// Knights can't get intercepted
-	boolean isValidMove2(Cell destination)
+	void moveUpdate(Cell destination)
 	{
-		return super.isValidMove(destination);
 	}
 	
 	// Knights only have a count of moves
-	boolean movesLeftToAdd(int a)			 
+	boolean movesLeftToAdd2(int a)			 
 	{
 		return a <= MOVE_LIMIT;
 	}

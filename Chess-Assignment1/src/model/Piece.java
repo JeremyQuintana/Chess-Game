@@ -20,7 +20,7 @@ public abstract class Piece {
 	//how to get the cell and WHY to get the cell
 	private Cell location;
 	// all pieces have a maximum of 2 moves they can make
-	static final int MOVE_LIMIT = 2;
+	private static final int MOVE_LIMIT = 3;
 	
 	PieceType getPieceType()
 	{
@@ -42,17 +42,25 @@ public abstract class Piece {
 	
 	boolean isValidMove(Cell destination)
 	{
+		moveUpdate(destination);
 		if (destination == null)
 			return false;
 		if (destination.getIsOccupied())
 			return player.getType() != destination.getOccupiedType();
 		return true;
+	}
+	
+	// adds destination if it fits rules, and breaks out of loop if no more to be added
+	boolean movesLeftToAdd(int a)
+	{
+		if (a > Piece.MOVE_LIMIT)
+			return false;
+		return movesLeftToAdd2(a);
 		
 	}
 	
-	abstract boolean isValidMove2(Cell destination);
-	// adds destination if it fits rules, and breaks out of loop if no more to be added
-	abstract boolean movesLeftToAdd(int a);
+	abstract void moveUpdate(Cell destination);
+	abstract boolean movesLeftToAdd2(int a);
 	
 	
 	
@@ -74,6 +82,8 @@ public abstract class Piece {
 	{
 		return key;
 	}
+	
+	
 	
 	
 	// get row/column depending on its move pattern and current iteration a

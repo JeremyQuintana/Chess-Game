@@ -2,6 +2,7 @@ package model;
 
 import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -43,13 +44,13 @@ public class Client {
 //			client.printGrid();
 //			client.makeMove();
 //		}
-		
+//		client.endGame();
 		// initialize the game board
 		Player p1 = new Player("JeremyIsAwesome", "idk");
 		Player p2 = new Player("TheOtherJeremyIsAwesome", "something");
 		GameBoard board = new GameBoard(p1, p2);
 		Client client = new Client();
-		board.setMaxCount(5,4);
+		board.setMaxCount(15,15);
 		client.setBoard(board);
 		
 		while (!board.isGameOver())
@@ -134,9 +135,8 @@ public class Client {
 			makeMove();
 		}
 		
-		if (board.getSelectedPlayer().getScore() > oldScore)
-			System.out.println("+5 points to " + board.getSelectedPlayer().toString());
-		board.switchPlayer();
+//		if (board.getSelectedPlayer().getScore() > oldScore)
+//			System.out.println("+5 points to " + board.getSelectedPlayer().toString());
 	}
 	
 	public void selectPiece()
@@ -158,8 +158,10 @@ public class Client {
 		System.out.println();
 		for (Cell cell : board.getCells())
 		{
-			boolean isSelected = board.getSelectedCells().contains(cell);
-			System.out.printf("%-3s", cell.getPrintable(isSelected));
+			boolean isSelected = board.getValidMoves().contains(cell);
+			boolean isDangerous = board.isDangerousMove(cell, isSelected);
+			
+			System.out.printf("%-3s", cell.getPrintable(isSelected, isDangerous));
 			if (cell.getCol() == GameBoard.GRID_SIZE-1)
 				System.out.println();
 		}

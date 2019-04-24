@@ -8,13 +8,11 @@ public class Cell {
 	{
 		row = rowNo;
 		col = column;
-		isOccupied = false;
 	}
 	
 	
 	private int row;
 	private int col;
-	private boolean isOccupied;
 	private Piece occupier;
 	
 	
@@ -22,19 +20,17 @@ public class Cell {
 	{
 		Piece piece = occupier;
 		occupier = null;
-		isOccupied = false;
 		return piece;
 	}
 	
 	public void setOccupied(Piece piece)
 	{
 		occupier = piece;
-		isOccupied = piece != null;
 	}
 	
 	public boolean getIsOccupied()
 	{
-		return isOccupied;
+		return occupier != null;
 	}
 	
 	PlayerType getOccupiedType()
@@ -57,19 +53,19 @@ public class Cell {
 	
 	public String toString()
 	{
-		return "(" + col + "," + row + ")" + " " + getPrintable(false);
+		return "(" + col + "," + row + ") " + getPrintable(false, false);
 	}
 	
-	public String getPrintable(boolean isSelected)
+	public String getPrintable(boolean isSelected, boolean isDangerous)
 	{
 		String occupier = ".";
-		if (isOccupied) 
+		if (this.occupier != null) 
 		{
 			occupier = this.occupier.getKey();
 			if (getOccupiedType().equals(PlayerType.BLACK))
 				occupier = this.occupier.getKey().toUpperCase();
 		}
-		return isSelected ? "o" : occupier;
+		return isSelected ? (isDangerous ? "x" : "o") : occupier;
 	}
 	
 }

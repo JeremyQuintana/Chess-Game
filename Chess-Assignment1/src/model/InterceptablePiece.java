@@ -13,14 +13,13 @@ public abstract class InterceptablePiece extends Piece {
 	// it has reached the end of the board
 	private boolean isIntercepted;
 	
-	boolean isValidMove2(Cell destination) 
+	void moveUpdate(Cell destination) 
 	{
 		if (destination == null || destination.getIsOccupied())
 			isIntercepted = true;
-		return super.isValidMove(destination);
 	}
 	
-	boolean movesLeftToAdd(int a)			 
+	boolean movesLeftToAdd2(int a)			 
 	{
 		boolean isClear = !isIntercepted;
 		// reset isIntercepted
