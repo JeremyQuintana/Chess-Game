@@ -6,8 +6,10 @@ public class MainFrame extends JFrame{
 	
 	public MainFrame() {
 		super("Chess Game");
-		setBounds(100, 100, 640, 480);
+		setBounds(100, 100, 700, 550);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
 	}
 
 }
+
