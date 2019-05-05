@@ -14,7 +14,6 @@ public class BoardPanel extends JPanel{
 	public BoardPanel() {
 		super(new GridLayout(6,6));
 		tilesList = new ArrayList<>();
-		
 		for(int i = 0; i < 36; i++) {
 			TilePanel tilePanel = new TilePanel(this, i);
 			tilesList.add(tilePanel);
@@ -40,7 +39,6 @@ public class BoardPanel extends JPanel{
 				setBackground(this.tileId % 2 == 0 ? Color.white : Color.GRAY);
 			}
 			else {
-				System.out.println(this.tileId);
 				setBackground(this.tileId % 2 != 0 ? Color.white : Color.GRAY);
 			}
 			
