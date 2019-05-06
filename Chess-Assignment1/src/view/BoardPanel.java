@@ -36,10 +36,10 @@ public class BoardPanel extends JPanel{
 		
 		private void colortheTile() {
 			if(this.tileId>= 0 && this.tileId <6 || this.tileId >= 12 && this.tileId <18 || this.tileId >= 24 && this.tileId <30){
-				setBackground(this.tileId % 2 == 0 ? Color.white : Color.GRAY);
+				setBackground(this.tileId % 2 == 0 ? new Color(255, 230, 204) : new Color(77, 40, 0));
 			}
 			else {
-				setBackground(this.tileId % 2 != 0 ? Color.white : Color.GRAY);
+				setBackground(this.tileId % 2 != 0 ? new Color(255, 230, 204) : new Color(77, 40, 0));
 			}
 			
 		}
