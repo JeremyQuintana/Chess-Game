@@ -2,7 +2,7 @@ package model;
 
 import java.util.List;
 
-public class Knight extends Piece {
+public class Knight extends SinglePiece {
 
 	public Knight(Player player, String key) 
 	{

@@ -1,11 +1,7 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
-
 public abstract class SinglePiece extends Piece {
 	
 	public SinglePiece(PieceType piece, Player player, String key) 

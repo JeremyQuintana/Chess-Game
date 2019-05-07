@@ -45,7 +45,7 @@ public class GameBoardTest {
 				break;
 			}
 		}
-		assertTrue(updatedCell.getOccupier().getPieceType().equals(PieceType.ROOK));
+		assertTrue(updatedCell.getOccupier().getType().equals(PieceType.ROOK));								/*needs to be made compatible with the new multipiece*/
 	}
 	
 	

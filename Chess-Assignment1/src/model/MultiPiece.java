@@ -3,6 +3,9 @@ package model;
 import java.util.LinkedList;
 import java.util.List;
 
+
+// implementation of pieces with combined pieceType properties
+// eg: RookKnight can move both as a rook or a knight
 public class MultiPiece extends Piece {
 	
 	public MultiPiece(SinglePiece piece) 
@@ -35,6 +38,7 @@ public class MultiPiece extends Piece {
 		return pieces;
 	}
 	
+	/*these methods need to add/remove pieces from player too*/
 	boolean merge(SinglePiece piece) 
 	{
 		for (SinglePiece p : pieces)
