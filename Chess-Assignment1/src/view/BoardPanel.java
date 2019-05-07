@@ -83,10 +83,10 @@ public class BoardPanel extends JPanel{
 		
 		private void colortheTile() {
 			if(this.cellId>= 0 && this.cellId <6 || this.cellId >= 12 && this.cellId <18 || this.cellId >= 24 && this.cellId <30){
-				setBackground(this.cellId % 2 == 0 ? new Color(255, 230, 204) : new Color(77, 40, 0));
+				setBackground(this.cellId % 2 == 0 ? new Color(204, 153, 102) : new Color(77, 40, 0));
 			}
 			else {
-				setBackground(this.cellId % 2 != 0 ? new Color(255, 230, 204) : new Color(77, 40, 0));
+				setBackground(this.cellId % 2 != 0 ? new Color(204, 153, 102) : new Color(77, 40, 0));
 			}
 			
 		}
