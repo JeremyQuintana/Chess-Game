@@ -7,27 +7,18 @@ import java.util.Scanner;
 
 public abstract class Piece {
 	
-	public Piece(PieceType piece, Player player, String key) 
+	public Piece(Player player) 
 	{
-		pieceType = piece;
 		this.player = player;
-		this.key = key;
 	}
 
-	
-	private PieceType pieceType;
 	private Player player;
-	private String key;
 	private Cell location;
 	// all pieces have a maximum of 2 moves they can make
 	private static final int MOVE_LIMIT = 3;
 	
 	
 	
-	PieceType getPieceType()
-	{
-		return pieceType;
-	}
 	Player getPlayer()
 	{
 		return player;
@@ -50,52 +41,10 @@ public abstract class Piece {
 		location.setOccupied(this);
 	}
 	
-	// if white rook returns "R", black knight returns "k"
-	public String toString()
-	{
-		return pieceType.name();
-	}
-	
-	public String getKey()
-	{
-		return key;
-	}
-	
-	// get row/column depending on its move pattern and current iteration a
-	abstract int getDestinationRow(int a, boolean rowPositive, boolean colPositive);
-	abstract int getDestinationCol(int a, boolean rowPositive, boolean colPositive);
-	
-	int getRedirectedRow(int rowDist, boolean rowPositive)
-	{
-		int oldRow = location.getRow();
-		int newRow = oldRow + (rowPositive ? rowDist : -rowDist);
-		return newRow;
-	}
-	
-	int getRedirectedCol(int colDist, boolean colPositive)
-	{
-		int oldCol = location.getCol();
-		int newCol = oldCol + (colPositive ? colDist : -colDist);
-		return newCol;
-	}
-	
-	boolean isValidMove(Cell destination)
-	{
-		if (destination == null)
-			return false;
-		if (destination.getIsOccupied())
-			return player.getType() != destination.getOccupiedType();
-		return true;
-	}
-	
-	// adds destination if it fits rules, and breaks out of loop if no more to be added
-	boolean movesLeftToAdd(int a, Cell destination)
-	{
-		if (a > Piece.MOVE_LIMIT)
-			return false;
-		return movesLeftToAdd2(a, destination);
-	}
-	abstract boolean movesLeftToAdd2(int a, Cell destination);
+	// facilitation of engine getValidMoves() so move checking continues relative to upgrades
+	abstract List<SinglePiece> getPieces();
+	abstract public String toString();
+	abstract String getKey();
 	
 }
 

@@ -35,7 +35,7 @@ public class GameBoard {
 		for (Piece piece : player.getPieces().values())				
 		{
 			int col = player.getType().defaultColumn();
-			int row = piece.getPieceType().defaultRow();
+			int row = ((SinglePiece) piece).getType().defaultRow();
 			
 			if (piece.getKey().contains("2"))
 				row = GRID_SIZE-1-row;
@@ -147,27 +147,29 @@ public class GameBoard {
 		return getValidMoves(selectedPiece);
 	}
 	
-	public List<Cell> getValidMoves(Piece piece)
+	public List<Cell> getValidMoves(Piece p)
 	{
 		boolean[] values = {true, false};
 		List<Cell> validMoves = new LinkedList<>();
 		Cell destination = null;
 		
-		if (piece == null)
+		if (p == null)
 			return validMoves;
 		
-		// checks valid destinations in all 4 directions (+ +) (+ -) (- +) (- -)
-		for (boolean rowPositive : values)
-		for (boolean colPositive : values) 
-			for (int a=1; piece.movesLeftToAdd(a, destination); a++)
-			{
-				int newRow = piece.getDestinationRow(a, rowPositive, colPositive);
-				int newCol = piece.getDestinationCol(a, rowPositive, colPositive);
-				
-				destination = getCell(newRow, newCol);
-				if (piece.isValidMove(destination))
-					validMoves.add(destination);	
-			}
+		// check all move possibilities of a multipiece
+		for (SinglePiece piece : p.getPieces())
+			// checks valid destinations in all 4 directions (+ +) (+ -) (- +) (- -)
+			for (boolean rowPositive : values)
+			for (boolean colPositive : values) 
+				for (int a=1; piece.movesLeftToAdd(a, destination); a++)
+				{
+					int newRow = piece.getDestinationRow(a, rowPositive, colPositive);
+					int newCol = piece.getDestinationCol(a, rowPositive, colPositive);
+					
+					destination = getCell(newRow, newCol);
+					if (piece.isValidMove(destination))
+						validMoves.add(destination);	
+				}
 		
 		/*test cases - if the cell contains opposer piece, that cell is valid*/
 		/*test cases - bishop/rook intercepted by any piece, but extra cell if its opposer piece*/
