@@ -86,29 +86,27 @@ public class GameBoard {
 
 
 
-
-	// returns true if the move successful
-	public boolean move(int row, int col)											
-	{
-		Cell destination = getCell(row, col);
-		
-		if (getValidMoves().contains(destination))
-		{
-			removePiece(destination);
-			selectedPiece.move(destination);
-			moveCount++;
-			switchPlayer();
-			return true;
-		}
-		return false;
-	}
-	
 	public boolean select(String key)
 	{
 		Piece desiredPiece = selectedPlayer.getPieces().get(key);
 		if(desiredPiece != null) 
 		{
 			selectedPiece = desiredPiece;
+			return true;
+		}
+		return false;
+	}
+
+	// returns true if the move successful
+	public boolean move(int row, int col)											
+	{
+		Cell destination = getCell(row, col);
+		if (getValidMoves().contains(destination))
+		{
+			removePiece(destination);
+			selectedPiece.move(destination);
+			moveCount++;
+			switchPlayer();
 			return true;
 		}
 		return false;
@@ -153,6 +151,7 @@ public class GameBoard {
 	{
 		boolean[] values = {true, false};
 		List<Cell> validMoves = new LinkedList<>();
+		Cell destination = null;
 		
 		if (piece == null)
 			return validMoves;
@@ -160,12 +159,12 @@ public class GameBoard {
 		// checks valid destinations in all 4 directions (+ +) (+ -) (- +) (- -)
 		for (boolean rowPositive : values)
 		for (boolean colPositive : values) 
-			for (int a=1; piece.movesLeftToAdd(a); a++)
+			for (int a=1; piece.movesLeftToAdd(a, destination); a++)
 			{
 				int newRow = piece.getDestinationRow(a, rowPositive, colPositive);
 				int newCol = piece.getDestinationCol(a, rowPositive, colPositive);
 				
-				Cell destination = getCell(newRow, newCol);
+				destination = getCell(newRow, newCol);
 				if (piece.isValidMove(destination))
 					validMoves.add(destination);	
 			}
@@ -179,8 +178,7 @@ public class GameBoard {
 	// if moving to destination leaves piece vulnerable
 	public boolean isDangerousMove(Cell destination, boolean isSelected)
 	{
-		// if it kills one opposer, the piece is newly vulnerable to other opposers originally blocked
-		// a prediction: temporary piece removal
+		// if it kills one opposer, the piece is newly vulnerable to other opposers originally being blocked
 		Piece killedOccupier = destination.removePiece();
 		boolean isDangerousMove = isSelected ? canOpposerMoveTo(destination) : false;
 		destination.setOccupied(killedOccupier);
@@ -196,6 +194,18 @@ public class GameBoard {
 				return true;
 		return false;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	
 	public Piece getSelectedPiece()
@@ -207,20 +217,6 @@ public class GameBoard {
 	{
 		return selectedPlayer;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	Cell getCell(int row, int col) 

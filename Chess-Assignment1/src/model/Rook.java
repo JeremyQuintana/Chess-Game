@@ -9,22 +9,7 @@ public class Rook extends InterceptablePiece {
 	{
 		super(PieceType.ROOK, player, key);
 	}
-
-//	// Rook moves in a straight pattern (a,0) or (0,a)
-//	//	row col		row col 	
-//	//	(a,0)		+ 	+		
-//	//	(0,a)		+ 	+		messes with
-//	// 	(-a,0)		- 	-		original getDestination
-//	//	(a,0)		- 	-		
-//	Cell getDestination(int a, CellList cells, boolean rowPositive, boolean colPositive) 
-//	{
-//		
-//		int rowDist = colPositive ? a : 0;
-//		int colDist = colPositive ? 0 : a; 
-//		//													fix				vvv
-//		return getRedirectedCell(rowDist, colDist, cells, rowPositive, rowPositive);
-//	}
-//	
+	
 //	boolean allMovesAdded(CellList validCells, int a, Cell destination)			 
 //	{
 //		if (destination == null || isSameOccupied(destination))	
@@ -34,7 +19,6 @@ public class Rook extends InterceptablePiece {
 //			return true;
 //		return false;
 //	}
-	
 	
 	// Rook moves in a straight pattern (a,0) or (0,a)
 	//	row col		row col 	
