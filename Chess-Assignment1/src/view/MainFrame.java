@@ -15,10 +15,13 @@ public class MainFrame extends JFrame{
 		setLayout(new BorderLayout());
 		JMenuBar menuBar = createMenuBar();
 		BoardPanel boardPanel = new BoardPanel();
+		
 		add(boardPanel, BorderLayout.CENTER);
-		add(new SidePanel(),BorderLayout.WEST);
-		add(menuBar,BorderLayout.NORTH); 
-		setBounds(100, 100, 700, 550);
+		add(menuBar,BorderLayout.NORTH);
+		add(new StatusPanel(),BorderLayout.NORTH);
+		add(new StatusPanel(),BorderLayout.SOUTH);
+		
+		setBounds(100, 100, 700, 650);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
