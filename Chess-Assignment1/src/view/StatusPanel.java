@@ -5,21 +5,22 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-public class SidePanel extends JPanel{
+public class StatusPanel extends JPanel{
 	
-	public SidePanel() {
-		setLayout(new GridLayout(3,1));
+	public StatusPanel() {
+		setLayout(new GridLayout(1,3));
 		Border blackBorder = BorderFactory.createLineBorder(Color.BLACK);
 		setBorder(blackBorder);
-		setPreferredSize(new Dimension(170,100));
+		setPreferredSize(new Dimension(170,80));
 		setBackground(Color.white);
 		
 		JLabel score = new JLabel("Score: ");
-		JLabel playerList = new JLabel("Player List: ");
+		JLabel playerList = new JLabel("Player Name: ");
 		JLabel history = new JLabel("History: ");
 		
 		score.setBorder(BorderFactory.createLineBorder(Color.blue));
