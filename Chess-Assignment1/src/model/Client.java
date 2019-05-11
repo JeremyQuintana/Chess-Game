@@ -46,8 +46,8 @@ public class Client {
 //		}
 //		client.endGame();
 		// initialize the game board
-		Player p1 = new Player("JeremyIsAwesome", "idk");
-		Player p2 = new Player("TheOtherJeremyIsAwesome", "something");
+		Player p1 = new Player("JeremyIsAwesome", "idk", PlayerType.WHITE);
+		Player p2 = new Player("TheOtherJeremyIsAwesome", "something", PlayerType.BLACK);
 		GameBoard board = new GameBoard(p1, p2);
 		Client client = new Client();
 		board.setMaxCount(15,15);
@@ -125,16 +125,30 @@ public class Client {
 	
 	public void makeMove()
 	{
-		System.out.print("move to x: ");	int x = sc.nextInt();
-		System.out.print("move to y: ");	int y = sc.nextInt();
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Move, merge, or split: ");
+		String[] command = sc.nextLine().split(" ");
 		
 		int oldScore = board.getSelectedPlayer().getScore();
-		if (!board.move(y, x))
+		boolean valid = false;
+		switch(command[0])
 		{
-			System.out.println("Invalid cell selected.");
-			makeMove();
+			case "move" : 
+				int x = Integer.parseInt(command[1]);
+				int y = Integer.parseInt(command[2]);
+				valid = board.move(y,x);					
+				break;
+			case "merge" : valid = board.merge(command[1]);	break;	/*causes a bug*/
+			case "split" : valid = board.split();			break;
 		}
 		
+		if (!valid)
+		{
+			System.out.println("Invalid choice.");
+			makeMove();
+			return;
+		}
+		board.switchPlayer();
 //		if (board.getSelectedPlayer().getScore() > oldScore)
 //			System.out.println("+5 points to " + board.getSelectedPlayer().toString());
 	}
@@ -158,12 +172,12 @@ public class Client {
 		System.out.println();
 		for (Cell cell : board.getCells())
 		{
-			boolean isSelected = board.getValidMoves().contains(cell);
+			boolean isSelected = board.validMoves().contains(cell);
 			boolean isDangerous = board.isDangerousMove(cell, isSelected);
 			
-			System.out.printf("%-3s", cell.getPrintable(isSelected, isDangerous));
+			System.out.printf("%-6s", cell.getPrintable(isSelected, isDangerous));
 			if (cell.getCol() == GameBoard.GRID_SIZE-1)
-				System.out.println();
+				System.out.println("\n");
 		}
 		System.out.println();
 	}	
@@ -233,36 +247,37 @@ public class Client {
 	
 	
 	
-	void testDisplay(String pieceKey)
-	{
-		Player p1 = new Player("JeremyIsAwesome", "idk");
-		Player p2 = new Player("TheOtherJeremyIsAwesome", "something");
-		board = new GameBoard(p1, p2);
-		
-		// manually remove all pieces except selected piece
-		for (Cell c : board.getCells())
-		{
-			if (c.getIsOccupied() )
-			{
-				Piece a = c.getOccupier();
-				if (a.getKey().equals(pieceKey) && a.getPlayer().equals(board.getSelectedPlayer()))
-					continue;
-				c.removePiece();
-				a.getPlayer().removePiece(a.getKey());
-			}
-		}
-		
-		
-		Cell destination = board.getCell(2,2);
-		board.removePiece(destination);
-		board.select(pieceKey);
-		board.getSelectedPiece().move(destination);
-		board.select(pieceKey);
-		
-		// A central display of all possible moves/restrictions on moves
-		printGrid();
-	}
+//	void testDisplay(String pieceKey)
+//	{
+//		Player p1 = new Player("JeremyIsAwesome", "idk");
+//		Player p2 = new Player("TheOtherJeremyIsAwesome", "something");
+//		board = new GameBoard(p1, p2);
+//		
+//		// manually remove all pieces except selected piece
+//		for (Cell c : board.getCells())
+//		{
+//			if (c.getIsOccupied() )
+//			{
+//				Piece a = c.getOccupiers();
+//				if (a.getKey().equals(pieceKey) && a.getPlayer().equals(board.getSelectedPlayer()))
+//					continue;
+//				c.removePiece();
+//				a.getPlayer().removePiece(a.getKey());
+//			}
+//		}
+//		
+//		
+//		Cell destination = board.getCell(2,2);
+//		board.removePiece(destination);
+//		board.select(pieceKey);
+//		board.getSelectedPiece().move(destination);
+//		board.select(pieceKey);
+//		
+//		// A central display of all possible moves/restrictions on moves
+//		printGrid();
+//	}
 	
 	
 	
 }
+

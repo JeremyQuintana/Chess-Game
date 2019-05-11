@@ -1,30 +1,30 @@
 package model;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Player {
 
-	public Player(String id, String password)
+	public Player(String id, String password, PlayerType type)
 	{
 		this.id = id;
 		this.password = password;
+		this.type = type;
 		score = 0;
-		
 		pieces = new HashMap<>();
-		for (PieceType piece : PieceType.values())
-		{
+		
+		for (PieceType piecetype : PieceType.values())
 			for (int i=1; i<=2; i++)
 			{
-				String key = piece.getKey() + i;
-				switch (piece)
+				switch (piecetype)
 				{
-					case ROOK : 	pieces.put(key, new Rook(this, key));	break;
-					case KNIGHT : 	pieces.put(key, new Knight(this, key));	break;
-					case BISHOP : 	pieces.put(key, new Bishop(this, key));	break;
+					case ROOK : 	add(new Rook("r" + i,   type));	break;
+					case KNIGHT : 	add(new Knight("k" + i, type));	break;
+					case BISHOP : 	add(new Bishop("b" + i, type));	break;
 				}
 			}
-		}
-		
 	}
 	
 	private String id;
@@ -33,9 +33,16 @@ public class Player {
 	private int score;
 	private Map<String, Piece> pieces;
 	
-	void removePiece(String pieceKey)
+	void remove(Piece piece)
 	{
-		pieces.remove(pieceKey);
+		if (piece != null)
+			pieces.remove(piece.getKey());
+	}
+	
+	void add(Piece piece)
+	{
+		if (piece != null)
+			pieces.put(piece.getKey(),piece);
 	}
 	
 	void addScore(int points)
@@ -48,29 +55,15 @@ public class Player {
 		return pieces;
 	}
 	
-	PlayerType getType()
-	{
-		return type;
-	}
-	
-	void setType(PlayerType type)
-	{
-		this.type = type;
-	}
-	
 	int getScore() 
 	{
 		return score;
 	}
 	
-//	public void setid(String id)
-//	{
-//		this.id = id;
-//	}
-//	public void setPassword(String password)
-//	{
-//		this.password = password;
-//	}
+	PlayerType getType()
+	{
+		return type;
+	}
 	
 	public String getid()
 	{

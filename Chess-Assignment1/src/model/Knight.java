@@ -2,11 +2,11 @@ package model;
 
 import java.util.List;
 
-public class Knight extends SinglePiece {
+public class Knight extends Piece {
 
-	public Knight(Player player, String key) 
+	public Knight(String key, PlayerType type) 
 	{
-		super(PieceType.KNIGHT, player, key);
+		super(PieceType.KNIGHT, key, type);
 	}
 	
 	// move limit for knight for each direction
