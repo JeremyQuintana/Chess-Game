@@ -1,4 +1,6 @@
 package model;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -22,8 +24,6 @@ public class GameBoard {
 //		playerList = new LinkedList<>();
 		moveCount = 0;
 		
-		p1.setType(PlayerType.WHITE);
-		p2.setType(PlayerType.BLACK);
 		
 		players = new HashMap<>();   
 		players.put(p1.getType(), p1);
@@ -35,17 +35,13 @@ public class GameBoard {
 		for (Piece piece : player.getPieces().values())				
 		{
 			int col = player.getType().defaultColumn();
-			int row = piece.getPieceType().defaultRow();
+			int row = piece.getType().defaultRow();
 			
 			if (piece.getKey().contains("2"))
 				row = GRID_SIZE-1-row;
 			piece.move(getCell(row, col));
 		}
-//		test to see if returned valid cells are correct (not working)
-//		select("r1");
-//		for(Cell cell : selectedPiece.getValidMoves(cells)) {
-//			System.out.println("y=" + cell.getRow() + " x=" + cell.getCol());
-//		}
+
 	}
 	
 //	public void startGame(Player p1, Player p2)
@@ -85,52 +81,72 @@ public class GameBoard {
 	
 
 
-
-	public boolean select(String key)
-	{
-		Piece desiredPiece = selectedPlayer.getPieces().get(key);
-		if(desiredPiece != null) 
-		{
-			selectedPiece = desiredPiece;
-			return true;
-		}
-		return false;
-	}
-
-	// returns true if the move successful
-	public boolean move(int row, int col)											
-	{
-		Cell destination = getCell(row, col);
-		if (getValidMoves().contains(destination))
-		{
-			removePiece(destination);
-			selectedPiece.move(destination);
-			moveCount++;
-			switchPlayer();
-			return true;
-		}
-		return false;
-	}
-	
-	
 	public void switchPlayer()
 	{
 		selectedPiece = null;
 		selectedPlayer = players.get(selectedPlayer.getType().getOpposer());
 	}
-	
-																					/*change to private after tests*/
-	public void removePiece(Cell destination)
+
+	public boolean select(String key)
 	{
-		if (destination.getIsOccupied())
-			if (destination.getOccupiedType() != selectedPiece.getPlayer().getType())
-			{
-				Player winner = selectedPlayer;
-				Player loser = players.get(selectedPlayer.getType().getOpposer());
-				winner.addScore(5); 											
-				loser.removePiece(destination.removePiece().getKey());
-			}
+		Piece piece = selectedPlayer.getPieces().get(key);
+		if (piece == null)
+			return false;
+		
+		selectedPiece = piece;
+		return true;
 	}
+
+	public boolean merge(String key)
+	{
+		Piece piece = selectedPlayer.getPieces().get(key);
+		for (Piece p1 : piece.getLinks())
+		for (Piece p2 : selectedPiece.getLinks())
+			if(p1.getType() == p2.getType())
+					return false;
+		
+		selectedPiece.merge(piece);
+		return true;
+	}
+																		/*
+																		 * throw exceptions for failed operations?
+																		 *merge tests: 	can merge 1 piece with a merged piece and vice versa
+																		 * 				pieces move to selected piece's location
+																		 *split tests: 	can't split 1 piece
+																		 *				splitting moves unselected pieces to special locations
+																		 */
+																		
+	// returns true if split successful
+	// design choice : all split pieces change location
+	public boolean split()
+	{	
+		if (selectedPiece.getLinks().size() < 2)
+			return false;
+		
+		selectedPiece.split(splitDestinations());
+		return true;
+	}
+	
+	// returns true if the move successful
+	public boolean move(int row, int col)											
+	{
+		Cell destination = getCell(row, col);
+		if (!validMoves().contains(destination))
+			return false;
+		
+		awardAndRemove(destination);
+		selectedPiece.move(destination);
+		moveCount++;
+		return true;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -142,12 +158,12 @@ public class GameBoard {
 	
 	
 	// a method to return all valid destinations for a piece
-	public List<Cell> getValidMoves() 
+	public List<Cell> validMoves() 
 	{
-		return getValidMoves(selectedPiece);
+		return validMoves(selectedPiece);
 	}
 	
-	public List<Cell> getValidMoves(Piece piece)
+	public List<Cell> validMoves(Piece piece)
 	{
 		boolean[] values = {true, false};
 		List<Cell> validMoves = new LinkedList<>();
@@ -156,18 +172,20 @@ public class GameBoard {
 		if (piece == null)
 			return validMoves;
 		
-		// checks valid destinations in all 4 directions (+ +) (+ -) (- +) (- -)
-		for (boolean rowPositive : values)
-		for (boolean colPositive : values) 
-			for (int a=1; piece.movesLeftToAdd(a, destination); a++)
-			{
-				int newRow = piece.getDestinationRow(a, rowPositive, colPositive);
-				int newCol = piece.getDestinationCol(a, rowPositive, colPositive);
-				
-				destination = getCell(newRow, newCol);
-				if (piece.isValidMove(destination))
-					validMoves.add(destination);	
-			}
+		// check all move possibilities of piece with multiple types
+		for (Piece p : piece.getLinks())
+			// checks valid destinations in all 4 directions (+ +) (+ -) (- +) (- -)
+			for (boolean rowPositive : values)
+			for (boolean colPositive : values) 
+				for (int a=1; p.movesLeftToAdd(a, destination); a++)
+				{
+					int newRow = p.getDestinationRow(a, rowPositive, colPositive);
+					int newCol = p.getDestinationCol(a, rowPositive, colPositive);
+					
+					destination = getCell(newRow, newCol);
+					if (p.isValidMove(destination))
+						validMoves.add(destination);	
+				}
 		
 		/*test cases - if the cell contains opposer piece, that cell is valid*/
 		/*test cases - bishop/rook intercepted by any piece, but extra cell if its opposer piece*/
@@ -175,14 +193,45 @@ public class GameBoard {
 		return validMoves;
 	}
 	
+	private void awardAndRemove(Cell destination)
+	{
+		if (destination.getIsOccupied())
+		{
+			Player winner = selectedPlayer;
+			Player loser = players.get(selectedPlayer.getType().getOpposer());
+			winner.addScore(5 * destination.getTotalSinglePieces());
+			for (Piece piece : destination.removeOccupiers())
+				loser.remove(piece);
+		}
+	}
+	
+	// places the extra split pieces to default locations
+	private Cell[] splitDestinations()
+	{
+		Cell[] destinations = new Cell[selectedPiece.getLinks().size()];
+		int i=0;
+		int col = selectedPiece.getPlayerType().defaultColumn();
+		for (int row=0;  row<GRID_SIZE; row++)
+		{
+			boolean occupied = getCell(row, col).getIsOccupied();
+			if (!occupied)
+				destinations[i++] = getCell(row, col);
+			if (i==destinations.length-1)	
+				break;
+		}
+		return destinations;
+				
+	}
+	
 	// if moving to destination leaves piece vulnerable
 	public boolean isDangerousMove(Cell destination, boolean isSelected)
 	{
 		// if it kills one opposer, the piece is newly vulnerable to other opposers originally being blocked
-		Piece killedOccupier = destination.removePiece();
+		List<Piece> killedOccupiers = destination.removeOccupiers();
 		boolean isDangerousMove = isSelected ? canOpposerMoveTo(destination) : false;
-		destination.setOccupied(killedOccupier);
-		
+		// leave the original board unchanged, replace the pieces
+		for (Piece piece : killedOccupiers)
+			destination.addOccupier(piece);
 		return isDangerousMove;
 	}
 	
@@ -190,7 +239,7 @@ public class GameBoard {
 	{
 		Player opposer = players.get(selectedPlayer.getType().getOpposer());
 		for (Piece opposingPiece : opposer.getPieces().values())
-			if (getValidMoves(opposingPiece).contains(destination))
+			if (validMoves(opposingPiece).contains(destination))
 				return true;
 		return false;
 	}
@@ -219,7 +268,7 @@ public class GameBoard {
 	}
 	
 	
-	Cell getCell(int row, int col) 
+	private Cell getCell(int row, int col) 
 	{
 		for (Cell cell : getCells())
 			if (cell.getRow() == row && cell.getCol() == col)

@@ -4,9 +4,9 @@ import java.util.List;
 
 public class Knight extends Piece {
 
-	public Knight(Player player, String key) 
+	public Knight(String key, PlayerType type) 
 	{
-		super(PieceType.KNIGHT, player, key);
+		super(PieceType.KNIGHT, key, type);
 	}
 	
 	// move limit for knight for each direction
@@ -22,12 +22,12 @@ public class Knight extends Piece {
 	// choose either (1,2) or (2,1)
 	int getDestinationRow(int a, boolean rowPositive, boolean colPositive)
 	{
-		return getRedirectedRow(a, rowPositive);
+		return getRedirectedRow((a-1)%2 + 1, rowPositive);
 	}
 	
 	int getDestinationCol(int a, boolean rowPositive, boolean colPositive)
 	{
-		return getRedirectedCol(a==1 ? 2:1, colPositive);
+		return getRedirectedCol(a%2 + 1, colPositive);
 	}
 
 }
