@@ -16,14 +16,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controller.TileListener;
+import model.GameBoard;
+
 public class BoardPanel extends JPanel{
 	final List<CellPanel> cellList;
+	private boolean selected = false;
 		
-	public BoardPanel() {
+	public BoardPanel(GameBoard board) {
 		super(new GridLayout(6,6));
 		cellList = new ArrayList<>();
 		for(int i = 0; i < 36; i++) {
-			CellPanel tilePanel = new CellPanel(this, i);
+			CellPanel tilePanel = new CellPanel(this, i,board);
 			cellList.add(tilePanel);
 			add(tilePanel);
 		}
@@ -65,19 +69,20 @@ public class BoardPanel extends JPanel{
 		
 		if(i == 0 || i == 5 || i == 30 || i == 35) {result = "rook";}
 		else if(i == 1 || i == 4 || i == 31 || i == 34) {result = "bishop";}
-		else {result = "knight";}
+		else if(i==2 || i==3 || i==32 || i==33){result = "knight";}
 		
 		return result;
 	}
 	
-	private class CellPanel extends JPanel{
+	public class CellPanel extends JPanel{
 		
 		private final int cellId;
-		public CellPanel(final BoardPanel boardPanel, final int cellId) {
+		public CellPanel(final BoardPanel boardPanel, final int cellId, GameBoard board) {
 			super(new GridLayout());
 			this.cellId = cellId;
 			setPreferredSize(new Dimension(10,10));
 			colortheTile();
+			addMouseListener(new TileListener(boardPanel, board,intToPiece(cellId),cellId));
 			validate();
 		}
 		
@@ -92,6 +97,17 @@ public class BoardPanel extends JPanel{
 		}
 		
 	}
+	
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
 
+	public boolean getSelected() {
+		return selected;
+	}
+	
+	public List getCellList() {
+		return cellList;
+	}
 }
 

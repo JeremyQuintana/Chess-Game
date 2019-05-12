@@ -57,11 +57,11 @@ public class Cell {
 		return occupiers.size();
 	}	
 	
-	int getRow()
+	public int getRow()
 	{
 		return row;
 	}
-	int getCol()
+	public int getCol()
 	{
 		return col;
 	}

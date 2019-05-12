@@ -8,17 +8,19 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import model.GameBoard;
+
 public class MainFrame extends JFrame{
 	
-	public MainFrame() {
+	public MainFrame(GameBoard board) {
 		super("Chess Game");
 		setLayout(new BorderLayout());
 		JMenuBar menuBar = createMenuBar();
-		BoardPanel boardPanel = new BoardPanel();
+		BoardPanel boardPanel = new BoardPanel(board);
 		
 		add(boardPanel, BorderLayout.CENTER);
 		add(menuBar,BorderLayout.NORTH);
-		add(new StatusPanel(),BorderLayout.NORTH);
+	    add(new StatusPanel(),BorderLayout.NORTH);
 		add(new StatusPanel(),BorderLayout.SOUTH);
 		
 		setBounds(100, 100, 700, 650);
