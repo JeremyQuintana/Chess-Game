@@ -14,7 +14,6 @@ import model.Cell;
 import model.GameBoard;
 import model.Piece;
 import view.BoardPanel;
-import view.BoardPanel.CellPanel;
 
 public class TileListener implements MouseListener{
 	private GameBoard board;
