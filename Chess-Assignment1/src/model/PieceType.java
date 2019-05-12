@@ -1,5 +1,7 @@
 package model;
 
+// keep as a static pre-constructed version of piece
+// also allows cheaper storage of piece by only storing its type
 public enum PieceType {
 
 	ROOK, BISHOP, KNIGHT;

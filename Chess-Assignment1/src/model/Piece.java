@@ -60,12 +60,12 @@ public abstract class Piece {
 		piece.move(location);
 	}
 	
-	PieceType getType()
+	public PieceType getType()
 	{
 		return type;
 	}
 	
-	PlayerType getPlayerType()
+	public PlayerType getPlayerType()
 	{
 		return playerType;
 	}

@@ -45,15 +45,10 @@ public class Client {
 //			client.makeMove();
 //		}
 //		client.endGame();
-		// initialize the game board
-		Player p1 = new Player("JeremyIsAwesome", "idk", PlayerType.WHITE);
-		Player p2 = new Player("TheOtherJeremyIsAwesome", "something", PlayerType.BLACK);
-		GameBoard board = new GameBoard(p1, p2);
+													/*creating new players and game engine in the client constructor - change this to do it manually*/
 		Client client = new Client();
-		board.setMaxCount(15,15);
-		client.setBoard(board);
 		
-		while (!board.isGameOver())
+		while (!client.getBoard().isGameOver())
 		{
 			client.printGrid();
 			client.selectPiece();
@@ -205,6 +200,7 @@ public class Client {
 	
 	public Client(Player[] players)
 	{
+		
 		sc = new Scanner(System.in);
 		playerList = new HashMap<>();
 		for (Player p : players)
@@ -213,7 +209,12 @@ public class Client {
 
 	public Client()
 	{
+		// initialize the game board
+		Player p1 = new Player("JeremyIsAwesome", "idk", PlayerType.WHITE);
+		Player p2 = new Player("TheOtherJeremyIsAwesome", "something", PlayerType.BLACK);
+		board = new GameBoard(p1, p2);
 		sc = new Scanner(System.in);
+		board.setMaxCount(15,15);
 	}
 	private Map<String, Player> playerList;
 	private GameBoard board;
@@ -224,12 +225,12 @@ public class Client {
 	{
 		return playerList.get(id);
 	}
-	void setBoard(GameBoard board)
-	{
-		this.board = board;
-	}
+//	void setBoard(GameBoard board)
+//	{
+//		this.board = board;
+//	}
 	
-	GameBoard getBoard()
+	public GameBoard getBoard()
 	{
 		return board;
 	}
