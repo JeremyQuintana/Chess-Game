@@ -224,7 +224,7 @@ public class Client {
 	{
 		return playerList.get(id);
 	}
-	void setBoard(GameBoard board)
+	public void setBoard(GameBoard board)
 	{
 		this.board = board;
 	}

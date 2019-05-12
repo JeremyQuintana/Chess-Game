@@ -21,41 +21,54 @@ public class TileListener implements MouseListener{
 	private String piece;
 	private int tileId;
 	private BoardPanel panel;
-	
-	public TileListener(final BoardPanel panel, GameBoard board,String piece, int tileId) {
+	private CellPanel thisCell;
+	private List<CellPanel> cellList;
+	public TileListener(final BoardPanel panel, GameBoard board,String piece, int tileId, CellPanel thisCell) {
 		this.panel = panel;
 		this.board = board;
 		this.piece = piece;
 		this.tileId = tileId;
+		this.thisCell=thisCell;
+		cellList = panel.getCellList();
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if(!panel.getSelected()) {
+		if(thisCell.getBorder()!=null) {
+			int sourceX = board.getSelectedPiece().getLocation().getCol();
+			int sourceY = board.getSelectedPiece().getLocation().getRow();
+			int sourceTileId = sourceX*6+sourceY;
+			
+			int y = tileId/6;
+			int x = tileId-6*y;
+			
+			board.move(y,x);
+			String wob = Character.toString(board.getSelectedPlayer().toString().charAt(0)).toLowerCase();
+			panel.removeDrawing(sourceTileId);
+			panel.drawThePiece(tileId, board.getSelectedPiece().toString(), wob);
+			panel.setSelected(false);
+			for(CellPanel cell: cellList) {
+				cell.setBorder(null);
+			}
+			panel.revalidate();
+		}
+		else if(!panel.getSelected()) {
 			String oneOrTwo = null;
 			if(tileId<=6 || tileId>=30) {
 				if(tileId<=2||tileId<=32&&tileId>6) {oneOrTwo = "1";} else{oneOrTwo ="2";}
 				board.select(piece.charAt(0)+oneOrTwo);
 				List<Cell> validCell = board.validMoves(board.getSelectedPiece());
-				List<CellPanel> cellList =panel.getCellList();
 				panel.setSelected(true);
 				for(Cell cell: validCell) {
-					System.out.println(cell.getCol());
 					CellPanel cellPanel = cellList.get((cell.getCol()*6)+cell.getRow());
 					Border greenBorder = BorderFactory.createLineBorder(Color.GREEN,3);
 					cellPanel.setBorder(greenBorder);
 				}
 			}
-			
-//			System.out.println("Clicked "+piece +oneOrTwo+" "+ tileId);
-//			
-//			System.out.println(board.getSelectedPiece());
-//			System.out.println(board.getSelectedPlayer());
 		}
 		else {
 			JOptionPane.showMessageDialog(null, "You can only choose 1 piece each time", "Warning", JOptionPane.WARNING_MESSAGE);
-			System.out.println("You can only choose one piece per move");
 		}
 		
 		

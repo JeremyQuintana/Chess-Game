@@ -296,7 +296,7 @@ public class GameBoard {
 	
 	
 	
-	boolean isGameOver()
+	public boolean isGameOver()
 	{
 		boolean noPiecesLeft = false;
 		for (Player player : players.values())
@@ -325,7 +325,7 @@ public class GameBoard {
 		return moveLimit;
 	}
 	
-	int setMaxCount(int maxCount1, int maxCount2)
+	public int setMaxCount(int maxCount1, int maxCount2)
 	{
 		moveLimit = (maxCount1+maxCount2)/2;
 		return moveLimit;

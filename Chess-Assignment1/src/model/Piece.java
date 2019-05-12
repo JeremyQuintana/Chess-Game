@@ -26,7 +26,7 @@ public abstract class Piece {
 	
 	
 	
-	Cell getLocation()
+	public Cell getLocation()
 	{
 		return location;
 	}

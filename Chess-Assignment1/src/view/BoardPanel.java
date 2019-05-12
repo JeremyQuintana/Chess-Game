@@ -36,14 +36,22 @@ public class BoardPanel extends JPanel{
 		validate();
 	}
 	
-	private void drawThePiece(int i, String pieceType, String worb) {
+	public void removeDrawing(int i) {
+		CellPanel cell = cellList.get(i);
+		JLabel pieceLabel = new JLabel();
+		pieceLabel.setIcon(null);
+		cell.removeAll();
+		cell.add(pieceLabel);
+	}
+	
+	public void drawThePiece(int i, String pieceType, String worb) {
 		ImageIcon piece = null; 
 		JLabel pieceLabel = new JLabel();
 		
 		pieceLabel.setSize(100,100);
 		
 		CellPanel draw = cellList.get(i);
-		piece = new ImageIcon("images/"+pieceType+"_"+worb+".png");
+		piece = new ImageIcon("images/"+pieceType.toLowerCase()+"_"+worb+".png");
 		Image convertImageIcon = piece.getImage();
 		Image resizeImage = convertImageIcon.getScaledInstance(80, 70, Image.SCALE_SMOOTH);
 		ImageIcon resized = new ImageIcon(resizeImage);
@@ -82,7 +90,7 @@ public class BoardPanel extends JPanel{
 			this.cellId = cellId;
 			setPreferredSize(new Dimension(10,10));
 			colortheTile();
-			addMouseListener(new TileListener(boardPanel, board,intToPiece(cellId),cellId));
+			addMouseListener(new TileListener(boardPanel, board,intToPiece(cellId),cellId,this));
 			validate();
 		}
 		
