@@ -267,7 +267,7 @@ public class GameBoard {
 		return selectedPlayer;
 	}
 	
-	
+	// kept public for access by the cell view counterpart
 	private Cell getCell(int row, int col) 
 	{
 		for (Cell cell : getCells())
