@@ -17,8 +17,8 @@ public class Cell {
 		occupiers = new ArrayList<>();
 	}
 	
-	int row;
-	int col;
+	private int row;
+	private int col;
 	private List<Piece> occupiers;
 	
 	public void addOccupier(Piece piece)
@@ -57,11 +57,11 @@ public class Cell {
 		return occupiers.size();
 	}	
 	
-	int getRow()
+	public int getRow()
 	{
 		return row;
 	}
-	int getCol()
+	public int getCol()
 	{
 		return col;
 	}
