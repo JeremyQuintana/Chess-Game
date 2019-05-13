@@ -268,7 +268,7 @@ public class GameBoard {
 	}
 	
 	
-	private Cell getCell(int row, int col) 
+	public Cell getCell(int row, int col) 
 	{
 		for (Cell cell : getCells())
 			if (cell.getRow() == row && cell.getCol() == col)

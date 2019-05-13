@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 
 import controller.TileListener;
 import model.GameBoard;
+import model.Piece;
 
 public class BoardPanel extends JPanel{
 	final List<CellPanel> cellList;
@@ -32,7 +33,7 @@ public class BoardPanel extends JPanel{
 			add(tilePanel);
 		}
 		setPreferredSize(new Dimension(400,350));
-		putAllPieces();
+		putAllPieces(board);
 		validate();
 	}
 	
@@ -47,7 +48,6 @@ public class BoardPanel extends JPanel{
 	public void drawThePiece(int i, String pieceType, String worb) {
 		ImageIcon piece = null; 
 		JLabel pieceLabel = new JLabel();
-		
 		pieceLabel.setSize(100,100);
 		
 		CellPanel draw = cellList.get(i);
@@ -61,14 +61,21 @@ public class BoardPanel extends JPanel{
 		draw.add(pieceLabel);
 	}
 	
-	private void putAllPieces() {
-		for(int i = 0; i < 6 ; i++) {
-			drawThePiece(i,intToPiece(i),"w");
-		}
+	private void putAllPieces(GameBoard board) {
+		for(int i = 0; i < cellList.size();i++) {
+			List<Piece>pieces;
+			int tileId = i;
+			int y = tileId/6;
+			int x = tileId-6*y;
+			pieces = board.getCell(x,y).getOccupiers();
+			if(pieces.size()>0) {
+				String wob = null;
+				if(i>12) {wob="b";}else {wob="w";}
+				drawThePiece(i,pieces.get(0).toString(),wob);
+			}
 		
-		for(int j = 30; j < 36 ; j++) {
-			drawThePiece(j,intToPiece(j),"b");
 		}
+	
 		
 	}
 	

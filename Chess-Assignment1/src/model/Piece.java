@@ -65,7 +65,7 @@ public abstract class Piece {
 		return type;
 	}
 	
-	PlayerType getPlayerType()
+	public PlayerType getPlayerType()
 	{
 		return playerType;
 	}
@@ -76,7 +76,7 @@ public abstract class Piece {
 		return type.name();
 	}
 	
-	String getKey()
+	public String getKey()
 	{
 		return key;
 	}

@@ -44,26 +44,32 @@ public class TileListener implements MouseListener{
 			int x = tileId-6*y;
 			
 			board.move(y,x);
+			
 			String wob = Character.toString(board.getSelectedPlayer().toString().charAt(0)).toLowerCase();
 			panel.removeDrawing(sourceTileId);
 			panel.drawThePiece(tileId, board.getSelectedPiece().toString(), wob);
 			panel.setSelected(false);
+			
 			for(CellPanel cell: cellList) {
 				cell.setBorder(null);
 			}
 			panel.revalidate();
 		}
 		else if(!panel.getSelected()) {
-			String oneOrTwo = null;
-			if(tileId<=6 || tileId>=30) {
-				if(tileId<=2||tileId<=32&&tileId>6) {oneOrTwo = "1";} else{oneOrTwo ="2";}
-				board.select(piece.charAt(0)+oneOrTwo);
+			int y = tileId/6;
+			int x = tileId-6*y;
+			if(thisCell.getComponentCount()!=0) {
+				List<Piece> pieces = board.getCell(x,y).getOccupiers();
+				String key = pieces.get(0).getKey();
+				board.select(key);
 				List<Cell> validCell = board.validMoves(board.getSelectedPiece());
+				System.out.println(validCell.toString());
 				panel.setSelected(true);
 				for(Cell cell: validCell) {
 					CellPanel cellPanel = cellList.get((cell.getCol()*6)+cell.getRow());
 					Border greenBorder = BorderFactory.createLineBorder(Color.GREEN,3);
 					cellPanel.setBorder(greenBorder);
+
 				}
 			}
 		}
