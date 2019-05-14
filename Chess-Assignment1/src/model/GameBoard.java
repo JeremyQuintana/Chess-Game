@@ -269,13 +269,8 @@ public class GameBoard {
 		return selectedPlayer;
 	}
 	
-<<<<<<< HEAD
-	// kept public for access by the cell view counterpart
-	private Cell getCell(int row, int col) 
-=======
 	
 	public Cell getCell(int row, int col) 
->>>>>>> branch 'kane' of https://github.com/s3700178/FFS.git
 	{
 		for (Cell cell : getCells())
 			if (cell.getRow() == row && cell.getCol() == col)

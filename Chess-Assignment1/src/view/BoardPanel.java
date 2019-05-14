@@ -43,37 +43,13 @@ public class BoardPanel extends JPanel{
 			cellList.add(tilePanel);
 			add(tilePanel);
 		}
-// 		super(new GridLayout(gameEngine.GRID_SIZE, gameEngine.GRID_SIZE));
-// 		engine = gameEngine;
-		
-// 		for (Cell cell : gameEngine.getCells())
-// 			add(new CellPanel(this, cell));
 		setPreferredSize(new Dimension(400,350));
-<<<<<<< HEAD
-		validate();
-	}	
-=======
 		putAllPieces(board);
 		revalidate();
 	}
->>>>>>> branch 'kane' of https://github.com/s3700178/FFS.git
 	
-<<<<<<< HEAD
-																								/*refactored into: getPieceImage and cell panel constructor
-																								 * added functionality: multiple pieces in one cell
-																								 * added functionality: dependency on model
-																								 * bit harder to read tho*/
-
-	private void putAllPieces() {
-		for(int i = 0; i < 6 ; i++) {
-			drawThePiece(i,intToPiece(i),"w");
-		}
-=======
 	public void removeDrawing(int i) {
 		CellPanel cell = cellList.get(i);
-//		CellPanel newCell = new CellPanel(this, i, board, frame);
-//		cellList.remove(i);
-//		cellList.add(i, newCell);
 		JLabel pieceLabel = new JLabel();
 		pieceLabel.setIcon(null);
 		cell.removeAll();
@@ -108,7 +84,6 @@ public class BoardPanel extends JPanel{
 				String wob = Character.toString(pieces.get(0).getPlayerType().toString().charAt(0)).toLowerCase();
 				drawThePiece(i,pieces.get(0).toString(),wob);
 			}
->>>>>>> branch 'kane' of https://github.com/s3700178/FFS.git
 		
 		}
 	
@@ -119,41 +94,23 @@ public class BoardPanel extends JPanel{
 	public class CellPanel extends JPanel{
 		
 		private final int cellId;
-<<<<<<< HEAD
-		public CellPanel(final BoardPanel boardPanel, final int cellId, GameBoard board) {
-// 		private final int row;
-// 		private final int col;
-// 		private final Cell cell;
-// 		public CellPanel(BoardPanel boardPanel, Cell cell) 
-// 		{
-=======
 		public CellPanel(BoardPanel boardPanel, final int cellId, GameBoard board,MainFrame frame) {
->>>>>>> branch 'kane' of https://github.com/s3700178/FFS.git
 			super(new GridLayout());
-			this.row = cell.getRow();
-			this.col = cell.getCol();
-			this.cell = cell;
+			this.cellId = cellId;
 			setPreferredSize(new Dimension(10,10));
 			colortheTile();
-<<<<<<< HEAD
-			addMouseListener(new TileListener(boardPanel, board,intToPiece(cellId),cellId));
-// 
-// 			setBackground(getColor());
-// 			// multiple pieces due to merging
-// 			for (Piece piece : cell.getOccupiers())
-// 				add(getPieceLabel(piece.getType(), piece.getPlayerType()));
-			
-=======
 			addMouseListener(new CellListener(boardPanel, board,cellId,this,frame));
->>>>>>> branch 'kane' of https://github.com/s3700178/FFS.git
 			validate();
 		}
 		
-		private Color getColor() {
+		private void colortheTile() {
+			if(this.cellId>= 0 && this.cellId <6 || this.cellId >= 12 && this.cellId <18 || this.cellId >= 24 && this.cellId <30){
+				setBackground(this.cellId % 2 == 0 ? new Color(204, 153, 102) : new Color(77, 40, 0));
+			}
+			else {
+				setBackground(this.cellId % 2 != 0 ? new Color(204, 153, 102) : new Color(77, 40, 0));
+			}
 			
-			Color white = new Color(204, 153, 102);
-			Color black = new Color(77, 40, 0);
-			return !(row%2==0 ^ col%2==0) ? white : black;
 		}
 		
 		// multiple piece images can appear in a cell due to merging

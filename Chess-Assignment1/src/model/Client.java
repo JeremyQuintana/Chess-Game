@@ -232,17 +232,11 @@ public class Client {
 	{
 		return playerList.get(id);
 	}
-<<<<<<< HEAD
-//	void setBoard(GameBoard board)
-//	{
-//		this.board = board;
-//	}
-=======
+	
 	public void setBoard(GameBoard board)
 	{
 		this.board = board;
 	}
->>>>>>> branch 'kane' of https://github.com/s3700178/FFS.git
 	
 	public GameBoard getBoard()
 	{

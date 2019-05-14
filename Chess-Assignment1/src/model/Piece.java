@@ -26,14 +26,6 @@ public abstract class Piece {
 	
 	
 	
-<<<<<<< HEAD
-=======
-	public Cell getLocation()
-	{
-		return location;
-	}
-	
->>>>>>> branch 'kane' of https://github.com/s3700178/FFS.git
 	// moving a merged/single piece
 	public void move(Cell destination)
 	{
@@ -93,7 +85,7 @@ public abstract class Piece {
 		return key;
 	}
 	
-	Cell getLocation()
+	public Cell getLocation()
 	{
 		return location;
 	}
