@@ -269,8 +269,13 @@ public class GameBoard {
 		return selectedPlayer;
 	}
 	
+<<<<<<< HEAD
 	// kept public for access by the cell view counterpart
 	private Cell getCell(int row, int col) 
+=======
+	
+	public Cell getCell(int row, int col) 
+>>>>>>> branch 'kane' of https://github.com/s3700178/FFS.git
 	{
 		for (Cell cell : getCells())
 			if (cell.getRow() == row && cell.getCol() == col)
@@ -298,7 +303,7 @@ public class GameBoard {
 	
 	
 	
-	boolean isGameOver()
+	public boolean isGameOver()
 	{
 		boolean noPiecesLeft = false;
 		for (Player player : players.values())
@@ -327,7 +332,7 @@ public class GameBoard {
 		return moveLimit;
 	}
 	
-	int setMaxCount(int maxCount1, int maxCount2)
+	public int setMaxCount(int maxCount1, int maxCount2)
 	{
 		moveLimit = (maxCount1+maxCount2)/2;
 		return moveLimit;

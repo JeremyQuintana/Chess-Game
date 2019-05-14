@@ -22,10 +22,18 @@ public abstract class Piece {
 	private PlayerType playerType;
 	private Cell location;
 	// all pieces have a maximum of 2 moves they can make
-	static final int MOVE_LIMIT = 3;
+	static final int MOVE_LIMIT = 2;
 	
 	
 	
+<<<<<<< HEAD
+=======
+	public Cell getLocation()
+	{
+		return location;
+	}
+	
+>>>>>>> branch 'kane' of https://github.com/s3700178/FFS.git
 	// moving a merged/single piece
 	public void move(Cell destination)
 	{
@@ -80,7 +88,7 @@ public abstract class Piece {
 		return type.name();
 	}
 	
-	String getKey()
+	public String getKey()
 	{
 		return key;
 	}

@@ -16,10 +16,10 @@ public class MainFrame extends JFrame{
 		super("Chess Game");
 		setLayout(new BorderLayout());
 		JMenuBar menuBar = createMenuBar();
-		BoardPanel boardPanel = new BoardPanel(board);
+		BoardPanel boardPanel = new BoardPanel(board,this);
 		
 		add(boardPanel, BorderLayout.CENTER);
-		add(menuBar,BorderLayout.NORTH);
+//		add(menuBar);
 	    add(new StatusPanel(),BorderLayout.NORTH);
 		add(new StatusPanel(),BorderLayout.SOUTH);
 		
