@@ -49,7 +49,12 @@ public class CellListener implements MouseListener{
 			
 			String wob = Character.toString(board.getSelectedPlayer().toString().charAt(0)).toLowerCase();
 			panel.removeDrawing(sourceTileId);
+			CellPanel test = cellList.get(tileId);
+			if(test.getComponentCount()==1) {System.out.println("kill");
+			panel.removeDrawing(tileId);}
+					
 			panel.drawThePiece(tileId, board.getSelectedPiece().toString(), wob);
+			
 			
 		    for(CellPanel cell: cellList) {
 			cell.setBorder(null);
@@ -68,12 +73,22 @@ public class CellListener implements MouseListener{
 				String key = pieces.get(0).getKey();
 				board.select(key);
 				List<Cell> validCell = board.validMoves(board.getSelectedPiece());
-				System.out.println(validCell.toString());
 				panel.setSelected(true);
 				for(Cell cell: validCell) {
 					CellPanel cellPanel = cellList.get((cell.getCol()*6)+cell.getRow());
 					Border greenBorder = BorderFactory.createLineBorder(Color.GREEN,3);
-					cellPanel.setBorder(greenBorder);
+					Border redBorder = BorderFactory.createLineBorder(Color.RED,3);
+					
+					boolean isSelected = board.validMoves().contains(cell);
+					boolean isDangerous = board.isDangerousMove(cell, isSelected);
+					
+					if(isDangerous) {
+						cellPanel.setBorder(redBorder);
+					}
+					else {
+						cellPanel.setBorder(greenBorder);
+					}
+					
 
 				}
 			}

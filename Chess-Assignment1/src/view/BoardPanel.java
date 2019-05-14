@@ -23,9 +23,15 @@ import model.Piece;
 public class BoardPanel extends JPanel{
 	List<CellPanel> cellList;
 	private boolean selected = false;
+	private GameBoard board;
+	private MainFrame frame;
 		
 	public BoardPanel(GameBoard board, MainFrame frame) {
 		super(new GridLayout(6,6));
+		
+		this.board = board;
+		this.frame = frame;
+		
 		cellList = new ArrayList<>();
 		for(int i = 0; i < 36; i++) {
 			CellPanel tilePanel = new CellPanel(this, i,board,frame);
@@ -39,6 +45,9 @@ public class BoardPanel extends JPanel{
 	
 	public void removeDrawing(int i) {
 		CellPanel cell = cellList.get(i);
+//		CellPanel newCell = new CellPanel(this, i, board, frame);
+//		cellList.remove(i);
+//		cellList.add(i, newCell);
 		JLabel pieceLabel = new JLabel();
 		pieceLabel.setIcon(null);
 		cell.removeAll();

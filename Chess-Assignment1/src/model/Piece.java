@@ -22,7 +22,7 @@ public abstract class Piece {
 	private PlayerType playerType;
 	private Cell location;
 	// all pieces have a maximum of 2 moves they can make
-	static final int MOVE_LIMIT = 3;
+	static final int MOVE_LIMIT = 2;
 	
 	
 	
