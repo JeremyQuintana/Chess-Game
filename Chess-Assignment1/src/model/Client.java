@@ -47,15 +47,21 @@ public class Client {
 //		client.endGame();
 													/*creating new players and game engine in the client constructor - change this to do it manually*/
 		Client client = new Client();
+		client.getBoard().select("r1");
+		Cell test = client.getBoard().getSelectedPiece().getLocation();
+		System.out.println(test.toString());
+		client.getBoard().move(0,3);
+		test = client.getBoard().getSelectedPiece().getLocation();
+		System.out.println(test.toString());
 		
-		while (!client.getBoard().isGameOver())
-		{
-			client.printGrid();
-			client.selectPiece();
-			client.printGrid();
-			client.makeMove();
-		}		
-		client.endGame();
+//		while (!client.getBoard().isGameOver())
+//		{
+//			client.printGrid();
+//			client.selectPiece();
+//			client.printGrid();
+//			client.makeMove();
+//		}		
+//		client.endGame();
 	}
 	
 	
@@ -77,6 +83,7 @@ public class Client {
 		else 
 			return checkPassword(gamer);
 	}
+
 	
 	private Player checkPassword(Player gamer)
 	{
