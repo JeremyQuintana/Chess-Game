@@ -15,6 +15,11 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import model.Cell;
+import model.GameBoard;
+import model.Piece;
+import model.PieceType;
+import model.PlayerType;
 
 import controller.CellListener;
 import model.GameBoard;
@@ -45,9 +50,6 @@ public class BoardPanel extends JPanel{
 	
 	public void removeDrawing(int i) {
 		CellPanel cell = cellList.get(i);
-//		CellPanel newCell = new CellPanel(this, i, board, frame);
-//		cellList.remove(i);
-//		cellList.add(i, newCell);
 		JLabel pieceLabel = new JLabel();
 		pieceLabel.setIcon(null);
 		cell.removeAll();
@@ -87,6 +89,7 @@ public class BoardPanel extends JPanel{
 	
 		
 	}
+
 	
 	public class CellPanel extends JPanel{
 		
@@ -110,6 +113,21 @@ public class BoardPanel extends JPanel{
 			
 		}
 		
+		// multiple piece images can appear in a cell due to merging
+		private JLabel getPieceLabel(PieceType pieceType, PlayerType playerType)
+		{
+			JLabel pieceLabel = new JLabel();
+			pieceLabel.setSize(100,100);
+			
+			ImageIcon piece = new ImageIcon("images/"+pieceType.name()+"_"+playerType.name().charAt(0)+".png");
+			Image convertImageIcon = piece.getImage();
+			Image resizeImage = convertImageIcon.getScaledInstance(80, 70, Image.SCALE_SMOOTH);
+			ImageIcon resized = new ImageIcon(resizeImage);
+			
+			pieceLabel.setIcon(resized);
+			pieceLabel.setHorizontalAlignment(JLabel.CENTER);
+			return pieceLabel;
+		}
 	}
 	
 	public void setSelected(boolean selected) {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
+//
 // handles knowledge of merge/split operations
 // merge by linking: o-o-o   split by delinking:o o o
 public class Cell {
@@ -17,8 +17,8 @@ public class Cell {
 		occupiers = new ArrayList<>();
 	}
 	
-	int row;
-	int col;
+	private int row;
+	private int col;
 	private List<Piece> occupiers;
 	
 	public void addOccupier(Piece piece)

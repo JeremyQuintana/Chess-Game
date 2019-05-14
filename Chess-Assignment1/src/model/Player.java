@@ -55,12 +55,12 @@ public class Player {
 		return pieces;
 	}
 	
-	int getScore() 
+	public int getScore() 
 	{
 		return score;
 	}
 	
-	PlayerType getType()
+	public PlayerType getType()
 	{
 		return type;
 	}
