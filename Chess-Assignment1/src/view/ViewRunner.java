@@ -18,15 +18,15 @@ public class ViewRunner {
 		GameBoard board = new GameBoard(p1, p2);
 		MainFrame start = new MainFrame(board);
 		
-		board.select("r1");
-		Cell test = board.getSelectedPiece().getLocation();
-		System.out.println(test.toString());
-		List<Piece> pieces = board.getCell(0,0).getOccupiers();
-		System.out.println(pieces.toString());
-		board.move(0,3);
-		List<Piece> pieces2 = board.getCell(0,3).getOccupiers();
-		System.out.println(pieces2.toString());
-		System.out.println(test.toString());
+//		board.select("r1");
+//		Cell test = board.getSelectedPiece().getLocation();
+//		System.out.println(test.toString());
+//		List<Piece> pieces = board.getCell(0,0).getOccupiers();
+//		System.out.println(pieces.toString());
+//		board.move(0,3);
+//		List<Piece> pieces2 = board.getCell(0,3).getOccupiers();
+//		System.out.println(pieces2.toString());
+//		System.out.println(test.toString());
 
 		
 		//		Client client = new Client();

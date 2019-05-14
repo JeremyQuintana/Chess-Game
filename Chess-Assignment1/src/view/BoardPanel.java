@@ -79,16 +79,6 @@ public class BoardPanel extends JPanel{
 		
 	}
 	
-//	private String intToPiece(int i) {
-//		String result = null;
-//		
-//		if(i == 0 || i == 5 || i == 30 || i == 35) {result = "rook";}
-//		else if(i == 1 || i == 4 || i == 31 || i == 34) {result = "bishop";}
-//		else if(i==2 || i==3 || i==32 || i==33){result = "knight";}
-//		
-//		return result;
-//	}
-	
 	public class CellPanel extends JPanel{
 		
 		private final int cellId;
