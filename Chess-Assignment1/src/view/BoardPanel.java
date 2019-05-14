@@ -15,23 +15,32 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import model.Cell;
 import model.GameBoard;
 import model.Piece;
 import model.PieceType;
 import model.PlayerType;
 
-public class BoardPanel extends JPanel
-{
-	private GameBoard engine;
+import controller.TileListener;
+import model.GameBoard;
+
+public class BoardPanel extends JPanel{
+	final List<CellPanel> cellList;
+	private boolean selected = false;
 		
-	public BoardPanel(GameBoard gameEngine) {
-		super(new GridLayout(gameEngine.GRID_SIZE, gameEngine.GRID_SIZE));
-		engine = gameEngine;
+	public BoardPanel(GameBoard board) {
+		super(new GridLayout(6,6));
+		cellList = new ArrayList<>();
+		for(int i = 0; i < 36; i++) {
+			CellPanel tilePanel = new CellPanel(this, i,board);
+			cellList.add(tilePanel);
+			add(tilePanel);
+		}
+// 		super(new GridLayout(gameEngine.GRID_SIZE, gameEngine.GRID_SIZE));
+// 		engine = gameEngine;
 		
-		for (Cell cell : gameEngine.getCells())
-			add(new CellPanel(this, cell));
+// 		for (Cell cell : gameEngine.getCells())
+// 			add(new CellPanel(this, cell));
 		setPreferredSize(new Dimension(400,350));
 		validate();
 	}	
@@ -41,23 +50,49 @@ public class BoardPanel extends JPanel
 																								 * added functionality: dependency on model
 																								 * bit harder to read tho*/
 
-	
-	private class CellPanel extends JPanel{
+	private void putAllPieces() {
+		for(int i = 0; i < 6 ; i++) {
+			drawThePiece(i,intToPiece(i),"w");
+		}
 		
-		private final int row;
-		private final int col;
-		private final Cell cell;
-		public CellPanel(BoardPanel boardPanel, Cell cell) 
-		{
+		for(int j = 30; j < 36 ; j++) {
+			drawThePiece(j,intToPiece(j),"b");
+		}
+		
+	}
+	
+	private String intToPiece(int i) {
+		String result = null;
+		
+		if(i == 0 || i == 5 || i == 30 || i == 35) {result = "rook";}
+		else if(i == 1 || i == 4 || i == 31 || i == 34) {result = "bishop";}
+		else if(i==2 || i==3 || i==32 || i==33){result = "knight";}
+		
+		return result;
+	}
+
+	
+	public class CellPanel extends JPanel{
+		
+		private final int cellId;
+		public CellPanel(final BoardPanel boardPanel, final int cellId, GameBoard board) {
+// 		private final int row;
+// 		private final int col;
+// 		private final Cell cell;
+// 		public CellPanel(BoardPanel boardPanel, Cell cell) 
+// 		{
 			super(new GridLayout());
 			this.row = cell.getRow();
 			this.col = cell.getCol();
 			this.cell = cell;
 			setPreferredSize(new Dimension(10,10));
-			setBackground(getColor());
-			// multiple pieces due to merging
-			for (Piece piece : cell.getOccupiers())
-				add(getPieceLabel(piece.getType(), piece.getPlayerType()));
+			colortheTile();
+			addMouseListener(new TileListener(boardPanel, board,intToPiece(cellId),cellId));
+// 
+// 			setBackground(getColor());
+// 			// multiple pieces due to merging
+// 			for (Piece piece : cell.getOccupiers())
+// 				add(getPieceLabel(piece.getType(), piece.getPlayerType()));
 			
 			validate();
 		}
@@ -85,6 +120,17 @@ public class BoardPanel extends JPanel
 			return pieceLabel;
 		}
 	}
+	
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
 
+	public boolean getSelected() {
+		return selected;
+	}
+	
+	public List getCellList() {
+		return cellList;
+	}
 }
 
