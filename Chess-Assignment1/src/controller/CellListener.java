@@ -15,20 +15,22 @@ import model.GameBoard;
 import model.Piece;
 import view.BoardPanel;
 import view.BoardPanel.CellPanel;
+import view.MainFrame;
 
-public class TileListener implements MouseListener{
+public class CellListener implements MouseListener{
 	private GameBoard board;
-	private String piece;
 	private int tileId;
 	private BoardPanel panel;
 	private CellPanel thisCell;
+	private MainFrame frame;
 	private List<CellPanel> cellList;
-	public TileListener(final BoardPanel panel, GameBoard board,String piece, int tileId, CellPanel thisCell) {
+	
+	public CellListener(BoardPanel panel, GameBoard board, int tileId, CellPanel thisCell,MainFrame frame) {
 		this.panel = panel;
 		this.board = board;
-		this.piece = piece;
 		this.tileId = tileId;
 		this.thisCell=thisCell;
+		this.frame = frame;
 		cellList = panel.getCellList();
 	}
 
@@ -43,23 +45,26 @@ public class TileListener implements MouseListener{
 			int y = tileId/6;
 			int x = tileId-6*y;
 			
-			board.move(y,x);
+			board.move(x,y);
 			
 			String wob = Character.toString(board.getSelectedPlayer().toString().charAt(0)).toLowerCase();
 			panel.removeDrawing(sourceTileId);
 			panel.drawThePiece(tileId, board.getSelectedPiece().toString(), wob);
-			panel.setSelected(false);
 			
-			for(CellPanel cell: cellList) {
-				cell.setBorder(null);
+		    for(CellPanel cell: cellList) {
+			cell.setBorder(null);
 			}
-			panel.revalidate();
+			board.switchPlayer();
+		    panel.setSelected(false);
 		}
 		else if(!panel.getSelected()) {
+			System.out.println("tileId = "+tileId);
 			int y = tileId/6;
 			int x = tileId-6*y;
+			System.out.println("x = "+x+", y = "+y);
 			if(thisCell.getComponentCount()!=0) {
 				List<Piece> pieces = board.getCell(x,y).getOccupiers();
+				System.out.println(pieces.toString());
 				String key = pieces.get(0).getKey();
 				board.select(key);
 				List<Cell> validCell = board.validMoves(board.getSelectedPiece());

@@ -1,8 +1,11 @@
 package view;
 
+import java.util.List;
+
 import model.Cell;
 import model.Client;
 import model.GameBoard;
+import model.Piece;
 import model.Player;
 import model.PlayerType;
 
@@ -15,12 +18,15 @@ public class ViewRunner {
 		GameBoard board = new GameBoard(p1, p2);
 		MainFrame start = new MainFrame(board);
 		
-//		 PROBLEM CAUSE AT THIS BIT BELOW
-//		board.select("r1");
-//		Cell test = board.getSelectedPiece().getLocation();
-//		System.out.println(test.toString());
-//		board.move(3,0);
-//		System.out.println(test.toString());
+		board.select("r1");
+		Cell test = board.getSelectedPiece().getLocation();
+		System.out.println(test.toString());
+		List<Piece> pieces = board.getCell(0,0).getOccupiers();
+		System.out.println(pieces.toString());
+		board.move(0,3);
+		List<Piece> pieces2 = board.getCell(0,3).getOccupiers();
+		System.out.println(pieces2.toString());
+		System.out.println(test.toString());
 
 		
 		//		Client client = new Client();
@@ -35,7 +41,6 @@ public class ViewRunner {
 //			client.makeMove();
 //		}		
 //		client.endGame();
-		
 		
 	}
 }

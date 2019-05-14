@@ -16,25 +16,25 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import controller.TileListener;
+import controller.CellListener;
 import model.GameBoard;
 import model.Piece;
 
 public class BoardPanel extends JPanel{
-	final List<CellPanel> cellList;
+	List<CellPanel> cellList;
 	private boolean selected = false;
 		
-	public BoardPanel(GameBoard board) {
+	public BoardPanel(GameBoard board, MainFrame frame) {
 		super(new GridLayout(6,6));
 		cellList = new ArrayList<>();
 		for(int i = 0; i < 36; i++) {
-			CellPanel tilePanel = new CellPanel(this, i,board);
+			CellPanel tilePanel = new CellPanel(this, i,board,frame);
 			cellList.add(tilePanel);
 			add(tilePanel);
 		}
 		setPreferredSize(new Dimension(400,350));
 		putAllPieces(board);
-		validate();
+		revalidate();
 	}
 	
 	public void removeDrawing(int i) {
@@ -68,9 +68,9 @@ public class BoardPanel extends JPanel{
 			int y = tileId/6;
 			int x = tileId-6*y;
 			pieces = board.getCell(x,y).getOccupiers();
+			
 			if(pieces.size()>0) {
-				String wob = null;
-				if(i>12) {wob="b";}else {wob="w";}
+				String wob = Character.toString(pieces.get(0).getPlayerType().toString().charAt(0)).toLowerCase();
 				drawThePiece(i,pieces.get(0).toString(),wob);
 			}
 		
@@ -79,25 +79,25 @@ public class BoardPanel extends JPanel{
 		
 	}
 	
-	private String intToPiece(int i) {
-		String result = null;
-		
-		if(i == 0 || i == 5 || i == 30 || i == 35) {result = "rook";}
-		else if(i == 1 || i == 4 || i == 31 || i == 34) {result = "bishop";}
-		else if(i==2 || i==3 || i==32 || i==33){result = "knight";}
-		
-		return result;
-	}
+//	private String intToPiece(int i) {
+//		String result = null;
+//		
+//		if(i == 0 || i == 5 || i == 30 || i == 35) {result = "rook";}
+//		else if(i == 1 || i == 4 || i == 31 || i == 34) {result = "bishop";}
+//		else if(i==2 || i==3 || i==32 || i==33){result = "knight";}
+//		
+//		return result;
+//	}
 	
 	public class CellPanel extends JPanel{
 		
 		private final int cellId;
-		public CellPanel(final BoardPanel boardPanel, final int cellId, GameBoard board) {
+		public CellPanel(BoardPanel boardPanel, final int cellId, GameBoard board,MainFrame frame) {
 			super(new GridLayout());
 			this.cellId = cellId;
 			setPreferredSize(new Dimension(10,10));
 			colortheTile();
-			addMouseListener(new TileListener(boardPanel, board,intToPiece(cellId),cellId,this));
+			addMouseListener(new CellListener(boardPanel, board,cellId,this,frame));
 			validate();
 		}
 		
