@@ -26,16 +26,18 @@ public abstract class Piece {
 	
 	
 	
+<<<<<<< HEAD
+=======
 	public Cell getLocation()
 	{
 		return location;
 	}
 	
+>>>>>>> branch 'kane' of https://github.com/s3700178/FFS.git
 	// moving a merged/single piece
 	public void move(Cell destination)
 	{
-		List<Piece> a = removeAndRetrieveLinks();
-		for (Piece piece : a)															/*creating a copy?*/
+		for (Piece piece : removeAndRetrieveLinks())															
 			moveLink(piece, destination);
 	}
 	
@@ -60,7 +62,17 @@ public abstract class Piece {
 		piece.move(location);
 	}
 	
-	PieceType getType()
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public PieceType getType()
 	{
 		return type;
 	}
@@ -81,6 +93,11 @@ public abstract class Piece {
 		return key;
 	}
 	
+	Cell getLocation()
+	{
+		return location;
+	}
+	
 	// returns multiple pieces if it is merged
 	List<Piece> getLinks()
 	{
@@ -89,9 +106,7 @@ public abstract class Piece {
 	// empties the cell of its occupiers
 	private List<Piece> removeAndRetrieveLinks()
 	{
-		return location!=null ? 
-				location.removeOccupiers() : 
-			Collections.singletonList(this);
+		return location!=null ? location.removeOccupiers() : Collections.singletonList(this);
 	}
 	
 	// a link is a piece that it may have merged with

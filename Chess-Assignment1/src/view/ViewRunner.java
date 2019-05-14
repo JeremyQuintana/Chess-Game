@@ -8,6 +8,7 @@ import model.GameBoard;
 import model.Piece;
 import model.Player;
 import model.PlayerType;
+import model.Client;
 
 public class ViewRunner {
 
@@ -17,6 +18,9 @@ public class ViewRunner {
 		
 		GameBoard board = new GameBoard(p1, p2);
 		MainFrame start = new MainFrame(board);
+
+//		ChessFrame start = new ChessFrame(new Client());
+
 		
 //		board.select("r1");
 //		Cell test = board.getSelectedPiece().getLocation();

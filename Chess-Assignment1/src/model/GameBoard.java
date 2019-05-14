@@ -99,6 +99,7 @@ public class GameBoard {
 
 	public boolean merge(String key)
 	{
+		// check if possible to merge: aka no repeating piece types
 		Piece piece = selectedPlayer.getPieces().get(key);
 		for (Piece p1 : piece.getLinks())
 		for (Piece p2 : selectedPiece.getLinks())
@@ -108,13 +109,6 @@ public class GameBoard {
 		selectedPiece.merge(piece);
 		return true;
 	}
-																		/*
-																		 * throw exceptions for failed operations?
-																		 *merge tests: 	can merge 1 piece with a merged piece and vice versa
-																		 * 				pieces move to selected piece's location
-																		 *split tests: 	can't split 1 piece
-																		 *				splitting moves unselected pieces to special locations
-																		 */
 																		
 	// returns true if split successful
 	// design choice : all split pieces change location
@@ -139,6 +133,14 @@ public class GameBoard {
 		moveCount++;
 		return true;
 	}
+	
+	/*
+	 * throw exceptions for failed operations?
+	 *merge tests: 	can merge 1 piece with a merged piece and vice versa
+	 * 				pieces move to selected piece's location
+	 *split tests: 	can't split 1 piece
+	 *				splitting moves unselected pieces to special locations
+	 */
 	
 	
 	
@@ -175,7 +177,7 @@ public class GameBoard {
 		// check all move possibilities of piece with multiple types
 		for (Piece p : piece.getLinks())
 			// checks valid destinations in all 4 directions (+ +) (+ -) (- +) (- -)
-			for (boolean rowPositive : values)
+			for (boolean rowPositive : values) 
 			for (boolean colPositive : values) 
 				for (int a=1; p.movesLeftToAdd(a, destination); a++)
 				{
@@ -267,8 +269,13 @@ public class GameBoard {
 		return selectedPlayer;
 	}
 	
+<<<<<<< HEAD
+	// kept public for access by the cell view counterpart
+	private Cell getCell(int row, int col) 
+=======
 	
 	public Cell getCell(int row, int col) 
+>>>>>>> branch 'kane' of https://github.com/s3700178/FFS.git
 	{
 		for (Cell cell : getCells())
 			if (cell.getRow() == row && cell.getCol() == col)

@@ -45,22 +45,23 @@ public class Client {
 //			client.makeMove();
 //		}
 //		client.endGame();
-		// initialize the game board
-		Player p1 = new Player("JeremyIsAwesome", "idk", PlayerType.WHITE);
-		Player p2 = new Player("TheOtherJeremyIsAwesome", "something", PlayerType.BLACK);
-		GameBoard board = new GameBoard(p1, p2);
+													/*creating new players and game engine in the client constructor - change this to do it manually*/
 		Client client = new Client();
-		board.setMaxCount(15,15);
-		client.setBoard(board);
+		client.getBoard().select("r1");
+		Cell test = client.getBoard().getSelectedPiece().getLocation();
+		System.out.println(test.toString());
+		client.getBoard().move(0,3);
+		test = client.getBoard().getSelectedPiece().getLocation();
+		System.out.println(test.toString());
 		
-		while (!board.isGameOver())
-		{
-			client.printGrid();
-			client.selectPiece();
-			client.printGrid();
-			client.makeMove();
-		}		
-		client.endGame();
+//		while (!client.getBoard().isGameOver())
+//		{
+//			client.printGrid();
+//			client.selectPiece();
+//			client.printGrid();
+//			client.makeMove();
+//		}		
+//		client.endGame();
 	}
 	
 	
@@ -82,6 +83,7 @@ public class Client {
 		else 
 			return checkPassword(gamer);
 	}
+
 	
 	private Player checkPassword(Player gamer)
 	{
@@ -205,6 +207,7 @@ public class Client {
 	
 	public Client(Player[] players)
 	{
+		
 		sc = new Scanner(System.in);
 		playerList = new HashMap<>();
 		for (Player p : players)
@@ -213,7 +216,12 @@ public class Client {
 
 	public Client()
 	{
+		// initialize the game board
+		Player p1 = new Player("JeremyIsAwesome", "idk", PlayerType.WHITE);
+		Player p2 = new Player("TheOtherJeremyIsAwesome", "something", PlayerType.BLACK);
+		board = new GameBoard(p1, p2);
 		sc = new Scanner(System.in);
+		board.setMaxCount(15,15);
 	}
 	private Map<String, Player> playerList;
 	private GameBoard board;
@@ -224,12 +232,19 @@ public class Client {
 	{
 		return playerList.get(id);
 	}
+<<<<<<< HEAD
+//	void setBoard(GameBoard board)
+//	{
+//		this.board = board;
+//	}
+=======
 	public void setBoard(GameBoard board)
 	{
 		this.board = board;
 	}
+>>>>>>> branch 'kane' of https://github.com/s3700178/FFS.git
 	
-	GameBoard getBoard()
+	public GameBoard getBoard()
 	{
 		return board;
 	}
