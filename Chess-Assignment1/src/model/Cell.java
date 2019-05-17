@@ -47,7 +47,7 @@ public class Cell {
 	}
 	
 	// multiple pieces (aka merged/split) can only be of same type
-	PlayerType getOccupiedType()	
+	public PlayerType getOccupiedType()	
 	{
 		return occupiers.isEmpty() ? null : occupiers.get(0).getPlayerType();
 	}

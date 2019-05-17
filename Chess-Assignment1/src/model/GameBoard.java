@@ -1,4 +1,5 @@
 package model;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -84,55 +85,136 @@ public class GameBoard {
 	public void switchPlayer()
 	{
 		selectedPiece = null;
-		selectedPlayer = players.get(selectedPlayer.getType().getOpposer());
+		moveCount++;
+		selectedPlayer = getOpposer();
 	}
-
-	public boolean select(String key)
+	
+	
+	
+	
+	
+	
+	
+	// chooses a row and column to allow view/GUI compatibility
+	public boolean isValidSelect(Cell cell)
 	{
-		Piece piece = selectedPlayer.getPieces().get(key);
-		if (piece == null)
+		if (!cell.getIsOccupied())
 			return false;
-		
-		selectedPiece = piece;
-		return true;
+		return cell.getOccupiedType() == selectedPlayer.getType();
 	}
 
-	public boolean merge(String key)
+	public boolean isValidMove(Cell destination)
 	{
-		// check if possible to merge: aka no repeating piece types
-		Piece piece = selectedPlayer.getPieces().get(key);
-		for (Piece p1 : piece.getLinks())
+		return validMoves().contains(destination);
+	}
+
+	public boolean isValidMerge(Cell cell)
+	{
+		for (Piece p1 : cell.getOccupiers())
 		for (Piece p2 : selectedPiece.getLinks())
 			if(p1.getType() == p2.getType())
 					return false;
-		
-		selectedPiece.merge(piece);
-		return true;
-	}
-																		
-	// returns true if split successful
-	// design choice : all split pieces change location
-	public boolean split()
-	{	
-		if (selectedPiece.getLinks().size() < 2)
-			return false;
-		
-		selectedPiece.split(splitDestinations());
 		return true;
 	}
 	
-	// returns true if the move successful
-	public boolean move(int row, int col)											
+	public boolean isValidSplit()
 	{
-		Cell destination = getCell(row, col);
-		if (!validMoves().contains(destination))
-			return false;
-		
+		return selectedPiece.getLinks().size() > 1;
+	}
+	
+	
+	// contract: only called when valid
+	public void select(Cell cell)
+	{
+		selectedPiece = cell.getOccupiers().get(0);
+	}
+	
+	public void merge(Cell cell)
+	{
+		Piece piece = cell.getOccupiers().get(0);
+		selectedPiece.merge(piece);
+	}
+	
+	public void split()
+	{
+		selectedPiece.split(splitDestinations());
+	}
+	
+	public void move(Cell destination)
+	{
 		awardAndRemove(destination);
 		selectedPiece.move(destination);
-		moveCount++;
-		return true;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+//	public boolean select(String key)
+//	{
+//		Piece piece = selectedPlayer.getPieces().get(key);
+//		if (piece == null)
+//			return false;
+//		
+//		selectedPiece = piece;
+//		return true;
+//	}
+//
+//	public boolean merge(String key)
+//	{
+//		// check if possible to merge: aka no repeating piece types
+//		Piece piece = selectedPlayer.getPieces().get(key);
+//		for (Piece p1 : piece.getLinks())
+//		for (Piece p2 : selectedPiece.getLinks())
+//			if(p1.getType() == p2.getType())
+//					return false;
+//		
+//		selectedPiece.merge(piece);
+//		return true;
+//	}
+	
+	
+//	public boolean select(Cell cell)
+//	{
+//		if (!cell.getIsOccupied())
+//			return false;
+//		if (cell.getOccupiedType() != selectedPlayer.getType())
+//			return false;
+//		selectedPiece = cell.getOccupiers().get(0);
+//		return true;
+//	}
+//																		
+//	// returns true if split successful
+//	// design choice : all split pieces change location
+//	public boolean split()
+//	{	
+//		if (selectedPiece.getLinks().size() < 2)
+//			return false;
+//		selectedPiece.split(splitDestinations());
+//		return true;
+//	}
+//	
+//	public boolean merge(Cell pieceHolder)
+//	{
+//		if (!isValidMerge(pieceHolder))
+//			return false;
+//		selectedPiece.merge(pieceHolder.getOccupiers().get(0));
+//		return true;
+//	}
+//	
+//	// returns true if the move successful
+//	public boolean move(Cell destination)											
+//	{
+//		if (!validMoves().contains(destination))
+//			return false;
+//		awardAndRemove(destination);
+//		selectedPiece.move(destination);											
+//		return true;
+//	}
 	
 	/*
 	 * throw exceptions for failed operations?
@@ -140,6 +222,9 @@ public class GameBoard {
 	 * 				pieces move to selected piece's location
 	 *split tests: 	can't split 1 piece
 	 *				splitting moves unselected pieces to special locations
+	 *UI tests: selecting another same-type piece when moving, causes it to select that piece
+	 *			selecting pieces when selected
+	 *			selecting opposite pieces (NOT valid) triggers a message
 	 */
 	
 	
@@ -168,7 +253,7 @@ public class GameBoard {
 	public List<Cell> validMoves(Piece piece)
 	{
 		boolean[] values = {true, false};
-		List<Cell> validMoves = new LinkedList<>();
+		List<Cell> validMoves = new ArrayList<>();
 		Cell destination = null;
 		
 		if (piece == null)
@@ -195,35 +280,21 @@ public class GameBoard {
 		return validMoves;
 	}
 	
-	private void awardAndRemove(Cell destination)
+	public List<Cell> validMerges()
 	{
-		if (destination.getIsOccupied())
-		{
-			Player winner = selectedPlayer;
-			Player loser = players.get(selectedPlayer.getType().getOpposer());
-			winner.addScore(5 * destination.getTotalSinglePieces());
-			for (Piece piece : destination.removeOccupiers())
-				loser.remove(piece);
-		}
+		List<Cell> validMoves = new ArrayList<>();
+		
+		if (selectedPiece == null)
+			return validMoves;
+		
+		for (Piece piece : selectedPlayer.getPieces().values()) 
+			if (isValidMerge(piece.getLocation()))
+				validMoves.add(piece.getLocation());
+		return validMoves;
 	}
 	
-	// places the extra split pieces to default locations
-	private Cell[] splitDestinations()
-	{
-		Cell[] destinations = new Cell[selectedPiece.getLinks().size()];
-		int i=0;
-		int col = selectedPiece.getPlayerType().defaultColumn();
-		for (int row=0;  row<GRID_SIZE; row++)
-		{
-			boolean occupied = getCell(row, col).getIsOccupied();
-			if (!occupied)
-				destinations[i++] = getCell(row, col);
-			if (i==destinations.length-1)	
-				break;
-		}
-		return destinations;
-				
-	}
+	
+
 	
 	// if moving to destination leaves piece vulnerable
 	public boolean isDangerousMove(Cell destination, boolean isSelected)
@@ -237,6 +308,43 @@ public class GameBoard {
 		return isDangerousMove;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+// specialist functions
+	
+	
+	private void awardAndRemove(Cell destination)
+	{
+		if (destination.getIsOccupied())
+		{
+			selectedPlayer.addScore(5 * destination.getTotalSinglePieces());
+			for (Piece piece : destination.removeOccupiers())
+				getOpposer().remove(piece);
+		}
+	}
+	
+	// allocate split pieces to default locations
+	private Cell[] splitDestinations()
+	{
+		Cell[] destinations = new Cell[selectedPiece.getLinks().size()];
+		int i=0;
+		int col = selectedPiece.getPlayerType().defaultColumn();
+		for (int row=0;  row<GRID_SIZE; row++)
+		{
+			boolean occupied = getCell(row, col).getIsOccupied();
+			if (!occupied)
+				destinations[i++] = getCell(row, col);
+			if (i==destinations.length-1)	
+				break;
+		}
+		return destinations;		
+	}
+	
 	private boolean canOpposerMoveTo(Cell destination)
 	{
 		Player opposer = players.get(selectedPlayer.getType().getOpposer());
@@ -245,12 +353,6 @@ public class GameBoard {
 				return true;
 		return false;
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -269,6 +371,20 @@ public class GameBoard {
 		return selectedPlayer;
 	}
 	
+	public Player getOpposer()
+	{
+		return players.get(selectedPlayer.getType().getOpposer());
+	}
+	
+	public Map<PlayerType, Player> getPlayers()
+	{
+		return players;
+	}
+	
+	public boolean isSelected()
+	{
+		return selectedPiece != null;
+	}
 	
 	public Cell getCell(int row, int col) 
 	{
@@ -317,7 +433,7 @@ public class GameBoard {
 		else return null;
 	}
 	
-	int getMoveCount()
+	public int getMoveCount()
 	{
 		return moveCount;
 	}

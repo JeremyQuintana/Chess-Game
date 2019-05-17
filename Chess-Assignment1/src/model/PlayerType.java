@@ -1,4 +1,7 @@
 package model;
+
+import java.awt.Color;
+
 public enum PlayerType {
 	WHITE, BLACK;
 	
@@ -28,6 +31,16 @@ public enum PlayerType {
 		{
 			case WHITE : 	return BLACK;
 			case BLACK : 	return WHITE;
+		}
+		return null;
+	}
+	
+	public Color getColor()
+	{
+		switch (this)
+		{
+			case WHITE : 	return Color.WHITE;
+			case BLACK : 	return Color.BLACK;
 		}
 		return null;
 	}
