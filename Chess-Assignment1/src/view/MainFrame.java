@@ -138,7 +138,7 @@ public class MainFrame extends JFrame{
 	{
 		board.switchPlayer();
 		statusPanel1.switchPlayer();
-		statusPanel1.switchPlayer();
+		statusPanel2.switchPlayer();
 	}
 	
 	
