@@ -115,9 +115,6 @@ public class MainFrame extends JFrame{
 			board.move(destination);
 		boardPanel.move(destination, isValid);
 		// check if dangerous
-		statusPanel1.move(destination, isValid);
-		statusPanel2.move(destination, isValid);
-		
 		return isValid;
 	}
 	
@@ -137,6 +134,12 @@ public class MainFrame extends JFrame{
 		return isValid;
 	}
 	
+	public void switchPlayer()
+	{
+		board.switchPlayer();
+		statusPanel1.switchPlayer();
+		statusPanel1.switchPlayer();
+	}
 	
 	
 	

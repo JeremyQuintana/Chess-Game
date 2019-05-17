@@ -74,18 +74,24 @@ public class BoardPanel extends JPanel
 	
 	
 	void select(Cell cell, boolean isValid)
-	{
-		if (isValid)
-//			currentAction = board.getMoveCount()%3 == 0 ? CellAction.MERGE : CellAction.MOVE;
+	{ 
+		if (isValid && currentAction == CellAction.SELECT)
 			currentAction = CellAction.MOVE;
 		// highlight valid moves, default go to
 		highlightCells(currentAction);
 	}
 	
+	// called by ButtonListener
+	public void select(CellAction action)
+	{
+		if (board.isSelected())
+			highlightCells(currentAction = action);
+	}
+	
 	void move(Cell cell, boolean isValid)
 	{
+		// reset before recalling listeners
 		currentAction = CellAction.SELECT;
-		
 		// for ease of use, clicking on the same piecetype REDISPLAYS the moves
 		boolean clickedSameType = !isValid && 
 		cell.getOccupiedType() == board.getSelectedPlayer().getType();
@@ -97,14 +103,12 @@ public class BoardPanel extends JPanel
 	
 	void merge(Cell cell, boolean isValid)
 	{
-		currentAction = CellAction.SELECT;
-		highlightCells(currentAction);
+		highlightCells(currentAction = CellAction.SELECT);
 	}
 	
 	void split(Cell cell, boolean isValid)
 	{
-		currentAction = CellAction.SELECT;
-		highlightCells(currentAction);
+		highlightCells(currentAction = CellAction.SELECT);
 	}
 	
 	

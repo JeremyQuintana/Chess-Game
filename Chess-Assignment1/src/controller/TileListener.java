@@ -92,7 +92,7 @@ public class TileListener implements MouseListener{
 			case SPLIT :isValid = frame.split(cell, board.isValidSplit()); 			break;
 		}
 		if (isValid)
-			board.switchPlayer();
+			frame.switchPlayer();
 		if (board.isGameOver())
 		{
 			

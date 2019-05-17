@@ -31,8 +31,6 @@ public class ButtonListener extends MouseAdapter
 	@Override
 	public void mouseClicked(MouseEvent e) 
 	{
-		// if board in selected state
-		if (frame.getBoard().isSelected())
-			frame.getBoardPanel().highlightCells(action);
+		frame.getBoardPanel().select(action);
 	}
 }

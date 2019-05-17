@@ -11,11 +11,13 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import controller.ButtonListener;
 import controller.CellAction;
 import model.Cell;
 import model.GameBoard;
@@ -26,6 +28,8 @@ public class StatusPanel extends JPanel{
 	
 	private JLabel score;
 	private JLabel playerName;
+	
+	private Box functionBox;
 	
 	private Player player;
 	private GameBoard board;
@@ -44,6 +48,13 @@ public class StatusPanel extends JPanel{
 		playerName = new JLabel("    " + player.getid());
 		score.setForeground(player.getType().getOpposer().getColor());
 		playerName.setForeground(player.getType().getOpposer().getColor());
+		
+		JButton move = new JButton("Move");
+		JButton merge = new JButton("merge");
+		JButton split = new JButton("split");
+		move.addMouseListener(new ButtonListener(CellAction.MOVE, frame));
+		merge.addMouseListener(new ButtonListener(CellAction.MERGE, frame));
+		split.addMouseListener(new ButtonListener(CellAction.SPLIT, frame));
 //		JLabel history = new JLabel("History: ");
 //		
 //		score.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -57,6 +68,18 @@ public class StatusPanel extends JPanel{
 		playerBox.add(playerName);
 		playerBox.add(Box.createVerticalGlue());
 		add(playerBox, BorderLayout.WEST);
+		
+		functionBox = Box.createHorizontalBox();
+		functionBox.add(Box.createHorizontalGlue());				
+		functionBox.add(move);
+		functionBox.add(Box.createHorizontalGlue());
+		functionBox.add(merge);
+		functionBox.add(Box.createHorizontalGlue());
+		functionBox.add(split);
+		functionBox.add(Box.createHorizontalGlue());
+		functionBox.setBackground(new Color(100,150,100));
+		functionBox.setVisible(board.getSelectedPlayer().getType() == player.getType()); /*doesn't work properly*/
+		add(functionBox);
 		setVisible(true);
 		
 	}
@@ -72,10 +95,39 @@ public class StatusPanel extends JPanel{
 //		return box;
 //	}
 	
-	void move(Cell cell, boolean isValid)
+//	void move(Cell cell, boolean isValid)
+//	{
+//		if (isValid)
+//			score.setText("    Score: " + player.getScore());
+//		functionBox.setVisible(board.getSelectedPlayer().getType() == player.getType());
+//		repaint();
+//		revalidate();
+//	}
+//	
+//	void merge(Cell cell, boolean isValid)
+//	{
+//		if (isValid)
+//			score.setText("    Score: " + player.getScore());
+//		functionBox.setVisible(board.getSelectedPlayer().getType() == player.getType());
+//		repaint();
+//		revalidate();
+//	}
+//	
+//	void split(Cell cell, boolean isValid)
+//	{
+//		if (isValid)
+//			score.setText("    Score: " + player.getScore());
+//		functionBox.setVisible(board.getSelectedPlayer().getType() == player.getType());
+//		repaint();
+//		revalidate();
+//	}
+	
+	void switchPlayer()
 	{
-		if (isValid)
-			score.setText("    Score: " + player.getScore());
+		score.setText("    Score: " + player.getScore());
+		functionBox.setVisible(board.getSelectedPlayer().getType() == player.getType());
+		repaint();
+		revalidate();
 	}
 
 }

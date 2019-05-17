@@ -110,6 +110,8 @@ public class GameBoard {
 
 	public boolean isValidMerge(Cell cell)
 	{
+		if (cell.getTotalSinglePieces() == 0)
+			return false;
 		for (Piece p1 : cell.getOccupiers())
 		for (Piece p2 : selectedPiece.getLinks())
 			if(p1.getType() == p2.getType())
