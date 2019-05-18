@@ -14,11 +14,12 @@ import controller.CellAction;
 import model.Cell;
 import model.GameBoard;
 
+@SuppressWarnings("serial")
 public class MainFrame extends JFrame{
 	
 	private StatusPanel statusPanel1;
 	private StatusPanel statusPanel2;
-	private JMenuBar menuBar;
+//	private JMenuBar menuBar;
 	private BoardPanel boardPanel;
 	private GameBoard board;
 	
@@ -26,32 +27,32 @@ public class MainFrame extends JFrame{
 		super("Chess Game");
 		setLayout(new BorderLayout());
 		this.board = board;
-		menuBar = createMenuBar();
+//		menuBar = createMenuBar();
 		boardPanel = new BoardPanel(this);
 		statusPanel1 = new StatusPanel(this, board.getSelectedPlayer());
 		statusPanel2 = new StatusPanel(this, board.getOpposer());
 		
+		setJMenuBar(new MenuBar(this, statusPanel1, statusPanel2));
 		add(boardPanel, BorderLayout.CENTER);
 //		add(menuBar);
 	    add(statusPanel1,BorderLayout.NORTH);
 		add(statusPanel2,BorderLayout.SOUTH);
-		
 		setBounds(100, 100, 700, 650);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 	
-	public JMenuBar createMenuBar() {
-		JMenuBar menuBar = new JMenuBar();
-		JMenu file = new JMenu("File");
-		JMenuItem login = new JMenuItem("Log in Player");
-		JMenuItem register = new JMenuItem("Register Player");
-		JMenuItem exit = new JMenuItem("Exit Game");
-		
-		menuBar.add(file);
-		file.add(login); file.add(register); file.add(exit);
-		return menuBar;
-	}
+//	public JMenuBar createMenuBar() {
+//		JMenuBar menuBar = new JMenuBar();
+//		JMenu file = new JMenu("File");
+//		JMenuItem login = new JMenuItem("Log in Player");
+//		JMenuItem register = new JMenuItem("Register Player");
+//		JMenuItem exit = new JMenuItem("Exit Game");
+//		
+//		menuBar.add(file);
+//		file.add(login); file.add(register); file.add(exit);
+//		return menuBar;
+//	}
 	
 	
 	
