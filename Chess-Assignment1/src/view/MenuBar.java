@@ -52,13 +52,23 @@ public class MenuBar extends JMenuBar{
 	public int displayLoginDialog()
 	{
 		id = new JTextField();
-		name = new JTextField();
 		password = new JPasswordField();
 		password.setEchoChar('*');
-		Object[] message = {"Player ID:", id, "Player Name:", 
-				name, "Password:", password};
+		Object[] message = {"Player ID:", id, "Password:", password};
 		int option = JOptionPane.showConfirmDialog(frame, message, "Login", JOptionPane.DEFAULT_OPTION);
 		return option;
+	}
+	
+	public String getID() {
+		return id.getText();
+	}
+	
+	public char[] getPassword() {
+		return password.getPassword();
+	}
+	
+	public String getName() {
+		return name.getText();
 	}
 	
 }
