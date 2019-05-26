@@ -7,11 +7,11 @@ import java.util.Map;
 
 public class Player {
 
-	public Player(String id, String password, PlayerType type)
+	public Player(String name, String password)
 	{
-		this.id = id;
+		this.name = name;
 		this.password = password;
-		this.type = type;
+		// type set later
 		score = 0;
 		pieces = new HashMap<>();
 		
@@ -20,19 +20,22 @@ public class Player {
 			{
 				switch (piecetype)
 				{
-					case ROOK : 	add(new Rook("r" + i,   type));	break;
-					case KNIGHT : 	add(new Knight("k" + i, type));	break;
-					case BISHOP : 	add(new Bishop("b" + i, type));	break;
+					case ROOK : 	add(new Rook("r" + i,   this));	break;
+					case KNIGHT : 	add(new Knight("k" + i, this));	break;
+					case BISHOP : 	add(new Bishop("b" + i, this));	break;
 				}
 			}
 	}
 	
-	private String id;
+	private String name;
 	private String password;
 	private PlayerType type;
 	private int score;
 	private Map<String, Piece> pieces;
 	
+	
+	// internally, all pieces are uniquely defined
+	// but can be accessed generally
 	void remove(Piece piece)
 	{
 		if (piece != null)
@@ -60,14 +63,19 @@ public class Player {
 		return score;
 	}
 	
+	public void setType(PlayerType type)
+	{
+		this.type = type;
+	}
+	
 	public PlayerType getType()
 	{
 		return type;
 	}
 	
-	public String getid()
+	public String getName()
 	{
-		return id;
+		return name;
 	}
 	
 	public String getPassword()

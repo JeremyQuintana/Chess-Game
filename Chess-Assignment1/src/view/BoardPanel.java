@@ -25,8 +25,8 @@ import model.Piece;
 import model.PieceType;
 import model.PlayerType;
 import controller.CellAction;
+import controller.Cell2Listener;
 import controller.CellListener;
-import controller.TileListener;
 import model.GameBoard;
 import model.Piece;
 
@@ -93,14 +93,15 @@ public class BoardPanel extends JPanel
 		// reset before recalling listeners
 		currentAction = CellAction.SELECT;
 		// for ease of use, clicking on the same piecetype REDISPLAYS the moves
-		boolean clickedSameType = !isValid && 
-		cell.getOccupiedType() == board.getSelectedPlayer().getType();
+		boolean clickedSameType = !isValid 
+		&& cell.getOccupiedType() == board.getSelectedPlayer().getType();
 		if (clickedSameType)
 			getCellPanel(cell).getMouseListeners()[0].mouseClicked(null);
 		
 		highlightCells(currentAction);
 	}
 	
+	// merge and split simply call a visual update, as the board is already updated
 	void merge(Cell cell, boolean isValid)
 	{
 		highlightCells(currentAction = CellAction.SELECT);
@@ -258,7 +259,7 @@ public class BoardPanel extends JPanel
 			
 			setPreferredSize(new Dimension(10,10));
 			setBackground(color);
-			addMouseListener(new TileListener(this, frame));
+			addMouseListener(new CellListener(this, frame));
 			reset();
 		}
 		
@@ -325,6 +326,7 @@ public class BoardPanel extends JPanel
 			JLabel pieceLabel = new JLabel();
 			pieceLabel.setSize(100,100);
 			
+			// setup image
 			ImageIcon piece = new ImageIcon("images/"+pieceType.name()+"_"+playerType.name().charAt(0)+".png");
 			Image convertImageIcon = piece.getImage();
 			Image resizeImage = convertImageIcon.getScaledInstance(80, 70, Image.SCALE_SMOOTH);

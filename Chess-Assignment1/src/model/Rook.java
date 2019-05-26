@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Rook extends InterceptablePiece {
 
-	public Rook(String key, PlayerType playerType) 
+	public Rook(String key, Player player) 
 	{
-		super(PieceType.ROOK, key, playerType);
+		super(PieceType.ROOK, key, player);
 	}
 	
 //	boolean allMovesAdded(CellList validCells, int a, Cell destination)			 

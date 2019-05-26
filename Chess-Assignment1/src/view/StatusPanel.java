@@ -45,7 +45,7 @@ public class StatusPanel extends JPanel{
 		setBackground(player.getType().getColor());
 		
 		score = new JLabel("    Score: " + player.getScore());
-		playerName = new JLabel("    " + player.getid());
+		playerName = new JLabel("    " + player.getName());
 		score.setForeground(player.getType().getOpposer().getColor());
 		playerName.setForeground(player.getType().getOpposer().getColor());
 		

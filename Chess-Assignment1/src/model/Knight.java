@@ -4,9 +4,9 @@ import java.util.List;
 
 public class Knight extends Piece {
 
-	public Knight(String key, PlayerType type) 
+	public Knight(String key, Player player) 
 	{
-		super(PieceType.KNIGHT, key, type);
+		super(PieceType.KNIGHT, key, player);
 	}
 	
 	// move limit for knight for each direction

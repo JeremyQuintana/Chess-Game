@@ -1,88 +1,88 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import controller.CellAction;
 import model.Cell;
+import model.Client;
+import model.Client.ClientException;
 import model.GameBoard;
+import model.Player;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame{
 	
 	private StatusPanel statusPanel1;
 	private StatusPanel statusPanel2;
-//	private JMenuBar menuBar;
 	private BoardPanel boardPanel;
 	private GameBoard board;
+	private Client client;
+	private MenuBar bar;
 	
-	public MainFrame(GameBoard board) {
+	
+	public MainFrame() 
+	{
 		super("Chess Game");
+		client = new Client();
 		setLayout(new BorderLayout());
-		this.board = board;
-//		menuBar = createMenuBar();
-		boardPanel = new BoardPanel(this);
-		statusPanel1 = new StatusPanel(this, board.getSelectedPlayer());
-		statusPanel2 = new StatusPanel(this, board.getOpposer());
+		setJMenuBar(bar = new MenuBar(this));
 		
-		setJMenuBar(new MenuBar(this, statusPanel1, statusPanel2));
-		add(boardPanel, BorderLayout.CENTER);
-//		add(menuBar);
-	    add(statusPanel1,BorderLayout.NORTH);
-		add(statusPanel2,BorderLayout.SOUTH);
-		setBounds(100, 100, 700, 650);
+		JPanel empty = new JPanel(new BorderLayout());
+		JLabel text = new JLabel("Please login players to start a game", SwingConstants.CENTER);
+		text.setFont(new Font("arial", Font.BOLD, 50));
+		text.setForeground(Color.LIGHT_GRAY);
+		empty.add(text, BorderLayout.CENTER);
+		add(empty, BorderLayout.CENTER);
+		// force login	
+
+		setBounds(100, 100, 900, 800);					/*resize as a square?*/
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 	
-//	public JMenuBar createMenuBar() {
-//		JMenuBar menuBar = new JMenuBar();
-//		JMenu file = new JMenu("File");
-//		JMenuItem login = new JMenuItem("Log in Player");
-//		JMenuItem register = new JMenuItem("Register Player");
-//		JMenuItem exit = new JMenuItem("Exit Game");
-//		
-//		menuBar.add(file);
-//		file.add(login); file.add(register); file.add(exit);
-//		return menuBar;
-//	}
+	// called by menu listener to create a board and startGame
+	public void startGame(Player p1, Player p2, int max1, int max2, int moveRange)
+	{		
+		removeAll();
+		this.board = new GameBoard(p1, p2, max1, max2, moveRange);
+		boardPanel = new BoardPanel(this);
+		statusPanel1 = new StatusPanel(this, board.getSelectedPlayer());
+		statusPanel2 = new StatusPanel(this, board.getOpposer());
+		
+		add(boardPanel, BorderLayout.CENTER);						/*game not starting???*/
+	    add(statusPanel1,BorderLayout.NORTH);
+		add(statusPanel2,BorderLayout.SOUTH);
+		repaint();
+		revalidate();
+	}
+	
+	public void endGame()
+	{
+//		boardPanel.remove
+	}
 	
 	
 	
-//	public void cellAction(Cell cell)
-//	{
-//		boolean isValid = false;
-//		int row = cell.getRow();
-//		int col = cell.getCol();
-//		switch (boardPanel.getCurrentAction())
-//		{
-//			case null : 	isValid = board.select(row,col);	select(cell, isValid);	break;
-//			// when a player clicks any tile while selected, deselect
-//			case SELECT : 										select(cell, false); 	break;
-//			case MOVE : 	isValid = board.move(row,col);		move(cell, isValid);	break;
-//			case MERGE : 																break;
-//			case SPLIT : 																break;
-//		}
-//		
-//		board.switchPlayer();
-//		if (board.isGameOver())
-//		{
-//			
-//		}
-//	}
-//	public void buttonAction(Cell cell, CellAction action)
-//	{
-//		// if board in selected state
-//		if (boardPanel.getCurrentAction() != null)
-//			displayCells(cell, action);
-//	}
+	
+	
+	
+	
+	
+	
+	
 	
 	public boolean select(Cell cell, boolean isValid)
 	{
@@ -129,6 +129,8 @@ public class MainFrame extends JFrame{
 	
 	public boolean split(Cell pieceHolder, boolean isValid)
 	{
+		if (!board.isValidSplit())
+			JOptionPane.showMessageDialog(null, "A single piece can't be split.");
 		if (isValid)
 			board.split();
 		boardPanel.split(pieceHolder, isValid);
@@ -171,6 +173,11 @@ public class MainFrame extends JFrame{
 	public GameBoard getBoard()
 	{
 		return board;
+	}
+	
+	public Client getClient()
+	{
+		return client;
 	}
 
 }

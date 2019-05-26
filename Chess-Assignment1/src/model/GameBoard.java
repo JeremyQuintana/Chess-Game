@@ -13,19 +13,24 @@ import java.util.Set;
 
 public class GameBoard {
 	
-	
-	public GameBoard(Player p1, Player p2)
+	// maxCounts are player choices for maximum moves
+	// moveRange is the range any piece (rook/bishop) can move
+	public GameBoard(Player p1, Player p2, int maxCount1, int maxCount2, int moveRange)
 	{	
+		
 		//initialize list of cells
 		cells = new LinkedList<>();
 		for (int row=0; row<GRID_SIZE; row++)
 		for (int col=0; col<GRID_SIZE; col++)
-			getCells().add(new Cell(row,col));       
+			getCells().add(new Cell(col, row));       
 		
 //		playerList = new LinkedList<>();
 		moveCount = 0;
+		moveLimit = (maxCount1+maxCount2)/2;
+		Piece.MOVE_LIMIT = moveRange;
 		
-		
+		p1.setType(PlayerType.WHITE);
+		p2.setType(PlayerType.BLACK);
 		players = new HashMap<>();   
 		players.put(p1.getType(), p1);
 		players.put(p2.getType(), p2);
@@ -227,6 +232,8 @@ public class GameBoard {
 	 *UI tests: selecting another same-type piece when moving, causes it to select that piece
 	 *			selecting pieces when selected
 	 *			selecting opposite pieces (NOT valid) triggers a message
+	 *			selecting split for 1 piece
+	 *			logging in and registering (read the Client class and see the exceptions it throws and test those)
 	 */
 	
 	
@@ -442,12 +449,6 @@ public class GameBoard {
 	
 	int getMoveLimit()
 	{
-		return moveLimit;
-	}
-	
-	public int setMaxCount(int maxCount1, int maxCount2)
-	{
-		moveLimit = (maxCount1+maxCount2)/2;
 		return moveLimit;
 	}
 	

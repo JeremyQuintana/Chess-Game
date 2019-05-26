@@ -4,9 +4,9 @@ import java.util.List;
 
 public class Bishop extends InterceptablePiece {
 
-	public Bishop(String key, PlayerType playerType) 
+	public Bishop(String key, Player player) 
 	{
-		super(PieceType.BISHOP, key, playerType);
+		super(PieceType.BISHOP, key, player);
 	}
 	
 	

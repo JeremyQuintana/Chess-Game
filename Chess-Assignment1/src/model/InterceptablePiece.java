@@ -2,9 +2,9 @@ package model;
 
 public abstract class InterceptablePiece extends Piece {
 
-	public InterceptablePiece(PieceType type, String key, PlayerType playerType) 
+	public InterceptablePiece(PieceType type, String key, Player player) 
 	{
-		super(type, key, playerType);
+		super(type, key, player);
 	}
 	
 	

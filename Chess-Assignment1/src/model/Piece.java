@@ -10,19 +10,32 @@ import java.util.Scanner;
 // a piece 
 public abstract class Piece {
 	
-	public Piece(PieceType piece, String key, PlayerType playerType) 
+	public Piece(PieceType piece, String key, Player player) 
 	{
 		type = piece;
-		this.playerType = playerType;
+		this.player = player;
 		this.key = key;
 	}
 	
+
 	private String key;
 	private PieceType type;
-	private PlayerType playerType;
+	private Player player;
 	private Cell location;
 	// all pieces have a maximum of 2 moves they can make
-	static final int MOVE_LIMIT = 2;
+	// unless changed
+	static int MOVE_LIMIT = 2;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -33,6 +46,8 @@ public abstract class Piece {
 			moveLink(piece, destination);
 	}
 	
+	// for splitting and merging, increase coupling with Cell
+	// get pieces for linking
 	
 	// when splitting, all pieces (except selected) move to different cells 	
 	// split pieces don't have a common cell
@@ -64,14 +79,20 @@ public abstract class Piece {
 	
 	
 	
+	
+	
+	
+	
+	
 	public PieceType getType()
 	{
 		return type;
 	}
 	
+	// encapsulate the actual player
 	public PlayerType getPlayerType()
 	{
-		return playerType;
+		return player.getType();
 	}
 	
 	// if white rook returns "R", black knight returns "k"
@@ -91,6 +112,7 @@ public abstract class Piece {
 	}
 	
 	// returns multiple pieces if it is merged
+	// only accessible by model
 	List<Piece> getLinks()
 	{
 		return location.getOccupiers();
@@ -155,9 +177,9 @@ public abstract class Piece {
 	{
 		if (destination == null)
 			return false;
-		if (destination.getIsOccupied())
-			return playerType != destination.getOccupiedType();
-		return true;
+		if (!destination.getIsOccupied())
+			return true;
+		return player.getType() != destination.getOccupiedType();
 	}
 	
 	abstract boolean movesLeftToAdd2(int a, Cell destination);

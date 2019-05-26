@@ -1,74 +1,180 @@
 package view;
 
+import java.text.NumberFormat;
+
+import javax.swing.AbstractButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JSpinner;
+import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.text.NumberFormatter;
 
-import controller.ExitListener;
-import controller.LoginListener;
-import controller.RegisterListener;
+import controller.MenuListener;
+import model.Client;
+import model.Client.ClientException;
+import model.Player;
 
 @SuppressWarnings("serial")
 public class MenuBar extends JMenuBar{
-	private JTextField id;
+	private JTextField value;
 	private JTextField name;
 	private JPasswordField password;
 	private MainFrame frame;
+	private Client client;
 	
-	public MenuBar(MainFrame frame, StatusPanel statusPanel1, StatusPanel statusPanel2) {
+	public MenuBar(MainFrame frame) {
 		this.frame = frame;
+		this.client = frame.getClient();
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu file = new JMenu("File");
-		JMenuItem login = new JMenuItem("Log in Player");
-		JMenuItem register = new JMenuItem("Register Player");
-		JMenuItem exit = new JMenuItem("Exit Game");
 		
-		exit.addActionListener(new ExitListener());
-		login.addActionListener(new LoginListener(this));
-		register.addActionListener(new RegisterListener(this));
-		
+		// create one item + listener for EACH function
+		// separate instantiation not required
+		for (MenuFunction function : MenuFunction.values())
+		{
+			JMenuItem item = new JMenuItem(function.toString());
+			item.addActionListener(new MenuListener(frame, this, function));
+			file.add(item);
+		}
 		menuBar.add(file);
-		file.add(login); file.add(register); file.add(exit);
-		
 		add(file);
 	}
 	
-	public int displayRegisterDialog()
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	public Player displayRegisterDialog() throws CancelException
+//	{
+//		name = new JTextField();
+//		password = new JPasswordField();
+//		password.setEchoChar('*');
+//		Object[] message = {"Player Name:", name, "Password:", password};
+//		dialog("Register player", message);/*error checking? Force construction for <2 players*/
+//		return new Player(name.getText(), password.getPassword().toString());
+//	}
+	
+	// Enum since logging and registering are very common
+	// Two differences: function call, and the tile "Register player" (solved by calling function.name())
+	public Player playerDialog(MenuFunction function) throws CancelException		
 	{
-		id = new JTextField();
 		name = new JTextField();
 		password = new JPasswordField();
 		password.setEchoChar('*');
-		Object[] message = {"Player ID:", id, "Player Name:", 
-				name, "Password:", password};
-		int option = JOptionPane.showConfirmDialog(frame, message, "Register Player", JOptionPane.DEFAULT_OPTION);
-		return option;
+		Object[] message = {"Name:", name, "Password:", password};
+		dialog(function.toString(), message);					/*remove class variables*/
+		
+		try
+		{
+			String name = this.name.getText();
+			String pass = new String(password.getPassword());
+			return function == MenuFunction.LOGIN ? client.login(name, pass) : client.register(name, pass);
+		}
+		catch (ClientException e)
+		{
+			JOptionPane.showMessageDialog(frame, e);
+			return playerDialog(function);			
+		}
+
 	}
 	
-	public int displayLoginDialog()
+	public int maxCountDialog(String playerName) throws CancelException
+	{		
+		return numberDialog(1,500, "Maximum moves", playerName + ", choose the maximum moves possible.");
+	}
+		
+	public int moveRangeDialog() throws CancelException
 	{
-		id = new JTextField();
-		password = new JPasswordField();
-		password.setEchoChar('*');
-		Object[] message = {"Player ID:", id, "Password:", password};
-		int option = JOptionPane.showConfirmDialog(frame, message, "Login", JOptionPane.DEFAULT_OPTION);
-		return option;
+		return numberDialog(2,10, "Piece Range", "Choose the range that you'd like your pieces to move.");
 	}
 	
-	public String getID() {
-		return id.getText();
+	public int exitDialog()
+	{
+		return JOptionPane.showConfirmDialog(frame,
+		"Are you sure you want to quit?", "Quit?", JOptionPane.YES_NO_OPTION);
 	}
 	
-	public char[] getPassword() {
-		return password.getPassword();
+	
+	
+	
+	
+	
+
+	public int numberDialog(int min, int max, String title, String msg) throws CancelException
+	{
+		SpinnerModel value =   new SpinnerNumberModel(min, min, max, 1);  
+	    JSpinner spinner = new JSpinner(value);
+	    // can't input text
+	    ((DefaultEditor) spinner.getEditor()).getTextField().setEditable(false);
+	    
+	    Object[] message = {msg, spinner};
+	    dialog(title, message);
+	    
+	    return (int) spinner.getValue();
 	}
 	
-	public String getName() {
-		return name.getText();
+	// generalized dialog to handle common functions
+	public boolean dialog(String title, Object[] message) throws CancelException
+	{
+
+		if (JOptionPane.showConfirmDialog(frame, message, title, JOptionPane.OK_CANCEL_OPTION) 
+		== JOptionPane.CANCEL_OPTION)		
+			throw new CancelException();
+		
+		try 
+		{
+			for (Object field : message)
+				if (field instanceof JTextField)
+					if (((JTextField) field).getText().equals(""))
+						throw new NullPointerException("Please fill the missing fields");
+			return true;
+		}
+		catch (NullPointerException e)
+		{	//retry
+			JOptionPane.showMessageDialog(frame, e.getMessage());
+			return dialog(title, message);								
+		}
 	}
+	
+	
+	
+	
+	
+
+	public class CancelException extends Exception {}
+	
+	// Logging and registering are very common eg: calling the same listeners with same parameters
+	// the only difference being the model function call
+	public enum MenuFunction
+	{
+		LOGIN, REGISTER, EXIT;
+		
+		// a readable version
+		public String toString()
+		{
+			switch (this)
+			{
+				case LOGIN : return "Login player";
+				case REGISTER : return "Register player";
+				case EXIT : return "Exit Game";
+			}
+			return null;
+		}
+	}
+	
+	
 	
 }
