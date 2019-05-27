@@ -1,120 +1,104 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+// a piece 
 public abstract class Piece {
-
-	public static void main(String[] args) 
-	{
-		Scanner sc = new Scanner(System.in);
-		GameBoard board = new GameBoard();
-		
-		while (true)
-		{
-			board.printGrid();
-			
-			System.out.print(board.getSelectedPlayer().toString() + " turn, choose a piece: ");
-			board.select(sc.next());
-			System.out.println(board.getSelectedPiece().toString() + " has been selected");
-			
-			System.out.print("move to x: ");	int row = sc.nextInt();
-			System.out.print("move to y: ");	int col = sc.nextInt();
-			
-			
-			System.out.println(board.move(col, row));				
-			
-			board.switchPlayer();
-		}
-
-	}
 	
-	public Piece(PieceType piece, Player player, String key) 
+	public Piece(PieceType piece, String key, Player player) 
 	{
-		pieceType = piece;
+		type = piece;
 		this.player = player;
 		this.key = key;
 	}
+	
 
-	private PieceType pieceType;
-	private Player player;
 	private String key;
-	//how to get the cell and WHY to get the cell
+	private PieceType type;
+	private Player player;
 	private Cell location;
+	// all pieces have a maximum of 2 moves they can make
+	// unless changed
+	static int MOVE_LIMIT = 2;
 	
-	PieceType getPieceType()
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// moving a merged/single piece
+	public void move(Cell destination)
 	{
-		return pieceType;
-	}
-	Player getPlayer()
-	{
-		return player;
-	}
-	void setCell(Cell location)
-	{
-		this.location = location;
+		for (Piece piece : removeAndRetrieveLinks())															
+			moveLink(piece, destination);
 	}
 	
-	Cell getCell()
-	{
-		return location;
-	}
+	// for splitting and merging, increase coupling with Cell
+	// get pieces for linking
 	
-	boolean isValidMove(Cell destination, List<Cell> cells)
+	// when splitting, all pieces (except selected) move to different cells 	
+	// split pieces don't have a common cell
+	public void split(Cell[] destinations)																		/*create a warning that piece location will be changed*/
 	{
-		Move move = new Move(location, destination);
-		if (pieceType.isValidMove(move))
+		int i=0;
+		for (Piece piece : removeAndRetrieveLinks())
 		{
-			// if piece is blocked by the same player piece
-			boolean isUnblocked = !isBlocked(destination, cells);
-			// piece has actually moved from position
-			boolean hasMoved = move.getXDist() != 0 || move.getYDist() != 0;
-			// if other piece at destination
-			boolean cellUnoccupied = destination.getIsOccupied() ? destination.getOccupiedType() != location.getOccupiedType() : true;
-			
-			return hasMoved && cellUnoccupied && isUnblocked;
+			boolean isSamePiece = type == piece.getType();
+			moveLink(piece, isSamePiece ? location : destinations[i]);
+			if (!isSamePiece)
+				i++;
 		}
-		return false;
 	}
 	
-
-	
-	// Assumes destination is in in the piece path
-	abstract boolean isBlocked(Cell destination, List<Cell> cells);
-	
-	/*NO NEED TO IMPLEMENT YET*/
-//	// filter possible destination cells
-//	List<Cell> possibleMoves(CellList cells)
-//	{
-//		List<Cell> validCells = new LinkedList<>();
-//		for (int a=1; ; a++)
-//		{
-//			
-//			int row = location.getRow() + a;
-//			int col = location.getCol() + a;
-//			
-//			if (cells.get(row,col).getIsOccupied())
-//				break;
-//			if (cells.)
-//			validCells.add(cells.get(y,x));
-//		}
-//	}
-	
-	
-	void move(Cell destination)
+	// tell the piece requesting merge to move to this location
+	public void merge(Piece piece)
 	{
-		if (location != null)
-			location.setOccupied(null);
-		location = destination;
-		location.setOccupied(this);
+		piece.move(location);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public PieceType getType()
+	{
+		return type;
+	}
+	
+	// encapsulate the actual player
+	public PlayerType getPlayerType()
+	{
+		return player.getType();
 	}
 	
 	// if white rook returns "R", black knight returns "k"
 	public String toString()
 	{
-		return pieceType.name();
+		return type.name();
 	}
 	
 	public String getKey()
@@ -122,21 +106,82 @@ public abstract class Piece {
 		return key;
 	}
 	
-	//not working
-	public abstract CellList getMoves(CellList cells, boolean xDirection, boolean yDirection);
-	//not working
-	public CellList getValidMoves(CellList cells) {
-		
-		boolean[] values = {true, false};
-		CellList validCells = new CellList();
-		
-		for (boolean rowPositive : values)
-			for (boolean colPositive : values) {
-				for(Cell cell : getMoves(cells, rowPositive, colPositive)) validCells.add(cell);
-			}
-		return validCells; //what happens when cell is fully blocked
-		
+	public Cell getLocation()
+	{
+		return location;
 	}
-
+	
+	// returns multiple pieces if it is merged
+	// only accessible by model
+	List<Piece> getLinks()
+	{
+		return location.getOccupiers();
+	}
+	// empties the cell of its occupiers
+	private List<Piece> removeAndRetrieveLinks()
+	{
+		return location!=null ? location.removeOccupiers() : Collections.singletonList(this);
+	}
+	
+	// a link is a piece that it may have merged with
+	// a piece is its own link
+	private void moveLink(Piece link, Cell destination)
+	{
+		link.location = destination;
+		destination.addOccupier(link);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// get row/column depending on its move pattern and current iteration a
+	abstract int getDestinationRow(int a, boolean rowPositive, boolean colPositive);
+	abstract int getDestinationCol(int a, boolean rowPositive, boolean colPositive);
+	
+	
+	// adds destination if it fits rules, and breaks out of loop if no more to be added
+	boolean movesLeftToAdd(int a, Cell destination)
+	{
+		if (a > Piece.MOVE_LIMIT)
+			return false;
+		return movesLeftToAdd2(a, destination);
+	}
+	
+	int getRedirectedRow(int rowDist, boolean rowPositive)
+	{
+		int oldRow = location.getRow();
+		int newRow = oldRow + (rowPositive ? rowDist : -rowDist);
+		return newRow;
+	}
+	
+	int getRedirectedCol(int colDist, boolean colPositive)
+	{
+		int oldCol = location.getCol();
+		int newCol = oldCol + (colPositive ? colDist : -colDist);
+		return newCol;
+	}
+	
+	boolean isValidMove(Cell destination)
+	{
+		if (destination == null)
+			return false;
+		if (!destination.getIsOccupied())
+			return true;
+		return player.getType() != destination.getOccupiedType();
+	}
+	
+	abstract boolean movesLeftToAdd2(int a, Cell destination);
+	
 }
-

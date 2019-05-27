@@ -21,4 +21,5 @@ public class Move {
 	{
 		return Math.abs(destination.getRow() - location.getRow());
 	}
+	
 }

@@ -1,63 +1,86 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+//
+// handles knowledge of merge/split operations
+// merge by linking: o-o-o   split by delinking:o o o
 public class Cell {
 
 	
-	/*maybe use a map with a key string location*/
 	public Cell(int rowNo, int column)
 	{
 		row = rowNo;
 		col = column;
-		isOccupied = false;
+		occupiers = new ArrayList<>();
 	}
-	
 	
 	private int row;
 	private int col;
-	private boolean isOccupied;
-	private Piece occupier;
+	private List<Piece> occupiers;
 	
-	
-	Piece removePiece()
+	public void addOccupier(Piece piece)
 	{
-		Piece piece = occupier;
-		occupier = null;
-		isOccupied = false;
-		return piece;
-	}
-	
-	void setOccupied(Piece piece)
-	{
-		occupier = piece;
-		isOccupied = piece != null;
+		occupiers.add(piece);
 	}
 	
 	public boolean getIsOccupied()
 	{
-		return isOccupied;
+		return !occupiers.isEmpty();
 	}
 	
-	PlayerType getOccupiedType()
+	public List<Piece> removeOccupiers()
 	{
-		return occupier.getPlayer().getType();
+		List<Piece> pieces = new ArrayList<>();
+		for (Piece piece : occupiers)
+			pieces.add(piece);
+		occupiers.clear();
+		return pieces;
 	}
 	
-	Piece getOccupier() {
-		return occupier;
+	// if there are more than one pieces, means the pieces are merged
+	public List<Piece> getOccupiers()
+	{
+		return occupiers;
 	}
 	
-	int getRow()
+	// multiple pieces (aka merged/split) can only be of same type
+	public PlayerType getOccupiedType()	
+	{
+		return occupiers.isEmpty() ? null : occupiers.get(0).getPlayerType();
+	}
+	// returns the number of individual single pieces
+	int getTotalSinglePieces() 			
+	{
+		return occupiers.size();
+	}	
+	
+	public int getRow()
 	{
 		return row;
 	}
-	int getCol()
+	public int getCol()
 	{
 		return col;
 	}
 	
 	public String toString()
 	{
-		return isOccupied ? occupier.getKey() : ".";
+		String string = "(" + col + "," + row + ") " + getPrintable(false, false);
+		if (col==GameBoard.GRID_SIZE-1)
+			string += "\n";
+		return string;
+	}
+	
+	public String getPrintable(boolean isSelected, boolean isDangerous)  
+	{
+		String occupier = "";
+		for (Piece piece : occupiers)			occupier += piece.getKey();
+		if (getOccupiedType() == PlayerType.BLACK)	occupier.toUpperCase();
+		if (occupiers.isEmpty())					occupier = ".";
+		return isSelected ? (isDangerous ? "x" : "o") : occupier;
 	}
 	
 }

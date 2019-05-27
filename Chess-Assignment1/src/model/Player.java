@@ -1,37 +1,30 @@
 package model;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Player {
 
-	public Player(PlayerType playerType)
+	public Player(String name, String password)
 	{
-		type = playerType;
+		this.name = name;
+		this.password = password;
+		// type set later
 		score = 0;
-		
 		pieces = new HashMap<>();
-//		for (PieceType piece : PieceType.values())
-//		{
-//			String key = piece.getKey();
-//			pieces.put(key, 		new Piece(piece, this, key)); 
-//			pieces.put(key + "2", 	new Piece(piece, this, key + "2"));
-//		}
-//		
-		// if piece subclasses implemented, ^^^ method becomes
-		for (PieceType piece : PieceType.values())
-		{
+		
+		for (PieceType piecetype : PieceType.values())
 			for (int i=1; i<=2; i++)
 			{
-				String key = piece.getKey() + i;
-				switch (piece)
+				switch (piecetype)
 				{
-					case ROOK : 	pieces.put(key, new Rook(this, key));	break;
-					case KNIGHT : 	pieces.put(key, new Knight(this, key));	break;
-					case BISHOP : 	pieces.put(key, new Bishop(this, key));	break;
+					case ROOK : 	add(new Rook("r" + i,   this));	break;
+					case KNIGHT : 	add(new Knight("k" + i, this));	break;
+					case BISHOP : 	add(new Bishop("b" + i, this));	break;
 				}
 			}
-		}
-		
 	}
 	
 	private String name;
@@ -40,10 +33,19 @@ public class Player {
 	private int score;
 	private Map<String, Piece> pieces;
 	
-	void removePiece(String pieceKey)
+	
+	// internally, all pieces are uniquely defined
+	// but can be accessed generally
+	void remove(Piece piece)
 	{
-		pieces.remove(pieceKey);
-		// do something with score?
+		if (piece != null)
+			pieces.remove(piece.getKey());
+	}
+	
+	void add(Piece piece)
+	{
+		if (piece != null)
+			pieces.put(piece.getKey(),piece);
 	}
 	
 	void addScore(int points)
@@ -56,22 +58,19 @@ public class Player {
 		return pieces;
 	}
 	
-	PlayerType getType()
+	public int getScore() 
 	{
-		return type;
-	}
-	
-	int getScore() {
 		return score;
 	}
 	
-	public void setName(String name)
+	public void setType(PlayerType type)
 	{
-		this.name = name;
+		this.type = type;
 	}
-	public void setPassword(String password)
+	
+	public PlayerType getType()
 	{
-		this.password = password;
+		return type;
 	}
 	
 	public String getName()

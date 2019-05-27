@@ -4,49 +4,30 @@ import java.util.List;
 
 public class Knight extends Piece {
 
-	public Knight(Player player, String key) 
+	public Knight(String key, Player player) 
 	{
-		super(PieceType.KNIGHT, player, key);
+		super(PieceType.KNIGHT, key, player);
 	}
 	
+	// move limit for knight for each direction
+	// ie. distance of (1,2) or (2,1)
+	static final int MOVE_LIMIT = 2;
 	
-//	/*TO IMPLEMENT*/
-//	public boolean isValidMove(Cell destination, List<Cell> cells)
-//	{
-//		// piecetype handles this
-////		Move move = new Move(super.getCell(), destination);
-////		
-////		if (move.getXDist() == 1 && move.getYDist() == 2 ||
-////			move.getXDist() == 2 && move.getYDist() == 1) 
-////			return super.isValidMove(destination, cells);
-//		return false;
-//		
-//	}
-
-	@Override
-	protected boolean isBlocked(Cell destination, List<Cell> cells) 
+	// Knights only have a count of moves
+	boolean movesLeftToAdd2(int a, Cell destination)			 
 	{
-		// knight is never blocked
-		return false;
+		return a <= MOVE_LIMIT;
 	}
 	
-	//not working
-	public CellList getMoves(CellList cells, boolean xDirection, boolean yDirection) 
+	// choose either (1,2) or (2,1)
+	int getDestinationRow(int a, boolean rowPositive, boolean colPositive)
 	{
-		CellList validCells = new CellList();
-		
-		int y = getCell().getRow();
-		int x = getCell().getCol();
-		
-		int moveY = xDirection ? 2 : -2;
-		int moveX = yDirection ? 1 : -1;
-		if(!(cells.get(y+moveY, x+moveX).getIsOccupied())) validCells.add(cells.get(y+moveY, x+moveX));
-		
-		moveY = xDirection ? 1 : -1;
-		moveX = yDirection ? 2 : -2;
-		if(!(cells.get(y+moveY, x+moveX).getIsOccupied())) validCells.add(cells.get(y+moveY, x+moveX));
-		
-		return validCells;
+		return getRedirectedRow((a-1)%2 + 1, rowPositive);
+	}
+	
+	int getDestinationCol(int a, boolean rowPositive, boolean colPositive)
+	{
+		return getRedirectedCol(a%2 + 1, colPositive);
 	}
 
 }

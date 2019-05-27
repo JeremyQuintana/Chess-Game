@@ -1,5 +1,7 @@
 package model;
 
+// keep as a static pre-constructed version of piece
+// also allows cheaper storage of piece by only storing its type
 public enum PieceType {
 
 	ROOK, BISHOP, KNIGHT;
@@ -23,7 +25,7 @@ public enum PieceType {
 			case BISHOP : 	return 1;
 			case KNIGHT :	return 2;
 		}
-		return -1;
+		throw new NullPointerException("piece does not exist");
 	}
 	
 	boolean isValidMove(Move move)
@@ -37,7 +39,7 @@ public enum PieceType {
 			case KNIGHT :	return  xDist == 1 && yDist == 2 ||
 									xDist == 2 && yDist == 1;
 		}
-		return false;
+		throw new NullPointerException("piece does not exist");
 	}
 	
 }

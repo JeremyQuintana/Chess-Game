@@ -1,19 +1,22 @@
 package model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class CellTest {
-	
+import junit.framework.TestCase;
+
+public class CellTest extends TestCase {
+
 	Cell cell;
 	Piece piece;
 	
 	@Before
 	public void setUp() {
 		cell = new Cell(0,0);
-		Player player = new Player(PlayerType.WHITE);
+		Player player = new Player("JeremyIsAwesome", "idk");
 		piece = new Rook(player, "r1");
 	}
 	
@@ -21,7 +24,7 @@ public class CellTest {
 	public void testRemovePiece() {
 		cell.setOccupied(piece);
 		cell.removePiece();
-		assertTrue(!(cell.getIsOccupied()));
+		assertFalse(cell.getIsOccupied());
 	}
 
 	@Test

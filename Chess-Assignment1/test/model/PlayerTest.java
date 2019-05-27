@@ -1,0 +1,46 @@
+package model;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class PlayerTest {
+	Player player;
+	@Before
+	public void setUp() {
+		player = new Player("o", "j");
+	}
+	
+	@Test
+	public void testRemovePiece() {
+		player.removePiece("r1");
+		assertTrue(player.getPieces().get("r1") == null);
+	}
+
+	@Test
+	public void testAddScore() {
+		player.addScore(200);
+		assertEquals(player.getScore(), 200);
+	}
+	
+	@Test
+	public void testPlayer() {
+		assertEquals("o", player.getid());
+		assertEquals("j", player.getPassword());
+	}
+	
+//	@Test
+//	public void testPlayerName()
+//	{
+//		player.setName("Jeremy Handsome");
+//		assertEquals(player.getName(),"Jeremy Handsome");
+//	}
+//	
+//	public void testPlayerPassword()
+//	{
+//		player.setPassword("thisisapassword");
+//		assertEquals(player.getPassword(),"thisisapassword");
+//	}
+	
+}
