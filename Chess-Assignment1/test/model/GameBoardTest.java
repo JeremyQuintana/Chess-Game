@@ -156,6 +156,7 @@ public class GameBoardTest {
 		assertTrue(board.getSelectedPlayer().getPieces().get("r1") == null);
 	}
 	
+	//test merge
 	@Test
 	public void testMerge1() {
 		Cell cellInitial = board.getCell(0, 0);
@@ -168,7 +169,8 @@ public class GameBoardTest {
 		assertTrue(board.getCell(0, 0).getOccupiers().contains(piece1)
 				&& board.getCell(0, 0).getOccupiers().contains(piece2));
 	}
-
+	
+	//test failed merge
 	@Test
 	public void testMerge2() {
 		Cell cellInitial = board.getCell(0, 0);
@@ -181,6 +183,7 @@ public class GameBoardTest {
 		assertTrue(board.getCell(0, 0).getOccupiers().size() == 1);
 	}
 	
+	//test split
 	@Test
 	public void testSplit1() {
 		Cell cellInitial = board.getCell(0, 0);
@@ -193,6 +196,7 @@ public class GameBoardTest {
 		assertTrue(board.getCell(0, 0).getOccupiers().contains(piece1));
 	}
 	
+	//test invalid split
 	@Test
 	public void testSplit2() {
 		Cell cellInitial = board.getCell(0, 0);
