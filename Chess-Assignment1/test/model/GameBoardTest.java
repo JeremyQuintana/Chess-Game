@@ -45,19 +45,6 @@ public class GameBoardTest {
 				&& cellDestination.getOccupiers().contains(piece));
 	}
 	
-	//test move failure
-	@Test
-	public void testMove2() {
-		Cell cellInitial = board.getCell(0, 0);
-		Cell cellDestination = board.getCell(1, 2);
-		Piece piece = board.getSelectedPlayer().getPieces().get("r1");
-		board.select(cellInitial);
-		board.move(cellDestination); // Move forward 2 cells
-		// Check if the cell is correctly updated with the piece
-		assertTrue(cellInitial.getOccupiers().contains(piece)
-				&& cellDestination.getOccupiers().isEmpty());
-	}
-	
 	//test merge move
 	@Test
 	public void testMove3() {
@@ -73,23 +60,6 @@ public class GameBoardTest {
 		assertTrue(cellDestination.getOccupiers().contains(piece)
 				&& cellDestination.getOccupiers().contains(piece2)
 				&& cellInitial.getOccupiers().isEmpty());
-	}
-	
-	//test merge move failure
-	@Test
-	public void testMove4() {
-		Cell cellInitial = board.getCell(0, 0);
-		Cell cellDestination = board.getCell(1, 2);
-		Cell cellMerge = board.getCell(1, 0);
-		Piece piece = board.getSelectedPlayer().getPieces().get("r1");
-		Piece piece2 = board.getSelectedPlayer().getPieces().get("b1");
-		board.select(cellInitial);
-		board.merge(cellMerge);
-		board.move(cellDestination); // Move forward 2 cells
-		// Check if the cell is correctly updated with the piece
-		assertTrue(cellInitial.getOccupiers().contains(piece)
-				&& cellInitial.getOccupiers().contains(piece2)
-				&& cellDestination.getOccupiers().isEmpty());
 	}
 	
 	@Test
@@ -127,9 +97,7 @@ public class GameBoardTest {
 		// Select Knight 1 from PlayerWHITE
 		Cell cellInitial2 = board.getCell(2, 0);
 		board.select(cellInitial2);
-		// Invalid move as Rook 1 is in the position (1, 2);
-		board.move(cellDestination2);
-		assertTrue(cellDestination2.getOccupiers().contains(piece));
+		assertTrue(!board.validMoves().contains(cellDestination2));
 	}
 	
 	@Test
@@ -168,19 +136,6 @@ public class GameBoardTest {
 		board.merge(cellInitial2);
 		assertTrue(board.getCell(0, 0).getOccupiers().contains(piece1)
 				&& board.getCell(0, 0).getOccupiers().contains(piece2));
-	}
-	
-	//test failed merge
-	@Test
-	public void testMerge2() {
-		Cell cellInitial = board.getCell(0, 0);
-		Cell cellInitial2 = board.getCell(5, 0);
-		Piece piece1 = board.getSelectedPlayer().getPieces().get("r1");
-		Piece piece2 = board.getSelectedPlayer().getPieces().get("b1");
-		
-		board.select(cellInitial);
-		board.merge(cellInitial2);
-		assertTrue(board.getCell(0, 0).getOccupiers().size() == 1);
 	}
 	
 	//test split

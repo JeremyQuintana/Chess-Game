@@ -139,8 +139,6 @@ public class GameBoard {
 	public void merge(Cell cell)
 	{
 		Piece piece = cell.getOccupiers().get(0);
-		if (piece.getType() != selectedPiece.getType()
-		 && piece.getPlayerType() == selectedPiece.getPlayerType())
 		selectedPiece.merge(piece);
 	}
 	
@@ -151,10 +149,8 @@ public class GameBoard {
 	
 	public void move(Cell destination)
 	{
-		if (validMoves().contains(destination)) {
-			awardAndRemove(destination);
-			selectedPiece.move(destination);
-		}
+		awardAndRemove(destination);
+		selectedPiece.move(destination);
 	}
 	
 	
