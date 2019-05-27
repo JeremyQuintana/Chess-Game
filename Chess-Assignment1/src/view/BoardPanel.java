@@ -25,7 +25,6 @@ import model.Piece;
 import model.PieceType;
 import model.PlayerType;
 import controller.CellAction;
-import controller.Cell2Listener;
 import controller.CellListener;
 import model.GameBoard;
 import model.Piece;
