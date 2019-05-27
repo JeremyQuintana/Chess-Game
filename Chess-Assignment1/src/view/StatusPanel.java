@@ -29,7 +29,8 @@ public class StatusPanel extends JPanel{
 	private JLabel score;
 	private JLabel playerName;
 	
-	private Box functionBox;
+	private Box actionBox;
+	private JLabel movesLeft;
 	
 	private Player player;
 	private GameBoard board;
@@ -38,16 +39,23 @@ public class StatusPanel extends JPanel{
 	{
 		this.board = frame.getBoard();
 		this.player = player;
+		boolean isWhite = player.getType() == PlayerType.WHITE;
 		setLayout(new BorderLayout());
-		
-//		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		setPreferredSize(new Dimension(170,80));
-		setBackground(player.getType().getColor());
+		setBackground(isWhite ? Color.WHITE : Color.BLACK);
 		
-		score = new JLabel("    Score: " + player.getScore());
-		playerName = new JLabel("    " + player.getName());
-		score.setForeground(player.getType().getOpposer().getColor());
-		playerName.setForeground(player.getType().getOpposer().getColor());
+		Font textFont = new Font("arial", Font.BOLD, 20);
+		Color textColor = isWhite ? Color.LIGHT_GRAY : Color.DARK_GRAY;
+		score = new JLabel("    SCORE: " + player.getScore());
+		playerName = new JLabel("    Player " + player.getName());
+		movesLeft = new JLabel("Moves remaining: " + board.movesRemaining());
+		score.setFont(textFont);
+		score.setForeground(textColor);
+		playerName.setFont(textFont);
+		playerName.setForeground(textColor);
+		movesLeft.setFont(textFont);
+		movesLeft.setForeground(textColor);
+		
 		
 		JButton move = new JButton("Move");
 		JButton merge = new JButton("merge");
@@ -55,12 +63,8 @@ public class StatusPanel extends JPanel{
 		move.addMouseListener(new ButtonListener(CellAction.MOVE, frame));
 		merge.addMouseListener(new ButtonListener(CellAction.MERGE, frame));
 		split.addMouseListener(new ButtonListener(CellAction.SPLIT, frame));
-//		JLabel history = new JLabel("History: ");
-//		
-//		score.setBorder(BorderFactory.createLineBorder(Color.blue));
-//		playerList.setBorder(BorderFactory.createLineBorder(Color.red));
-//		history.setBorder(BorderFactory.createLineBorder(Color.green));
 		
+		// to show player details
 		Box playerBox = Box.createVerticalBox();
 		playerBox.add(Box.createVerticalGlue());
 		playerBox.add(score);
@@ -69,65 +73,80 @@ public class StatusPanel extends JPanel{
 		playerBox.add(Box.createVerticalGlue());
 		add(playerBox, BorderLayout.WEST);
 		
-		functionBox = Box.createHorizontalBox();
-		functionBox.add(Box.createHorizontalGlue());				
-		functionBox.add(move);
-		functionBox.add(Box.createHorizontalGlue());
-		functionBox.add(merge);
-		functionBox.add(Box.createHorizontalGlue());
-		functionBox.add(split);
-		functionBox.add(Box.createHorizontalGlue());
-		functionBox.setBackground(new Color(100,150,100));
-		functionBox.setVisible(board.getSelectedPlayer().getType() == player.getType()); /*doesn't work properly*/
-		add(functionBox);
+		// to show cell actions if it's the players turn
+		actionBox = Box.createHorizontalBox();
+		actionBox.add(Box.createHorizontalGlue());				
+		actionBox.add(move);
+		actionBox.add(Box.createHorizontalGlue());
+		actionBox.add(merge);
+		actionBox.add(Box.createHorizontalGlue());
+		actionBox.add(split);
+		actionBox.add(Box.createHorizontalGlue());
+		actionBox.add(movesLeft);
+		actionBox.add(Box.createHorizontalGlue());
+		actionBox.setVisible(board.getSelectedPlayer().getType() == player.getType()); 
+		add(actionBox);
 		setVisible(true);
 		
 	}
 	
-
 	
-//	private Box box(Component comp)
-//	{
-//		Box box = Box.createVerticalBox();
-//		box.add(Box.createVerticalGlue());
-//		box.add(comp);
-//		box.add(Box.createVerticalGlue());
-//		return box;
-//	}
 	
-//	void move(Cell cell, boolean isValid)
-//	{
-//		if (isValid)
-//			score.setText("    Score: " + player.getScore());
-//		functionBox.setVisible(board.getSelectedPlayer().getType() == player.getType());
-//		repaint();
-//		revalidate();
-//	}
-//	
-//	void merge(Cell cell, boolean isValid)
-//	{
-//		if (isValid)
-//			score.setText("    Score: " + player.getScore());
-//		functionBox.setVisible(board.getSelectedPlayer().getType() == player.getType());
-//		repaint();
-//		revalidate();
-//	}
-//	
-//	void split(Cell cell, boolean isValid)
-//	{
-//		if (isValid)
-//			score.setText("    Score: " + player.getScore());
-//		functionBox.setVisible(board.getSelectedPlayer().getType() == player.getType());
-//		repaint();
-//		revalidate();
-//	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	void switchPlayer()
 	{
-		score.setText("    Score: " + player.getScore());
-		functionBox.setVisible(board.getSelectedPlayer().getType() == player.getType());
+		score.setText("   SCORE: " + player.getScore());
+		movesLeft.setText("Moves remaining: " + board.movesRemaining());
+		// warn that less moves remaining
+		if (board.movesRemaining() <= 6)
+		{
+			movesLeft.setText("Only " + board.movesRemaining() + " moves left!");
+			movesLeft.setForeground(new Color(180, 40, 40, 200));
+		}
+		
+		// change visibility if not player's turn
+		actionBox.setVisible(board.getSelectedPlayer().getType() == player.getType());
 		repaint();
 		revalidate();
 	}
-
+	
+	void endGame()
+	{
+		actionBox.setVisible(false);
+		
+		// tie
+		JLabel winLoseLabel = new JLabel("It's a tie.");
+		winLoseLabel.setFont(new Font("arial", Font.BOLD, 50));
+		winLoseLabel.setForeground(new Color(150, 150, 150, 150));
+		
+		// if not a tie
+		if (board.getWinner() != null)
+		{
+			boolean isWinner = board.getWinner().getType() == player.getType();
+			winLoseLabel = new JLabel(isWinner ? "You win!" : "You've lost :(");
+			
+			int r = isWinner ? 60 : 200;
+			int g = isWinner ? 120 : 30;
+			int b = isWinner ? 200 : 30;
+			winLoseLabel.setFont(new Font("arial", Font.BOLD, isWinner ? 75 : 25));
+			winLoseLabel.setForeground(new Color(r,g,b, 150));
+		}
+		
+		// special "You win" box
+		Box endGameBox = Box.createHorizontalBox();
+		endGameBox.add(Box.createHorizontalGlue());				
+		endGameBox.add(winLoseLabel);
+		endGameBox.add(Box.createHorizontalGlue());
+		add(endGameBox);
+		repaint();
+		revalidate();
+	}
 }

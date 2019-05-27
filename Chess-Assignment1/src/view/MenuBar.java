@@ -94,12 +94,12 @@ public class MenuBar extends JMenuBar{
 	
 	public int maxCountDialog(String playerName) throws CancelException
 	{		
-		return numberDialog(1,500, "Maximum moves", playerName + ", choose the maximum moves possible.");
+		return numberDialog(2,500,2, "Maximum moves", playerName + ", choose the maximum moves possible.");
 	}
 		
 	public int moveRangeDialog() throws CancelException
 	{
-		return numberDialog(2,10, "Piece Range", "Choose the range that you'd like your pieces to move.");
+		return numberDialog(2,10,1, "Piece Range", "Choose the range that you'd like your pieces to move.");
 	}
 	
 	public int exitDialog()
@@ -114,9 +114,9 @@ public class MenuBar extends JMenuBar{
 	
 	
 
-	public int numberDialog(int min, int max, String title, String msg) throws CancelException
+	public int numberDialog(int min, int max, int step, String title, String msg) throws CancelException
 	{
-		SpinnerModel value =   new SpinnerNumberModel(min, min, max, 1);  
+		SpinnerModel value =   new SpinnerNumberModel(min, min, max, step);  
 	    JSpinner spinner = new JSpinner(value);
 	    // can't input text
 	    ((DefaultEditor) spinner.getEditor()).getTextField().setEditable(false);

@@ -92,8 +92,9 @@ public class CellListener extends MouseAdapter{
 			case SPLIT :validTurn = frame.split(cell, board.isValidSplit()); 		break;
 		}
 		// alternative to a callback class
+		if (validTurn)			frame.switchPlayer();
+		// instance check so no else if
 		if (board.isGameOver())	frame.endGame();
-		else if (validTurn)		frame.switchPlayer();
 	}
 
 	@Override

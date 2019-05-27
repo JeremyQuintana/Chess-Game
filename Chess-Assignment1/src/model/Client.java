@@ -232,16 +232,15 @@ public class Client {
 			throw new ClientException("Player already logged in.");
 		/*test - what happens when trying to log same player again*/
 		
-		// login this player reference
-		Player player = playerList.get(name);
-		// reset logging process once 2nd player logged in
-		if (logged.size() < 2)	logged.put(name, player);
-		else 					logged.clear();
-		return player;
+		// store this player so it can't login again
+		logged.put(name, new Player(name, password));
+		return logged.get(name);
 	}
 	
+	// reset logging process  once a new login process started
 	public void clearLogged()
 	{
+		
 		logged.clear();
 	}
 	

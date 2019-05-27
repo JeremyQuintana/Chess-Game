@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -110,6 +111,18 @@ public class BoardPanel extends JPanel
 	void split(Cell cell, boolean isValid)
 	{
 		highlightCells(currentAction = CellAction.SELECT);
+	}
+	
+	void endGame()
+	{
+		// don't allow player to make more moves
+		for (CellPanel panel : cellList)
+		{
+			for (MouseListener listener : panel.getMouseListeners())
+				panel.removeMouseListener(listener);
+			if (board.getWinner() != null)
+				panel.endGame(board.getWinner().getType());
+		}
 	}
 	
 	
@@ -250,8 +263,8 @@ public class BoardPanel extends JPanel
 	
 			int row = cell.getRow();
 			int col = cell.getCol();
-			Color white = new Color(160,160,160);	// new Color(180, 153, 102);
-			Color black = new Color(50,50,50);	// new Color(77, 40, 0);
+			Color white = new Color(160,160,160);	
+			Color black = new Color(50,50,50);	
 			// checkered pattern based on row/col number
 			color = !(row%2==0 ^ col%2==0) ? white : black;
 			isHighlighted = false;
@@ -286,7 +299,7 @@ public class BoardPanel extends JPanel
 		
 		
 		
-		// called by board panel to highlight cell if valid
+		// called by board panel to highlight cell if valid for CellAction
 		// parameter not a color to encapsulate this attribute
 		private void highlight(boolean isDangerous)
 		{
@@ -305,6 +318,13 @@ public class BoardPanel extends JPanel
 			int g = highlightColor.getGreen()	+ 30;
 			int b = highlightColor.getBlue()	+ 30;
 			setBackground(onHover ? new Color(r,g,b) : highlightColor);
+		}
+		
+		// brighten/dampen color based on winner
+		public void endGame(PlayerType winner)
+		{
+			int val = color.getRed() + (winner==PlayerType.WHITE ? 40 : -40);
+			setBackground(new Color(val, val, val));
 		}
 		
 		
@@ -329,7 +349,7 @@ public class BoardPanel extends JPanel
 			// setup image
 			ImageIcon piece = new ImageIcon("images/"+pieceType.name()+"_"+playerType.name().charAt(0)+".png");
 			Image convertImageIcon = piece.getImage();
-			Image resizeImage = convertImageIcon.getScaledInstance(80, 70, Image.SCALE_SMOOTH);
+			Image resizeImage = convertImageIcon.getScaledInstance(60, 50, Image.SCALE_SMOOTH);
 			ImageIcon resized = new ImageIcon(resizeImage);
 			
 			pieceLabel.setIcon(resized);

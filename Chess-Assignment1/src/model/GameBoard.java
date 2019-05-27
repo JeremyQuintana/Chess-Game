@@ -259,7 +259,7 @@ public class GameBoard {
 		return validMoves(selectedPiece);
 	}
 	
-	public List<Cell> validMoves(Piece piece)
+	private List<Cell> validMoves(Piece piece)
 	{
 		boolean[] values = {true, false};
 		List<Cell> validMoves = new ArrayList<>();
@@ -343,16 +343,15 @@ public class GameBoard {
 		Cell[] destinations = new Cell[selectedPiece.getLinks().size()];
 		int i=0;
 		int col = selectedPiece.getPlayerType().defaultColumn();
-		for (int row=0;  row<GRID_SIZE; row++)
+		for (int row=0; i<destinations.length; row++)
 		{
 			boolean occupied = getCell(row, col).getIsOccupied();
 			if (!occupied)
 				destinations[i++] = getCell(row, col);
-			if (i==destinations.length-1)	
-				break;
 		}
 		return destinations;		
 	}
+	
 	
 	private boolean canOpposerMoveTo(Cell destination)
 	{
@@ -429,27 +428,25 @@ public class GameBoard {
 		for (Player player : players.values())
 			if (player.getPieces().isEmpty())
 				noPiecesLeft = true;
-		return moveCount >= moveLimit || noPiecesLeft;
+		return movesRemaining() <= 0 || noPiecesLeft;
 	}
 	
-	Player getWinner()
+	// for displaying the moves left
+	// encapsulates the actual count and limit
+	public int movesRemaining()
+	{
+		return moveLimit - moveCount;
+	}
+	
+	public Player getWinner()
 	{
 		int whiteScore = players.get(PlayerType.WHITE).getScore();
 		int blackScore = players.get(PlayerType.BLACK).getScore();
 		
 		if (whiteScore != blackScore)
 			return players.get(whiteScore > blackScore ? PlayerType.WHITE : PlayerType.BLACK);
+		// implies no winner/ out of moves
 		else return null;
-	}
-	
-	public int getMoveCount()
-	{
-		return moveCount;
-	}
-	
-	int getMoveLimit()
-	{
-		return moveLimit;
 	}
 	
 }
