@@ -35,7 +35,8 @@ public class MainFrame extends JFrame{
 	private BoardPanel boardPanel;
 	private GameBoard board;
 	private Client client;
-	private MenuBar bar;
+	// the temp panel before a game
+	private JPanel empty;
 	
 	
 	public MainFrame() 
@@ -43,7 +44,7 @@ public class MainFrame extends JFrame{
 		super("Chess Game");
 		client = new Client();
 		setLayout(new BorderLayout());
-		setJMenuBar(bar = new MenuBar(this));
+		setJMenuBar(new MenuBar(this));
 		
 //		try {
 //
@@ -62,12 +63,12 @@ public class MainFrame extends JFrame{
 //		    clip2.start();
 //		}
 //		catch (Exception e) {}
-//		JPanel empty = new JPanel(new BorderLayout());
-//		JLabel text = new JLabel("Please login players to start a game", SwingConstants.CENTER);
-//		text.setFont(new Font("arial", Font.BOLD, 50));
-//		text.setForeground(Color.LIGHT_GRAY);
-//		empty.add(text, BorderLayout.CENTER);
-//		add(empty, BorderLayout.CENTER);
+		empty = new JPanel(new BorderLayout());
+		JLabel text = new JLabel("Please login players to start a game", SwingConstants.CENTER);
+		text.setFont(new Font("arial", Font.BOLD, 50));
+		text.setForeground(Color.LIGHT_GRAY);
+		empty.add(text, BorderLayout.CENTER);
+		add(empty, BorderLayout.CENTER);
 		// force login	
 
 		setBounds(100, 100, 900, 800);					/*resize as a square?*/
@@ -78,8 +79,16 @@ public class MainFrame extends JFrame{
 	
 	// called by menu listener to create a board and startGame
 	public void startGame(Player p1, Player p2, int max1, int max2, int moveRange)
-	{		
-//		removeAll();
+	{
+		try
+		{
+			remove(empty);
+			remove(statusPanel1);
+			remove(statusPanel2);
+			remove(boardPanel);
+		}
+		catch (NullPointerException e) {};
+	
 		board = new GameBoard(p1, p2, max1, max2, moveRange);
 		boardPanel = new BoardPanel(this);
 		statusPanel1 = new StatusPanel(this, board.getSelectedPlayer());
@@ -92,9 +101,17 @@ public class MainFrame extends JFrame{
 		revalidate();
 	}
 	
+	// called by menu listener to undo logging process
+	public void loginFail()
+	{
+		client.clearLogged();
+	}
+	
 	public void endGame()
 	{
 //		boardPanel.remove
+		System.out.println("no moves left/pieces dead");
+		System.exit(0);
 	}
 	
 	

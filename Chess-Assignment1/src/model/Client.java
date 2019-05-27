@@ -240,6 +240,11 @@ public class Client {
 		return player;
 	}
 	
+	public void clearLogged()
+	{
+		logged.clear();
+	}
+	
 	public Player register(String name, String password) throws ClientException
 	{
 		if (password.length() < 2 || password.length() > 10)

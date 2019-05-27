@@ -32,10 +32,11 @@ public class MenuListener implements ActionListener {
 			switch (function)
 			{
 				case LOGIN : 
+					frame.getClient().clearLogged();
 					Player p1 = menubar.playerDialog(function);
+					int max1  = menubar.maxCountDialog(p1.getName());
 					Player p2 = menubar.playerDialog(function);
-					int max1 = menubar.maxCountDialog(p1.getName());
-					int max2 = menubar.maxCountDialog(p2.getName());
+					int max2  = menubar.maxCountDialog(p2.getName());
 					int range = menubar.moveRangeDialog();
 					frame.startGame(p1, p2, max1, max2, range);
 					break;
