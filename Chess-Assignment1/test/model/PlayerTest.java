@@ -6,15 +6,22 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class PlayerTest {
+	
 	Player player;
+	Piece piece;
+	Piece piece2;
+	
 	@Before
 	public void setUp() {
 		player = new Player("o", "j");
+		piece = new Rook("r1", player);
+		piece2 = new Rook("r2", player);
 	}
 	
 	@Test
 	public void testRemovePiece() {
-		player.removePiece("r1");
+		player.add(piece);
+		player.remove(piece);
 		assertTrue(player.getPieces().get("r1") == null);
 	}
 
@@ -26,21 +33,16 @@ public class PlayerTest {
 	
 	@Test
 	public void testPlayer() {
-		assertEquals("o", player.getid());
+		assertEquals("o", player.getName());
 		assertEquals("j", player.getPassword());
 	}
 	
-//	@Test
-//	public void testPlayerName()
-//	{
-//		player.setName("Jeremy Handsome");
-//		assertEquals(player.getName(),"Jeremy Handsome");
-//	}
-//	
-//	public void testPlayerPassword()
-//	{
-//		player.setPassword("thisisapassword");
-//		assertEquals(player.getPassword(),"thisisapassword");
-//	}
+	@Test
+	public void testGetPieces() {
+		player.add(piece);
+		player.add(piece2);
+		assertTrue(player.getPieces().containsKey("r1") 
+				&& player.getPieces().containsKey("r2"));
+	}
 	
 }

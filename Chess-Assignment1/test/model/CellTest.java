@@ -12,25 +12,42 @@ public class CellTest extends TestCase {
 
 	Cell cell;
 	Piece piece;
+	Piece piece2;
 	
 	@Before
 	public void setUp() {
 		cell = new Cell(0,0);
 		Player player = new Player("JeremyIsAwesome", "idk");
-		piece = new Rook(player, "r1");
+		piece = new Rook("r1", player);
+		piece2 = new Rook("k1", player);
 	}
 	
 	@Test
 	public void testRemovePiece() {
-		cell.setOccupied(piece);
-		cell.removePiece();
+		cell.addOccupier(piece);
+		cell.removeOccupiers();
+		assertFalse(cell.getIsOccupied());
+	}
+	
+	@Test
+	public void testRemovePiece2() {
+		cell.addOccupier(piece);
+		cell.addOccupier(piece2);
+		cell.removeOccupiers();
 		assertFalse(cell.getIsOccupied());
 	}
 
 	@Test
 	public void testSetOccupied() {
-		cell.setOccupied(piece);
-		assertEquals(cell.getOccupier(), piece);
+		cell.addOccupier(piece);
+		assertTrue(cell.getOccupiers().contains(piece));
+	}
+	
+	@Test
+	public void testSetOccupied2() {
+		cell.addOccupier(piece);
+		cell.addOccupier(piece2);
+		assertTrue(cell.getOccupiers().contains(piece) && cell.getOccupiers().contains(piece2));
 	}
 
 }
