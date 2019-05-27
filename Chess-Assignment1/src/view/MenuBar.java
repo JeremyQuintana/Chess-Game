@@ -81,7 +81,8 @@ public class MenuBar extends JMenuBar{
 		{
 			String name = this.name.getText();
 			String pass = new String(password.getPassword());
-			return function == MenuFunction.LOGIN ? client.login(name, pass) : client.register(name, pass);
+			Player player = function == MenuFunction.LOGIN ? client.login(name, pass) : client.register(name, pass);
+			return player;
 		}
 		catch (ClientException e)
 		{
@@ -119,6 +120,7 @@ public class MenuBar extends JMenuBar{
 	    JSpinner spinner = new JSpinner(value);
 	    // can't input text
 	    ((DefaultEditor) spinner.getEditor()).getTextField().setEditable(false);
+	    spinner.setSize(300,300);  
 	    
 	    Object[] message = {msg, spinner};
 	    dialog(title, message);

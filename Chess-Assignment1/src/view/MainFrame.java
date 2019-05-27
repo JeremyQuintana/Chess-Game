@@ -4,7 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+import java.io.File;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -39,12 +45,29 @@ public class MainFrame extends JFrame{
 		setLayout(new BorderLayout());
 		setJMenuBar(bar = new MenuBar(this));
 		
-		JPanel empty = new JPanel(new BorderLayout());
-		JLabel text = new JLabel("Please login players to start a game", SwingConstants.CENTER);
-		text.setFont(new Font("arial", Font.BOLD, 50));
-		text.setForeground(Color.LIGHT_GRAY);
-		empty.add(text, BorderLayout.CENTER);
-		add(empty, BorderLayout.CENTER);
+//		try {
+//
+//		    AudioInputStream stream = AudioSystem.getAudioInputStream(new File("sounds/bishop.wav"));
+//		    AudioFormat format = stream.getFormat();
+//		    DataLine.Info info = new DataLine.Info(Clip.class, format);
+//		    Clip clip = (Clip) AudioSystem.getLine(info);
+//		    clip.open(stream);
+//		    clip.start();
+//		    
+//		    AudioInputStream stream2 = AudioSystem.getAudioInputStream(new File("sounds/rook.wav"));
+//		    AudioFormat format2 = stream2.getFormat();
+//		    DataLine.Info info2 = new DataLine.Info(Clip.class, format2);
+//		    Clip clip2 = (Clip) AudioSystem.getLine(info2);
+//		    clip2.open(stream2);
+//		    clip2.start();
+//		}
+//		catch (Exception e) {}
+//		JPanel empty = new JPanel(new BorderLayout());
+//		JLabel text = new JLabel("Please login players to start a game", SwingConstants.CENTER);
+//		text.setFont(new Font("arial", Font.BOLD, 50));
+//		text.setForeground(Color.LIGHT_GRAY);
+//		empty.add(text, BorderLayout.CENTER);
+//		add(empty, BorderLayout.CENTER);
 		// force login	
 
 		setBounds(100, 100, 900, 800);					/*resize as a square?*/
@@ -56,8 +79,8 @@ public class MainFrame extends JFrame{
 	// called by menu listener to create a board and startGame
 	public void startGame(Player p1, Player p2, int max1, int max2, int moveRange)
 	{		
-		removeAll();
-		this.board = new GameBoard(p1, p2, max1, max2, moveRange);
+//		removeAll();
+		board = new GameBoard(p1, p2, max1, max2, moveRange);
 		boardPanel = new BoardPanel(this);
 		statusPanel1 = new StatusPanel(this, board.getSelectedPlayer());
 		statusPanel2 = new StatusPanel(this, board.getOpposer());
@@ -111,6 +134,12 @@ public class MainFrame extends JFrame{
 			if (JOptionPane.showConfirmDialog(null, "This will result in your piece"
 			+ " being in a vulnerable position to be killed.\nMove anyway?") > 0)
 				return false;
+		
+//		// sound for kill
+//		if (destination.getIsOccupied())
+//			if (destination.getOccupiedType() != board.getSelectedPlayer().getType())
+//				
+//				playSound();
 				
 		if (isValid)		
 			board.move(destination);
@@ -153,17 +182,19 @@ public class MainFrame extends JFrame{
 	
 	
 	
-	
-//	private void uninterruptingDialog(String message)
-//	{
-//		 new Thread(new Runnable()
-//		 {
-//	        public void run()
-//	        {
-//	            JOptionPane.showMessageDialog(null, message);
-//	        }
-//		 }).start();
-//	}
+	private void playSound(String fileName)
+	{
+		try
+		{
+		    AudioInputStream stream = AudioSystem.getAudioInputStream(new File("sounds/" + fileName + ".wav"));
+		    AudioFormat format = stream.getFormat();
+		    DataLine.Info info = new DataLine.Info(Clip.class, format);
+		    Clip clip = (Clip) AudioSystem.getLine(info);
+		    clip.open(stream);
+		    clip.start();
+		}
+		catch (Exception e) {}
+	}
 	
 	public BoardPanel getBoardPanel()
 	{

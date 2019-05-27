@@ -230,6 +230,7 @@ public class Client {
 			throw new ClientException("Incorrect password.");
 		if (logged.containsKey(name))
 			throw new ClientException("Player already logged in.");
+		/*test - what happens when trying to log same player again*/
 		
 		// login this player reference
 		Player player = playerList.get(name);
@@ -245,6 +246,8 @@ public class Client {
 			throw new ClientException("Please choose a password between 2 and 10 characters");
 		if (password.equals(name) || password.equals("abcdefg"))
 			throw new ClientException("Please choose a stronger password.");
+		if (playerList.containsKey(name))
+			throw new ClientException("Player already added");
 		return playerList.put(name, new Player(name, password));
 	}
 //	
