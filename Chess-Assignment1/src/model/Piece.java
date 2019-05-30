@@ -1,11 +1,7 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 
 // piece can be "merged"/linked to other pieces through its location
@@ -26,19 +22,6 @@ public abstract class Piece {
 	// all pieces have a maximum of 2 moves they can make
 	// unless changed
 	static int MOVE_LIMIT = 2;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	// moving a merged/single piece
 	public void move(Cell destination)
@@ -69,21 +52,6 @@ public abstract class Piece {
 	{
 		piece.move(location);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public PieceType getType()
 	{
@@ -132,20 +100,7 @@ public abstract class Piece {
 		destination.addOccupier(link);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	// all functions for getting the valid moves of a cell
-	
-	
 	
 	// get row/column depending on its move pattern and current iteration a
 	abstract int getDestinationRow(int a, boolean rowPositive, boolean colPositive);

@@ -61,14 +61,6 @@ public class Client {
 		return playerList.put(name, new Player(name, password));
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	public class ClientException extends Exception
 	{
 

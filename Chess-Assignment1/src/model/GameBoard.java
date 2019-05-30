@@ -49,7 +49,6 @@ public class GameBoard {
 
 	}
 	
-	
 	public static int GRID_SIZE = 6;
 	private List<Cell> cells;
 	Piece selectedPiece;
@@ -58,20 +57,12 @@ public class GameBoard {
 	private int moveCount;
 	private int moveLimit;
 	
-
-
 	public void switchPlayer()
 	{
 		selectedPiece = null;
 		moveCount++;
 		selectedPlayer = getOpposer();
 	}
-	
-	
-	
-	
-	
-	
 	
 	// chooses a cell to allow view/GUI compatibility
 	public boolean isValidSelect(Cell cell)
@@ -126,17 +117,6 @@ public class GameBoard {
 		selectedPiece.move(destination);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	// a method to return all valid destinations for a piece
 	public List<Cell> validMoves() 
 	{
@@ -182,9 +162,6 @@ public class GameBoard {
 		return validMoves;
 	}
 	
-	
-
-	
 	// if moving to destination leaves piece vulnerable
 	public boolean isDangerousMove(Cell destination, boolean isSelected)
 	{
@@ -196,13 +173,6 @@ public class GameBoard {
 			destination.addOccupier(piece);
 		return isDangerousMove;
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 // specialist functions
 	
@@ -243,12 +213,6 @@ public class GameBoard {
 	}
 	
 	
-	
-	
-	
-	
-
-	
 	public Piece getSelectedPiece()
 	{
 		return selectedPiece;
@@ -285,22 +249,6 @@ public class GameBoard {
 	public List<Cell> getCells() {
 		return cells;
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public boolean isGameOver()
 	{
@@ -328,12 +276,4 @@ public class GameBoard {
 		// implies no winner/ out of moves
 		else return null;
 	}
-
-
-
-
-
-
-
-	
 }

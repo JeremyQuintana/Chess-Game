@@ -22,10 +22,6 @@ public class CellListener extends MouseAdapter
 		this.frame = frame;
 	}
 	
-	
-	
-	
-	
 	//depending on what "State"/action board is in
 	// cells will act accordingly
 	@Override
