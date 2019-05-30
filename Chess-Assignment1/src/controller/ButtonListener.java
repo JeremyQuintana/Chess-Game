@@ -1,22 +1,12 @@
 package controller;
 
-import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.List;
-
-import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
-import javax.swing.border.Border;
-
-import model.Cell;
-import model.GameBoard;
-import model.Piece;
-import view.BoardPanel;
 import view.MainFrame;
 
+// a listener for each move/merge/split button
+// a button defined by its CellAction
+// eg: ButtonListener(CellAction.MOVE, frame) is a move button
 public class ButtonListener extends MouseAdapter
 {
 	

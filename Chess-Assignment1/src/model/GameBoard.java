@@ -1,15 +1,14 @@
 package model;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
 
+/**
+ * Similar to information expert
+ * "Logic" handler of all Actions (move/merge/split/select)
+ */
 
 public class GameBoard {
 	
@@ -50,38 +49,12 @@ public class GameBoard {
 
 	}
 	
-//	public void startGame(Player p1, Player p2)
-//	{
-//		p1.setType(PlayerType.WHITE);
-//		p2.setType(PlayerType.BLACK);
-//		
-//		gamers = new HashMap<>();   
-//		gamers.put(p1.getType(), p1);
-//		gamers.put(p2.getType(), p2);
-//		selectedPlayer = gamers.get(PlayerType.WHITE);
-//	
-//		// place pieces in default locations
-//		for (Player player : gamers.values())
-//		for (Piece piece : player.getPieces().values())				
-//		{
-//			selectedPiece = piece;
-//			int col = player.getType().defaultColumn();
-//			int row = piece.getPieceType().defaultRow();
-//			
-//			if (piece.getKey().contains("2"))
-//				row = GRID_SIZE-1-row;
-//			
-//			selectedPiece.move(cells.get(row, col));
-//		}
-//	}
 	
 	public static int GRID_SIZE = 6;
 	private List<Cell> cells;
-	private Piece selectedPiece;
-	private Player selectedPlayer;
+	Piece selectedPiece;
+	Player selectedPlayer;
 	private Map<PlayerType, Player> players;
-	// contains all registered players
-//	private List<Player> playerList;
 	private int moveCount;
 	private int moveLimit;
 	
@@ -100,7 +73,7 @@ public class GameBoard {
 	
 	
 	
-	// chooses a row and column to allow view/GUI compatibility
+	// chooses a cell to allow view/GUI compatibility
 	public boolean isValidSelect(Cell cell)
 	{
 		if (!cell.getIsOccupied())
@@ -115,7 +88,7 @@ public class GameBoard {
 
 	public boolean isValidMerge(Cell cell)
 	{
-		if (cell.getTotalSinglePieces() == 0)
+		if (cell.getOccupiers().size() == 0)
 			return false;
 		for (Piece p1 : cell.getOccupiers())
 		for (Piece p2 : selectedPiece.getLinks())
@@ -160,95 +133,6 @@ public class GameBoard {
 	
 	
 	
-
-//	public boolean select(String key)
-//	{
-//		Piece piece = selectedPlayer.getPieces().get(key);
-//		if (piece == null)
-//			return false;
-//		
-//		selectedPiece = piece;
-//		return true;
-//	}
-//
-//	public boolean merge(String key)
-//	{
-//		// check if possible to merge: aka no repeating piece types
-//		Piece piece = selectedPlayer.getPieces().get(key);
-//		for (Piece p1 : piece.getLinks())
-//		for (Piece p2 : selectedPiece.getLinks())
-//			if(p1.getType() == p2.getType())
-//					return false;
-//		
-//		selectedPiece.merge(piece);
-//		return true;
-//	}
-	
-	
-//	public boolean select(Cell cell)
-//	{
-//		if (!cell.getIsOccupied())
-//			return false;
-//		if (cell.getOccupiedType() != selectedPlayer.getType())
-//			return false;
-//		selectedPiece = cell.getOccupiers().get(0);
-//		return true;
-//	}
-//																		
-//	// returns true if split successful
-//	// design choice : all split pieces change location
-//	public boolean split()
-//	{	
-//		if (selectedPiece.getLinks().size() < 2)
-//			return false;
-//		selectedPiece.split(splitDestinations());
-//		return true;
-//	}
-//	
-//	public boolean merge(Cell pieceHolder)
-//	{
-//		if (!isValidMerge(pieceHolder))
-//			return false;
-//		selectedPiece.merge(pieceHolder.getOccupiers().get(0));
-//		return true;
-//	}
-//	
-//	// returns true if the move successful
-//	public boolean move(Cell destination)											
-//	{
-//		if (!validMoves().contains(destination))
-//			return false;
-//		awardAndRemove(destination);
-//		selectedPiece.move(destination);											
-//		return true;
-//	}
-	
-	/*
-	 * throw exceptions for failed operations?
-	 *merge tests: 	can merge 1 piece with a merged piece and vice versa
-	 * 				pieces move to selected piece's location
-	 *split tests: 	can't split 1 piece
-	 *				splitting moves unselected pieces to special locations
-	 *UI tests: selecting another same-type piece when moving, causes it to select that piece
-	 *			selecting pieces when selected
-	 *			selecting opposite pieces (NOT valid) triggers a message
-	 *			selecting split for 1 piece
-	 *			logging in and registering (read the Client class and see the exceptions it throws and test those)
-	 */
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -282,10 +166,6 @@ public class GameBoard {
 					if (p.isValidMove(destination))
 						validMoves.add(destination);	
 				}
-		
-		/*test cases - if the cell contains opposer piece, that cell is valid*/
-		/*test cases - bishop/rook intercepted by any piece, but extra cell if its opposer piece*/
-		/*test cases - knight*/
 		return validMoves;
 	}
 	
@@ -331,7 +211,7 @@ public class GameBoard {
 	{
 		if (destination.getIsOccupied())
 		{
-			selectedPlayer.addScore(5 * destination.getTotalSinglePieces());
+			selectedPlayer.addScore(5 * destination.getOccupiers().size());
 			for (Piece piece : destination.removeOccupiers())
 				getOpposer().remove(piece);
 		}
@@ -448,5 +328,12 @@ public class GameBoard {
 		// implies no winner/ out of moves
 		else return null;
 	}
+
+
+
+
+
+
+
 	
 }

@@ -7,7 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-// a piece 
+
+// piece can be "merged"/linked to other pieces through its location
 public abstract class Piece {
 	
 	public Piece(PieceType piece, String key, Player player) 
@@ -46,7 +47,7 @@ public abstract class Piece {
 			moveLink(piece, destination);
 	}
 	
-	// for splitting and merging, increase coupling with Cell
+	// for splitting and merging, maintain coupling with Cell
 	// get pieces for linking
 	
 	// when splitting, all pieces (except selected) move to different cells 	
@@ -142,7 +143,7 @@ public abstract class Piece {
 	
 	
 	
-	
+	// all functions for getting the valid moves of a cell
 	
 	
 	
@@ -159,6 +160,8 @@ public abstract class Piece {
 		return movesLeftToAdd2(a, destination);
 	}
 	
+	// each piece has a different set of rules
+	// creates one cell position for each direction
 	int getRedirectedRow(int rowDist, boolean rowPositive)
 	{
 		int oldRow = location.getRow();

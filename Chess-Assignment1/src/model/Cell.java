@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//
-// handles knowledge of merge/split operations
-// merge by linking: o-o-o   split by delinking:o o o
 public class Cell {
 
 	
@@ -19,9 +16,12 @@ public class Cell {
 	
 	private int row;
 	private int col;
+	// multiple occupiers for a "merged"/linked piece
+	// so each piece can access its links
+	// by referring to its cell
 	private List<Piece> occupiers;
 	
-	public void addOccupier(Piece piece)
+	void addOccupier(Piece piece)
 	{
 		occupiers.add(piece);
 	}
@@ -31,7 +31,7 @@ public class Cell {
 		return !occupiers.isEmpty();
 	}
 	
-	public List<Piece> removeOccupiers()
+	List<Piece> removeOccupiers()
 	{
 		List<Piece> pieces = new ArrayList<>();
 		for (Piece piece : occupiers)
@@ -51,11 +51,6 @@ public class Cell {
 	{
 		return occupiers.isEmpty() ? null : occupiers.get(0).getPlayerType();
 	}
-	// returns the number of individual single pieces
-	int getTotalSinglePieces() 			
-	{
-		return occupiers.size();
-	}	
 	
 	public int getRow()
 	{
@@ -66,6 +61,7 @@ public class Cell {
 		return col;
 	}
 	
+	// used for debugging
 	public String toString()
 	{
 		String string = "(" + col + "," + row + ") " + getPrintable(false, false);
@@ -74,7 +70,7 @@ public class Cell {
 		return string;
 	}
 	
-	public String getPrintable(boolean isSelected, boolean isDangerous)  
+	private String getPrintable(boolean isSelected, boolean isDangerous)  
 	{
 		String occupier = "";
 		for (Piece piece : occupiers)			occupier += piece.getKey();

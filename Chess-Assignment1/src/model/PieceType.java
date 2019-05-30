@@ -28,18 +28,4 @@ public enum PieceType {
 		throw new NullPointerException("piece does not exist");
 	}
 	
-	boolean isValidMove(Move move)
-	{
-		int xDist = move.getXDist();
-		int yDist = move.getYDist();
-		switch (this)
-		{
-			case ROOK : 	return 	xDist == 0 || yDist == 0;
-			case BISHOP : 	return 	xDist == yDist;
-			case KNIGHT :	return  xDist == 1 && yDist == 2 ||
-									xDist == 2 && yDist == 1;
-		}
-		throw new NullPointerException("piece does not exist");
-	}
-	
 }

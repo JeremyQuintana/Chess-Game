@@ -2,28 +2,15 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Font;
-import java.io.File;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import controller.CellAction;
 import model.Cell;
 import model.Client;
-import model.Client.ClientException;
 import model.GameBoard;
 import model.Player;
 
@@ -53,19 +40,6 @@ public class MainFrame extends JFrame{
 		text.setForeground(Color.LIGHT_GRAY);
 		empty.add(text, BorderLayout.CENTER);
 		add(empty, BorderLayout.CENTER);
-		
-//		// testing purposes
-//		board = new GameBoard(new Player("a", "b"), new Player("b", "c"), 100, 100, 6);
-//		sound = new SoundPlayer(board);
-//		boardPanel = new BoardPanel(this);
-//		statusPanel1 = new StatusPanel(this, board.getSelectedPlayer());
-//		statusPanel2 = new StatusPanel(this, board.getOpposer());
-//		
-//		add(boardPanel, BorderLayout.CENTER);						/*game not starting???*/
-//	    add(statusPanel1,BorderLayout.NORTH);
-//		add(statusPanel2,BorderLayout.SOUTH);
-//		repaint();
-//		revalidate();
 
 		setBounds(50, 50, 1200, 1000);					
 		setResizable(false);
@@ -183,23 +157,6 @@ public class MainFrame extends JFrame{
 	
 	
 	
-	
-	
-	
-	
-	private void playSound(String fileName)
-	{
-		try
-		{
-		    AudioInputStream stream = AudioSystem.getAudioInputStream(new File("sounds/" + fileName + ".wav"));
-		    AudioFormat format = stream.getFormat();
-		    DataLine.Info info = new DataLine.Info(Clip.class, format);
-		    Clip clip = (Clip) AudioSystem.getLine(info);
-		    clip.open(stream);
-		    clip.start();
-		}
-		catch (Exception e) {}
-	}
 	
 	public BoardPanel getBoardPanel()
 	{

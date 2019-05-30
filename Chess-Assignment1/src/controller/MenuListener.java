@@ -11,7 +11,8 @@ import view.MenuBar;
 import view.MenuBar.CancelException;
 import view.MenuBar.MenuFunction;
 
-// this listener handles all Menu functions: register, login, exit
+// Listener for each menu function: register, login, exit
+// handles external game operations
 public class MenuListener implements ActionListener {
 
 	private MenuBar menubar;

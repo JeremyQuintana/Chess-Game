@@ -3,16 +3,6 @@ package model;
 public enum PlayerType {
 	WHITE, BLACK;
 	
-//	public String getKey(String s)
-//	{
-//		switch (this)
-//		{
-//			case WHITE : 	return s.toUpperCase();
-//			case BLACK : 	return s.toLowerCase();
-//		}
-//		return null;
-//	}
-	
 	public int defaultColumn()
 	{
 		switch (this)
