@@ -23,7 +23,6 @@ public class GameBoard {
 		for (int col=0; col<GRID_SIZE; col++)
 			getCells().add(new Cell(col, row));       
 		
-//		playerList = new LinkedList<>();
 		moveCount = 0;
 		moveLimit = (maxCount1+maxCount2)/2;
 		Piece.MOVE_LIMIT = moveRange;
